@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="">
+  <defs>
+    <radialGradient id="luz" cx="68%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#7D42D8" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#3A1E63" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#0C0A12" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="piso" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0C0A12" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0C0A12"/>
+    </linearGradient>
+    <filter id="grano">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="#0C0A12"/>
+  <rect width="1600" height="900" fill="url(#luz)"/>
+  <!-- Haz de luz de escenario: la marca vive en conciertos y rodajes. -->
+  <path d="M1180 -40 L1600 -40 L1460 940 L900 940 Z" fill="#7D42D8" opacity="0.10"/>
+  <path d="M1290 -40 L1520 -40 L1400 940 L1080 940 Z" fill="#C9F24D" opacity="0.045"/>
+  <rect width="1600" height="900" fill="url(#piso)"/>
+  <rect width="1600" height="900" filter="url(#grano)" opacity="0.16"/>
+</svg>
