@@ -1,0 +1,23 @@
+{
+  "name": "lienzos-producciones",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173",
+    "formato": "prettier --write .",
+    "formato:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^4.1.11",
+    "tailwind-animations": "^1.0.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11"
+  },
+  "description": "Producimos video para marcas que van a pautar: contenido para redes, cobertura de eventos y podcast, con un equipo propio de cine, sonido, artes visuales y derecho comercial."
+}

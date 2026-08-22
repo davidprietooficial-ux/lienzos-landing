@@ -1,0 +1,22 @@
+# ── No es nuestro / binario ──────────────────────────────────────────
+node_modules/
+dist/
+*.min.js
+*.min.css
+*.woff
+*.woff2
+
+# exFAT (disco externo) crea estos al escribir cualquier archivo. No son
+# texto: si Prettier intenta parsearlos, truena con un SyntaxError.
+._*
+.DS_Store
+
+# ── Reformatearlo ROMPE algo ──────────────────────────────────────────
+# .htaccess no es JS/CSS; Prettier no lo entiende y lo deja peor.
+public/.htaccess
+
+# PHP: Prettier no lo formatea.
+public/*.php
+
+# Generado por el compilador de tokens — se reescribe entero en cada build.
+src/estilos/tokens.css

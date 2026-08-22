@@ -1,0 +1,1376 @@
+/* ───────────────────────────────────────────────────────────────────
+ * Estilos del sitio.
+ *
+ * tokens.css lo genera marca/tokens.mjs y NO se edita a mano.
+ * Este archivo sí: aquí van los patrones que usan esos tokens.
+ * ─────────────────────────────────────────────────────────────────── */
+
+/* ── Revelado al hacer scroll ────────────────────────────────────────
+ *
+ * El elemento arranca desplazado y transparente; lib/revelar.ts le pone
+ * .visible cuando entra en pantalla.
+ *
+ * Importante: si el JS no llega a ejecutarse (error, bloqueador), el
+ * contenido quedaría invisible para siempre. Por eso .sin-js lo fuerza
+ * visible, y main.ts quita esa clase solo cuando ya está observando.
+ */
+[data-revelar] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--mov-lento) var(--mov-curva-entrada),
+    transform var(--mov-lento) var(--mov-curva-entrada);
+  will-change: opacity, transform;
+}
+[data-revelar='izquierda'] {
+  transform: translateX(-24px);
+}
+[data-revelar='derecha'] {
+  transform: translateX(24px);
+}
+[data-revelar='escala'] {
+  transform: scale(0.96);
+}
+[data-revelar].visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* Sin JavaScript, todo visible. El contenido nunca depende de una animación. */
+.no-js [data-revelar] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Contenedores ────────────────────────────────────────────────────*/
+.contenedor {
+  width: 100%;
+  max-width: var(--contenedor-max);
+  margin-inline: auto;
+  /* 24px en móvil, no 48: a 390px de ancho, 48 por lado se come el 25% de
+     la pantalla y deja los titulares condensados sin sitio donde caer. */
+  padding-inline: var(--spacing-xs);
+}
+@media (min-width: 768px) {
+  .contenedor {
+    padding-inline: var(--spacing-md);
+  }
+}
+@media (min-width: 1024px) {
+  .contenedor {
+    padding-inline: var(--spacing-lg);
+  }
+}
+
+.seccion {
+  padding-block: var(--seccion-y);
+}
+
+/* Longitud de línea legible para texto largo. Por encima de ~70 caracteres
+   el ojo pierde el renglón al volver. */
+.prosa {
+  max-width: var(--contenedor-texto-max);
+}
+
+/* La navegación vive en .marca-flotante, más abajo. Aquí había un bloque
+   .navbar con menú móvil: se eliminó al quitar el header de navegación —
+   una landing de campaña no lleva enlaces de sección que compitan con el CTA. */
+
+/* ── Botones ─────────────────────────────────────────────────────────
+ *
+ * Un solo primario visible por vista. Si hay dos, uno está mal
+ * clasificado. Altura mínima 44px en cualquier pantalla: es el objetivo
+ * táctil por debajo del cual la gente falla el toque.
+ */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2xs);
+  min-height: var(--boton-alto);
+  padding-inline: var(--boton-padding-x);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color var(--mov-rapido) var(--mov-curva),
+    border-color var(--mov-rapido) var(--mov-curva),
+    transform var(--mov-rapido) var(--mov-curva);
+}
+.boton:active {
+  transform: translateY(1px);
+}
+.boton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.boton-primario {
+  background: var(--accion);
+  color: var(--texto-sobre-accion);
+  border: var(--borde-ancho) solid transparent;
+}
+.boton-primario:hover:not(:disabled) {
+  background: var(--accion-hover);
+}
+
+.boton-secundario {
+  background: transparent;
+  color: var(--texto-principal);
+  border: var(--borde-ancho) solid var(--linea);
+}
+.boton-secundario:hover:not(:disabled) {
+  background: var(--tarjeta-fondo);
+}
+
+/* ── Tarjetas ────────────────────────────────────────────────────────
+ * Prohibida la tarjeta dentro de tarjeta: un solo nivel de elevación
+ * por región, o el ojo deja de saber qué es lo importante.
+ */
+.tarjeta {
+  background: var(--tarjeta-fondo);
+  border: var(--borde-ancho) solid var(--linea);
+  border-radius: var(--radius-lg);
+  padding: var(--tarjeta-padding);
+}
+@media (min-width: 768px) {
+  .tarjeta {
+    padding: var(--tarjeta-padding-lg);
+  }
+}
+
+/* Solo las tarjetas que son clicables se elevan al pasar el ratón: si una
+   tarjeta se mueve y no lleva a ningún sitio, es una promesa falsa. */
+.tarjeta-enlace {
+  transition:
+    border-color var(--mov-normal) var(--mov-curva),
+    transform var(--mov-normal) var(--mov-curva);
+}
+.tarjeta-enlace:hover {
+  border-color: var(--accion);
+  transform: translateY(-2px);
+}
+
+/* ── Formulario ──────────────────────────────────────────────────────*/
+.campo {
+  width: 100%;
+  min-height: var(--campo-alto);
+  padding: var(--spacing-2xs) var(--spacing-xs);
+  background: var(--elevado-fondo);
+  border: var(--borde-ancho) solid var(--linea);
+  border-radius: var(--radius-sm);
+  color: var(--texto-principal);
+  font: inherit;
+  transition: border-color var(--mov-rapido) var(--mov-curva);
+}
+.campo:hover {
+  border-color: color-mix(in srgb, var(--linea) 60%, var(--texto-secundario));
+}
+.campo[aria-invalid='true'] {
+  border-color: var(--estado-error);
+}
+
+.etiqueta-campo {
+  display: block;
+  margin-bottom: var(--spacing-3xs);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* El error va DEBAJO del campo y dice cómo arreglarlo, no solo que está mal. */
+.error-campo {
+  margin-top: var(--spacing-3xs);
+  font-size: 14px;
+  color: var(--estado-error);
+}
+
+/* ── Los cuatro estados ──────────────────────────────────────────────*/
+[data-estado] {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+}
+[data-estado='cargando'] {
+  background: var(--tarjeta-fondo);
+  color: var(--texto-secundario);
+}
+[data-estado='exito'] {
+  background: color-mix(in srgb, var(--estado-exito) 12%, transparent);
+  color: var(--estado-exito);
+  font-weight: 600;
+}
+[data-estado='error'] {
+  background: color-mix(in srgb, var(--estado-error) 10%, transparent);
+  color: var(--estado-error);
+}
+
+/* Spinner del botón mientras envía */
+[aria-busy='true'] .indicador-carga {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: girar 700ms linear infinite;
+}
+.indicador-carga {
+  display: none;
+}
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Preguntas frecuentes ────────────────────────────────────────────*/
+[data-faq] details {
+  border-bottom: var(--borde-ancho) solid var(--linea);
+}
+[data-faq] summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding-block: var(--spacing-sm);
+  min-height: var(--boton-alto);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+[data-faq] summary::-webkit-details-marker {
+  display: none;
+}
+[data-faq] summary::after {
+  content: '+';
+  flex-shrink: 0;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--texto-secundario);
+  transition: transform var(--mov-normal) var(--mov-curva);
+}
+[data-faq] details[open] summary::after {
+  transform: rotate(45deg);
+}
+[data-faq] details > div {
+  padding-bottom: var(--spacing-sm);
+  color: var(--texto-secundario);
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────
+ * En móvil NO se sirve el vídeo: se sirve el póster. Es de donde sale la
+ * mayor parte de la puntuación de rendimiento en móvil, que es donde
+ * está el tráfico.
+ */
+.hero-media {
+  display: none;
+}
+@media (min-width: 768px) {
+  .hero-media {
+    display: block;
+  }
+}
+
+/* ── Sólo para lectores de pantalla ──────────────────────────────────*/
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Saltar al contenido: primer tabulador de la página. Obligatorio para
+   quien navega por teclado y no quiere recorrer el menú cada vez. */
+.saltar-contenido {
+  position: absolute;
+  left: var(--spacing-sm);
+  top: -100px;
+  z-index: 100;
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  background: var(--accion);
+  color: var(--texto-sobre-accion);
+  border-radius: var(--radius-sm);
+  transition: top var(--mov-rapido) var(--mov-curva);
+}
+.saltar-contenido:focus {
+  top: var(--spacing-sm);
+}
+
+/* ── Publicidad ──────────────────────────────────────────────────────
+ * El contenedor reserva la altura ANTES de que cargue el anuncio. Sin
+ * esto el anuncio empuja el contenido al aparecer y el CLS se dispara.
+ */
+.anuncio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-block: var(--spacing-lg);
+  overflow: hidden;
+}
+.anuncio::before {
+  content: 'Publicidad';
+  position: absolute;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+  opacity: 0.5;
+}
+.anuncio > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Reproductor de video (VSL / testimonio con reproducción real) ─────
+ * Patrón completo en references/reproductor-video.md — lib/reproductor.ts
+ * lo engancha. El <video> arranca con `controls` en el HTML (fail-open) y
+ * este CSS oculta el botón propio hasta que el JS confirma que va a poder
+ * manejar el estado — si el JS no corre, [hidden] nunca se quita del
+ * botón/barra propios y el navegador se queda con sus controles nativos.
+ */
+@keyframes reproductor-pulso {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+.reproductor {
+  position: relative;
+  cursor: pointer;
+}
+.reproductor__video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.reproductor__boton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  height: 72px;
+  width: 72px;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  border: none;
+  border-radius: 9999px;
+  background: var(--accion);
+  color: var(--texto-sobre-accion);
+  cursor: pointer;
+  transition:
+    opacity var(--mov-normal) var(--mov-curva),
+    visibility var(--mov-normal) var(--mov-curva);
+}
+/* Mientras reproduce, el botón se esconde para no tapar el video. */
+.reproductor--reproduciendo .reproductor__boton {
+  opacity: 0;
+  visibility: hidden;
+}
+.reproductor__boton::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  border: 2px solid var(--accion);
+  animation: reproductor-pulso 1.8s ease-out infinite;
+}
+/* El triángulo de play no está centrado ópticamente por defecto. */
+.reproductor__boton svg[data-icono-play] {
+  transform: translateX(2px);
+}
+
+.reproductor__barra {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  height: 4px;
+  background: rgb(0 0 0 / 0.2);
+  pointer-events: none; /* clave: no se puede arrastrar/adelantar */
+}
+.reproductor__barra-relleno {
+  height: 100%;
+  width: 0%;
+  background: var(--accion);
+  transition: width var(--mov-instante) linear;
+}
+
+.reproductor__resumen,
+.reproductor__final {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2xs);
+  padding: var(--spacing-sm);
+  text-align: center;
+}
+/* Por si el sistema de estilos pisa [hidden] con un display de otra regla
+   (ver references/reproductor-video.md, "el gotcha de [hidden]"). */
+.reproductor__resumen[hidden],
+.reproductor__final[hidden] {
+  display: none;
+}
+.reproductor__resumen {
+  z-index: 3;
+  background: color-mix(in srgb, var(--pagina-fondo) 88%, transparent);
+  color: var(--texto-principal);
+}
+.reproductor__resumen-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-2xs);
+}
+.reproductor__final {
+  z-index: 4;
+  background: rgb(0 0 0 / 0.6);
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Lienzos Producciones — patrones propios de este sitio
+ *
+ * La materialidad del contrato está en 3: su portafolio actual apoya
+ * todo sobre una textura de grano y usa duotonos de color sobre las
+ * fotos. Se replica aquí con SVG en línea (cero peticiones de red) en
+ * vez de con un JPG de textura, que costaría ~200 KB por lo mismo.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* Dos colores de marca que no entran en el archivo generado de arriba, que
+ * solo cubre los roles fijos del sistema. Van declarados aquí a mano:
+ *
+ *   acento          → #C9F24D  lima de señal
+ *   marca profunda  → #7D42D8  el violeta exacto del logotipo
+ */
+:root {
+  --acento-senal: #C9F24D;
+  --marca-profunda: #7D42D8;
+
+  /* Anton es una grotesca condensada, no una serif: el fallback que genera
+     tokens.mjs por defecto (ui-serif) daría un salto enorme mientras carga. */
+  --font-display: 'Anton', 'Arial Narrow', ui-sans-serif, sans-serif;
+}
+
+/* ── Grano ───────────────────────────────────────────────────────────
+ * feTurbulence a baseFrequency alta = ruido fino tipo emulsión de 35 mm.
+ * Va en ::after con pointer-events:none para no tocar la interacción.
+ */
+.grano {
+  position: relative;
+  isolation: isolate;
+}
+.grano::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23r)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* ── Titular fluido ──────────────────────────────────────────────────
+ * Anton es condensada: escala continua en vez de tres saltos por etapa,
+ * porque el largo del titular cambia mucho entre secciones.
+ */
+.titular-hero {
+  font-family: var(--font-display);
+  /* Tope a 4.75rem, no a 6: Anton es condensada y a 96px un titular de
+     cinco palabras se comía el alto completo del viewport en escritorio. */
+  /* Tope 3.5rem desde que el hero es de dos columnas: el copy ya no tiene
+     el ancho entero, y a 68px un titular de seis palabras se partía en seis
+     líneas — que es justo lo que la máscara por líneas deja en evidencia. */
+  font-size: clamp(2rem, 3.6vw + 0.5rem, 3.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.titular-seccion {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* El kicker que va encima de cada titular: la etiqueta de sección. */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-3xs);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accion);
+}
+.kicker::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+
+/* ── Hero a sangre ───────────────────────────────────────────────────*/
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  /* min() para que en una pantalla muy alta el hero no se estire hasta
+     dejar el resto de la página fuera del primer scroll. */
+  min-height: min(88svh, 720px);
+  padding-block: var(--spacing-lg) var(--spacing-md);
+  overflow: hidden;
+}
+@media (min-width: 1024px) {
+  .hero {
+    min-height: min(90svh, 800px);
+  }
+}
+.hero__fondo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero__fondo img,
+.hero__fondo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* El velo va en dos direcciones: hacia abajo para que el titular apoye,
+   y desde la izquierda para que el texto tenga fondo propio sin caja. */
+.hero__velo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to top, var(--pagina-fondo) 4%, transparent 62%),
+    linear-gradient(to right, var(--pagina-fondo) 8%, color-mix(in srgb, var(--pagina-fondo) 55%, transparent) 58%, transparent 92%);
+}
+.hero__contenido {
+  position: relative;
+  z-index: 2;
+}
+@media (min-width: 768px) {
+  .hero__contenido {
+    max-width: 40rem;
+  }
+}
+@media (min-width: 1024px) {
+  .hero__contenido {
+    /* En escritorio el ancho lo reparte el grid de dos columnas, no un
+       max-width: limitarlo aquí además estrecharía la columna del copy y
+       partiría el titular donde la máscara por líneas no lo espera. */
+    max-width: none;
+  }
+}
+
+/* ── Placeholder de material pendiente ───────────────────────────────
+ * Existe para que el hueco se VEA como hueco. Un placeholder que se
+ * parece a contenido real es exactamente cómo un dato falso llega a
+ * producción — ver PROYECTO.md, "Decisiones tomadas por criterio".
+ */
+.hueco {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      var(--tarjeta-fondo) 0 14px,
+      var(--elevado-fondo) 14px 28px
+    );
+  border: 1px dashed var(--linea);
+  color: var(--texto-secundario);
+}
+.hueco__etiqueta {
+  position: relative;
+  z-index: 2;
+  padding: var(--spacing-3xs) var(--spacing-2xs);
+  background: var(--pagina-fondo);
+  border: 1px solid var(--linea);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Marca de "esto no es real todavía" para datos sueltos (una métrica,
+   una respuesta de FAQ). Se lee distinto del contenido de al lado. */
+.pendiente {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--estado-aviso);
+  color: var(--estado-aviso);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Servicios: franja de color por tarjeta ──────────────────────────
+ * Su portafolio da a cada servicio un duotono distinto. Aquí es una
+ * franja superior, no un icono: cuatro iconos de librería en fila es
+ * literalmente el patrón que anti-slop.md prohíbe.
+ */
+.servicio {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.servicio::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 4px;
+  background: var(--franja, var(--accion));
+}
+.servicio__indice {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: var(--texto-secundario);
+}
+
+/* ── Portafolio: bento asimétrico ────────────────────────────────────*/
+.bento {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-2xs);
+}
+@media (min-width: 768px) {
+  .bento {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .bento > * {
+    grid-column: span 3;
+  }
+  .bento > .bento--destacado {
+    grid-column: span 6;
+  }
+}
+@media (min-width: 1024px) {
+  .bento > * {
+    grid-column: span 2;
+  }
+  .bento > .bento--destacado {
+    grid-column: span 3;
+  }
+}
+
+.pieza {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--linea);
+  aspect-ratio: 4 / 3;
+}
+.pieza--alta {
+  aspect-ratio: 3 / 4;
+}
+.pieza--ancha {
+  aspect-ratio: 16 / 9;
+}
+.pieza__titulo {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: var(--spacing-2xs);
+  background: linear-gradient(to top, var(--pagina-fondo) 10%, transparent);
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+/* ── Equipo: el nombre va SOBRE la foto ──────────────────────────────
+ * Copiado de su propio portafolio, que es donde ya funciona: nombre en
+ * condensada grande abajo a la izquierda y el cargo debajo en cuerpo.
+ */
+.persona {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--linea);
+  aspect-ratio: 4 / 3;
+}
+.persona__pie {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: var(--spacing-sm) var(--spacing-2xs) var(--spacing-2xs);
+  background: linear-gradient(to top, var(--pagina-fondo) 15%, transparent);
+}
+.persona__nombre {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 2.4vw, 1.75rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+.persona__rol {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--texto-secundario);
+}
+
+/* ── Proceso: la línea que une los pasos ─────────────────────────────*/
+.paso {
+  position: relative;
+  padding-top: var(--spacing-sm);
+  border-top: 2px solid var(--linea);
+}
+.paso::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 40%;
+  height: 2px;
+  background: var(--accion);
+}
+.paso__numero {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 0.8;
+  color: var(--accion);
+}
+
+/* ── Métricas ────────────────────────────────────────────────────────*/
+.metrica__valor {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 5rem);
+  line-height: 0.85;
+  color: var(--acento-senal);
+}
+
+/* ── Banda de cierre, en el violeta exacto del logo ──────────────────
+ * marca_profunda (#7D42D8) solo aquí: es superficie grande con texto
+ * grande encima (5.16:1). Como texto suelto sobre el fondo daría 3.41
+ * y no pasaría — por eso el token de acción es el aclarado.
+ */
+.banda-marca {
+  background: var(--marca-profunda);
+  color: var(--texto-principal);
+}
+.banda-marca .boton-secundario {
+  border-color: var(--texto-principal);
+}
+.banda-marca .boton-secundario:hover:not(:disabled) {
+  background: color-mix(in srgb, #000 20%, transparent);
+}
+
+/* ── Chips del formulario ────────────────────────────────────────────
+ * Un checkbox que parece botón: se toca con el pulgar y se ve el estado
+ * sin leer. El input real sigue ahí para el teclado y el lector.
+ */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3xs);
+}
+.chip {
+  position: relative;
+  display: inline-flex;
+}
+.chip input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--spacing-2xs);
+  border: 1px solid var(--linea);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  transition:
+    border-color var(--mov-rapido) var(--mov-curva),
+    background-color var(--mov-rapido) var(--mov-curva),
+    color var(--mov-rapido) var(--mov-curva);
+}
+.chip input:hover + span {
+  border-color: var(--accion);
+}
+.chip input:checked + span {
+  background: var(--accion);
+  border-color: var(--accion);
+  color: var(--texto-sobre-accion);
+}
+.chip input:focus-visible + span {
+  outline: 2px solid var(--accion);
+  outline-offset: 2px;
+}
+
+/* select: el navegador no hereda ni la fuente ni el fondo por su cuenta */
+select.campo {
+  appearance: none;
+  padding-right: var(--spacing-sm);
+  background-image: linear-gradient(45deg, transparent 50%, var(--texto-secundario) 50%),
+    linear-gradient(135deg, var(--texto-secundario) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) calc(50% + 2px),
+    calc(100% - 14px) calc(50% + 2px);
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* ── Barra fija de acciones, solo móvil ──────────────────────────────*/
+.sticky-cta {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 45;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--spacing-3xs);
+  padding: var(--spacing-3xs);
+  padding-bottom: max(var(--spacing-3xs), env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--pagina-fondo) 94%, transparent);
+  border-top: 1px solid var(--linea);
+  backdrop-filter: blur(8px);
+}
+@media (min-width: 768px) {
+  .sticky-cta {
+    display: none;
+  }
+}
+/* Sitio deja hueco al final para que la barra no tape el pie. */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 76px;
+  }
+}
+
+/* ── Foco visible, en todo ───────────────────────────────────────────*/
+:focus-visible {
+  outline: 2px solid var(--accion);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Movimiento — capa vistosa
+ *
+ * Todo en CSS + IntersectionObserver, sin GSAP: una productora necesita
+ * que el sitio se mueva, pero no a costa de los 95 de Lighthouse móvil.
+ * Solo se anima `transform` y `opacity` (las dos propiedades que el
+ * compositor resuelve sin recalcular layout).
+ *
+ * El bloque global de prefers-reduced-motion vive en tokens.css y mata
+ * todo lo de aquí sin excepción.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Barra superior: SOLO marca + un accionable ──────────────────────
+ * No es un header de sitio web. Una landing de campaña tiene un único
+ * trabajo y cada enlace de navegación es una salida que compite con él.
+ */
+.marca-flotante {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--mov-normal) var(--mov-curva),
+    border-color var(--mov-normal) var(--mov-curva),
+    padding var(--mov-normal) var(--mov-curva);
+}
+.marca-flotante.compacta {
+  background: color-mix(in srgb, var(--pagina-fondo) 90%, transparent);
+  border-bottom-color: var(--linea);
+  backdrop-filter: blur(10px);
+}
+.marca-flotante__fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2xs);
+  padding-block: var(--spacing-3xs);
+  min-height: 64px;
+}
+/* El CTA de arriba solo aparece cuando el del hero ya se fue de pantalla:
+   dos botones idénticos a la vez es ruido, no insistencia. */
+.marca-flotante__cta {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    opacity var(--mov-normal) var(--mov-curva),
+    transform var(--mov-normal) var(--mov-curva);
+}
+.marca-flotante.compacta .marca-flotante__cta {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* ── Titular que entra línea a línea ─────────────────────────────────
+ * Cada línea vive en un contenedor con overflow oculto y sube desde
+ * debajo del borde. Es el gesto de cabecera de cualquier productora, y
+ * cuesta dos reglas CSS.
+ */
+.linea-mascara {
+  display: block;
+  overflow: hidden;
+}
+.linea-mascara > span {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.visible .linea-mascara > span,
+.linea-mascara.visible > span {
+  transform: none;
+}
+.linea-mascara:nth-of-type(2) > span { transition-delay: 90ms; }
+.linea-mascara:nth-of-type(3) > span { transition-delay: 180ms; }
+.no-js .linea-mascara > span { transform: none; }
+
+/* ── Ticker: la cinta de formatos que cruza la página ────────────────
+ * Duplicada en el HTML y desplazada el 50%: el bucle no tiene costura.
+ */
+.ticker {
+  position: relative;
+  overflow: hidden;
+  border-block: 1px solid var(--linea);
+  padding-block: var(--spacing-2xs);
+  /* Se difumina en los bordes para que no "aparezca" de golpe. */
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.ticker__pista {
+  display: flex;
+  width: max-content;
+  animation: ticker-correr 38s linear infinite;
+}
+.ticker:hover .ticker__pista {
+  animation-play-state: paused;
+}
+.ticker__grupo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  padding-inline: var(--spacing-2xs);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--texto-secundario);
+}
+.ticker__item::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--acento-senal);
+}
+.ticker__item--fuerte {
+  color: var(--texto-principal);
+}
+@keyframes ticker-correr {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ── Los huecos respiran ─────────────────────────────────────────────
+ * Un barrido lento sobre el rayado. Deja claro que el sitio está vivo y
+ * que ahí falta material, en vez de parecer una imagen rota.
+ */
+.hueco::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    color-mix(in srgb, var(--accion) 14%, transparent) 50%,
+    transparent 65%
+  );
+  background-size: 250% 100%;
+  animation: hueco-barrido 4.5s ease-in-out infinite;
+}
+@keyframes hueco-barrido {
+  from { background-position: 160% 0; }
+  to   { background-position: -60% 0; }
+}
+
+/* ── Botón primario con barrido al pasar el ratón ────────────────────*/
+.boton-primario {
+  position: relative;
+  overflow: hidden;
+}
+.boton-primario::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.35) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform var(--mov-lento) var(--mov-curva);
+}
+.boton-primario:hover:not(:disabled)::before {
+  transform: translateX(100%);
+}
+.boton-primario > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Tarjetas de servicio: la franja crece al acercarse ──────────────*/
+.servicio::before {
+  transform: scaleX(0.18);
+  transform-origin: left;
+  transition: transform var(--mov-lento) var(--mov-curva-entrada);
+}
+.servicio.visible::before,
+.no-js .servicio::before {
+  transform: scaleX(1);
+}
+.servicio {
+  transition:
+    border-color var(--mov-normal) var(--mov-curva),
+    transform var(--mov-normal) var(--mov-curva);
+}
+@media (hover: hover) {
+  .servicio:hover {
+    border-color: var(--accion);
+    transform: translateY(-3px);
+  }
+}
+
+/* ── Piezas del portafolio: zoom contenido al pasar ──────────────────*/
+.pieza > .hueco,
+.pieza > img,
+.persona > .hueco,
+.persona > img {
+  transition: transform var(--mov-lento) var(--mov-curva);
+}
+@media (hover: hover) {
+  .pieza:hover > .hueco,
+  .pieza:hover > img,
+  .persona:hover > .hueco,
+  .persona:hover > img {
+    transform: scale(1.04);
+  }
+  .pieza,
+  .persona {
+    transition: border-color var(--mov-normal) var(--mov-curva);
+  }
+  .pieza:hover,
+  .persona:hover {
+    border-color: var(--accion);
+  }
+}
+
+/* ── La línea del paso se dibuja sola ────────────────────────────────*/
+.paso::before {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 900ms var(--mov-curva-entrada);
+}
+.paso.visible::before,
+.no-js .paso::before {
+  transform: scaleX(1);
+}
+
+/* ── Indicador de scroll del hero ────────────────────────────────────*/
+.indicador-scroll {
+  /* Solo desde tablet. La visibilidad va aquí y no con la utilidad `hidden`
+     del HTML: este archivo no está en @layer, así que su `display: flex`
+     gana siempre a `.hidden` y el elemento aparecía igual en móvil. */
+  display: none;
+  align-items: center;
+  gap: var(--spacing-3xs);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+}
+.indicador-scroll::before {
+  content: '';
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom, var(--accion), transparent);
+  animation: bajar 2.2s ease-in-out infinite;
+}
+@media (min-width: 768px) {
+  .indicador-scroll {
+    display: flex;
+  }
+}
+@keyframes bajar {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%      { transform: translateY(8px); opacity: 0.35; }
+}
+
+/* ── Aura del hero: respiración lenta detrás del titular ─────────────
+ * Un solo elemento animando transform. No es un "glow" de sombra difusa
+ * de las que prohíbe anti-slop: es un degradado radial con máscara.
+ */
+.hero__aura {
+  position: absolute;
+  top: -10%;
+  right: -20%;
+  z-index: 1;
+  width: 75vw;
+  height: 75vw;
+  max-width: 900px;
+  max-height: 900px;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--marca-profunda) 40%, transparent) 0%,
+    transparent 62%
+  );
+  animation: respirar 11s ease-in-out infinite;
+}
+@keyframes respirar {
+  0%, 100% { transform: scale(1) translate3d(0, 0, 0); opacity: 0.75; }
+  50%      { transform: scale(1.12) translate3d(-2%, 2%, 0); opacity: 1; }
+}
+
+/* ── Kicker: la línea se estira al entrar ────────────────────────────*/
+.kicker::before {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--mov-lento) var(--mov-curva-entrada);
+}
+.visible .kicker::before,
+.kicker.visible::before,
+.no-js .kicker::before {
+  transform: scaleX(1);
+}
+
+/* ── Hueco de copy sin escribir ──────────────────────────────────────
+ * Distinto del hueco de imagen: esto es texto que falta, no material.
+ * Se ve como una nota del constructor, no como contenido del cliente.
+ */
+.copy-pendiente {
+  display: block;
+  border-left: 3px solid var(--estado-aviso);
+  padding: var(--spacing-2xs);
+  background: color-mix(in srgb, var(--estado-aviso) 7%, transparent);
+  color: var(--texto-secundario);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.copy-pendiente strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--estado-aviso);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* El titular no se mueve él: se mueven sus líneas dentro de la máscara.
+   Si además se desplazara el bloque entero, serían dos gestos peleando. */
+[data-revelar='lineas'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * VSL del hero — vertical, en bucle mudo hasta que lo piden
+ *
+ * Arranca mudo y en bucle para que haya movimiento desde el primer
+ * segundo sin invadir a nadie. Al pulsar play vuelve al inicio, se
+ * desmutea y pasa a controles nativos. Lo engancha src/lib/vsl.ts.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.vsl {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 9 / 16;
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
+  border: 1px solid var(--linea);
+  background: var(--tarjeta-fondo);
+}
+@media (min-width: 768px) {
+  .vsl {
+    max-width: 360px;
+  }
+}
+.vsl__video,
+.vsl > .hueco {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* El botón vive sobre el video y desaparece al reproducir de verdad. */
+.vsl__boton {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-3xs);
+  padding: var(--spacing-2xs);
+  border: 0;
+  background: linear-gradient(to top, color-mix(in srgb, var(--pagina-fondo) 92%, transparent) 8%, transparent 55%);
+  color: var(--texto-principal);
+  cursor: pointer;
+  font: inherit;
+  transition: opacity var(--mov-normal) var(--mov-curva);
+}
+.vsl--reproduciendo .vsl__boton {
+  opacity: 0;
+  pointer-events: none;
+}
+.vsl__play {
+  display: flex;
+  height: 60px;
+  width: 60px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--accion);
+  color: var(--texto-sobre-accion);
+}
+/* El triángulo de play no está centrado ópticamente por defecto. */
+.vsl__play svg {
+  transform: translateX(2px);
+}
+.vsl__pulso {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 60px;
+  width: 60px;
+  margin: -30px 0 0 -30px;
+  border: 2px solid var(--accion);
+  border-radius: 9999px;
+  animation: vsl-pulso 2s ease-out infinite;
+  pointer-events: none;
+}
+.vsl--reproduciendo .vsl__pulso {
+  display: none;
+}
+@keyframes vsl-pulso {
+  from { opacity: 0.7; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.6); }
+}
+.vsl__etiqueta {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ * Formulario por pasos
+ *
+ * Los mismos campos, repartidos en tres pantallas. Un formulario de
+ * once campos de golpe no se llena: la persona calcula el esfuerzo
+ * antes de empezar y se va. En tres pasos calcula el del primero.
+ *
+ * Los datos de contacto van al FINAL a propósito: se piden cuando ya
+ * hay inversión hecha, no antes de que haya nada que perder.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.pasos__barra {
+  display: flex;
+  gap: 6px;
+  margin-bottom: var(--spacing-2xs);
+}
+.pasos__tramo {
+  flex: 1;
+  height: 3px;
+  background: var(--linea);
+  overflow: hidden;
+}
+.pasos__tramo::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accion);
+  transition: width var(--mov-lento) var(--mov-curva-entrada);
+}
+.pasos__tramo[data-hecho]::after {
+  width: 100%;
+}
+.pasos__cuenta {
+  margin-bottom: var(--spacing-2xs);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+}
+
+.paso-panel[hidden] {
+  display: none;
+}
+.paso-panel {
+  animation: paso-entra var(--mov-normal) var(--mov-curva-entrada);
+}
+@keyframes paso-entra {
+  from { opacity: 0; transform: translateX(12px); }
+  to   { opacity: 1; transform: none; }
+}
+.paso-panel__titulo {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.pasos__acciones {
+  display: flex;
+  gap: var(--spacing-3xs);
+  margin-top: var(--spacing-xs);
+}
+.pasos__acciones .boton {
+  flex: 1;
+}
+/* "Atrás" no compite con el botón que avanza. */
+.pasos__acciones .boton-secundario {
+  flex: 0 0 auto;
+  padding-inline: var(--spacing-2xs);
+}

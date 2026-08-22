@@ -1,0 +1,115 @@
+/* ARCHIVO GENERADO — no lo edites a mano.
+ * Todo lo de aquí sale del contrato de marca del proyecto. Cualquier cambio
+ * escrito directamente en este archivo se pierde en la siguiente compilación.
+ */
+
+@import 'tailwindcss';
+/* tailwind-animations 1.x publica CSS puro (exports: './src/index.css'), no un
+   plugin JS. Con @plugin, Tailwind v4 intenta cargarlo como módulo y el build
+   muere con "Unknown file extension .css". Va como @import. */
+@import 'tailwind-animations';
+
+@theme {
+  /* Solo tres etapas — ver references/responsive-3.md. sm:/xl:/2xl: no
+     compilan a propósito: el gate (verificación 3) los busca como texto. */
+  --breakpoint-*: initial;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+
+  --font-display: "Anton", ui-serif, serif;
+  --font-cuerpo: "Archivo", ui-sans-serif, system-ui, sans-serif;
+}
+
+@font-face {
+  font-family: "Anton";
+  src: url("/fuentes/anton-400.woff2") format("woff2");
+  font-weight: 400 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Archivo";
+  src: url("/fuentes/archivo-var.woff2") format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}
+
+:root {
+  /* Color. Si el tono del primario cae en el rango de morados reservado, es
+     porque es el color real de la marca y está documentado como excepción. */
+  --accion: #9B6BEA;
+  --accion-hover: #A97BF0;
+  --pagina-fondo: #0C0A12;
+  --tarjeta-fondo: #17131F;
+  --elevado-fondo: #201c28;
+  --texto-principal: #F4F1FA;
+  --texto-secundario: #A79FB5;
+  --texto-sobre-accion: #000000;
+  --estado-exito: #5CD69A;
+  --estado-error: #FF7A70;
+  --estado-aviso: #F0C05A;
+  --linea: #6B5C82;
+  --borde-ancho: 1px;
+
+  /* Forma — máximo 3 radios en todo el sistema (anti-slop.md). */
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+
+  /* Espaciado — escala derivada de la unidad del contrato (4 u 8px). */
+  --spacing-3xs: 8px;
+  --spacing-2xs: 16px;
+  --spacing-xs: 24px;
+  --spacing-sm: 32px;
+  --spacing-md: 48px;
+  --spacing-lg: 80px;
+  --seccion-y: 64px;
+
+  /* Constantes de sistema — no cambian por cliente, ver docs/sistema-bloques.md. */
+  --contenedor-max: 1200px;
+  --contenedor-texto-max: 70ch;
+  --boton-alto: 48px;
+  --boton-padding-x: 24px;
+  --campo-alto: 48px;
+  --tarjeta-padding: 32px;
+  --tarjeta-padding-lg: 48px;
+
+  /* Movimiento — un solo lugar, ver references/motion.md. */
+  --mov-instante: 100ms;
+  --mov-rapido: 150ms;
+  --mov-normal: 250ms;
+  --mov-lento: 400ms;
+  --mov-curva: cubic-bezier(0.4, 0, 0.2, 1);
+  --mov-curva-entrada: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --seccion-y: 96px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --seccion-y: 128px;
+  }
+}
+
+body {
+  background: var(--pagina-fondo);
+  color: var(--texto-principal);
+  font-family: var(--font-cuerpo);
+}
+
+/* prefers-reduced-motion — no negociable, ver references/motion.md.
+   Cualquier @keyframes o transition fuera de este archivo (GSAP en T3
+   incluido) tiene que respetar esto por su cuenta. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

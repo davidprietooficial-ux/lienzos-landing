@@ -1,0 +1,29 @@
+# Dependencias y compilación
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Credenciales — nunca, bajo ningún concepto
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Sourcemaps: si alguno se cuela, que no llegue al repositorio
+*.map
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+._*
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Datos del formulario en local (el límite de tasa escribe aquí en desarrollo)
+datos-formulario/

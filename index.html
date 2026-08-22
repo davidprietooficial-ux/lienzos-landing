@@ -1,0 +1,829 @@
+<!doctype html>
+<!--
+  La clase no-js del <html> la quita src/main.ts al arrancar. Si el JS
+  falla o lo bloquean, se queda puesta y todo el contenido se ve igual.
+-->
+<html lang="es" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Lienzos Producciones · Video para marcas que pautan</title>
+    <meta
+      name="description"
+      content="Producimos video para marcas que van a pautar: contenido para redes, cobertura de eventos y podcast. Entregamos en 9:16, 1:1 y 16:9, listos para subir al administrador de anuncios."
+    />
+    <!-- DOMINIO PENDIENTE: cámbialo aquí, en og:url y en el JSON-LD cuando
+         esté comprado. Ver PROYECTO.md → Pendiente del cliente. -->
+    <link rel="canonical" href="https://DOMINIO-PENDIENTE.com/" />
+
+    <!-- Open Graph: es lo que se ve al compartir el enlace por WhatsApp,
+         que es por donde va a viajar la mitad del tráfico de la pauta. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lienzos Producciones" />
+    <meta
+      property="og:description"
+      content="Grabamos para el formato en el que vas a pautar. Del mismo rodaje salen el vertical, el cuadrado y el horizontal."
+    />
+    <meta property="og:url" content="https://DOMINIO-PENDIENTE.com/" />
+    <meta property="og:image" content="https://DOMINIO-PENDIENTE.com/og.jpg" />
+    <meta property="og:locale" content="es_CO" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Anton es la fuente del LCP (el titular del hero). La del cuerpo no
+         se precarga: competiría con el render de lo primero que se ve. -->
+    <link rel="preload" href="/fuentes/anton-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta name="theme-color" content="#0C0A12" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <script type="module" src="/src/main.ts"></script>
+
+    <!-- JSON-LD. Sin FAQPage a propósito: tres de las cuatro respuestas
+         todavía son huecos pendientes del cliente, y marcar datos
+         estructurados con contenido de relleno es peor que no marcarlos.
+         Se añade en /web iterar cuando las respuestas sean reales. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Lienzos Producciones",
+        "description": "Productora de anuncios en video para pauta digital: guion, rodaje con equipo propio y entrega en 9:16, 1:1 y 16:9 lista para Meta, TikTok y YouTube.",
+        "url": "https://DOMINIO-PENDIENTE.com/",
+        "email": "lienzosprod@gmail.com",
+        "telephone": "+573057190936",
+        "areaServed": { "@type": "Country", "name": "Colombia" },
+        "sameAs": [
+          "https://www.instagram.com/lienzosproducciones/",
+          "https://lienzosproduccionesportafolio.myportfolio.com/work"
+        ]
+      }
+    </script>
+  </head>
+
+  <body>
+    <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
+    <!-- ══ Marca + un accionable ═══════════════════════════════════
+         NO es un header de sitio web y no debe convertirse en uno. Una
+         landing de campaña tiene un solo trabajo, y cada enlace de
+         navegación es una salida que compite con el CTA. Aquí arriba solo
+         hay logo y "Cotizar" — que además no aparece hasta que el CTA del
+         hero se ha ido de pantalla.
+    -->
+    <header class="marca-flotante" data-block="nav-simple" data-marca-flotante>
+      <div class="contenedor marca-flotante__fila">
+        <a href="#contenido" class="flex items-center gap-[var(--spacing-3xs)]">
+          <img src="/logo-lienzos.png" alt="Lienzos Producciones" width="36" height="36" class="block h-9 w-9" />
+          <span class="font-display text-base leading-none tracking-[0.02em] uppercase md:text-lg">Lienzos</span>
+        </a>
+
+        <a href="#cotizar" class="boton boton-primario marca-flotante__cta">
+          <span>Cotizar</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="contenido" tabindex="-1">
+      <!-- ══ Hero ══════════════════════════════════════════════════
+           Dos columnas en escritorio: el VSL vertical a la izquierda y el
+           copy a la derecha. En móvil el copy va primero — el titular es
+           el gancho, y un video que hay que pasar antes de saber de qué va
+           la página es un peaje, no un argumento.
+      -->
+      <section class="hero grano" data-block="hero-video">
+        <div class="hero__aura" aria-hidden="true"></div>
+        <div class="hero__velo" aria-hidden="true"></div>
+
+        <div class="contenedor hero__contenido">
+          <div class="grid items-center gap-[var(--spacing-md)] lg:grid-cols-[340px_1fr]">
+            <!-- VSL. En móvil baja debajo del copy con order. -->
+            <div class="order-2 lg:order-1" data-revelar="escala">
+              <div class="vsl grano" data-vsl>
+                <!-- Cuando llegue el video real: quitar el .hueco, poner el
+                     <video> con su poster y su src. El JS ya está enganchado. -->
+                <div class="hueco"><span class="hueco__etiqueta">VSL pendiente · 30-45 s</span></div>
+
+                <button type="button" class="vsl__boton" data-vsl-boton>
+                  <span class="vsl__pulso" aria-hidden="true"></span>
+                  <span class="vsl__play" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                  </span>
+                  <span class="vsl__etiqueta">Ver en 45 segundos</span>
+                </button>
+              </div>
+              <p class="copy-pendiente mt-[var(--spacing-2xs)] lg:max-w-[360px] lg:mx-auto">
+                <strong>Falta el VSL</strong>
+                Aquí va un video vertical de 30-45 s de alguien de Lienzos explicando la oferta:
+                a quién le sirve, qué reciben y cuánto tarda. Es la pieza que más convierte de
+                toda la página y además demuestra el producto — si el video de venta se ve mal,
+                nadie compra producción de video.
+              </p>
+            </div>
+
+            <!-- Copy -->
+            <div class="order-1 lg:order-2">
+              <p class="kicker">Creamos contenido auténtico que resuelve</p>
+
+              <h1 class="titular-hero mt-[var(--spacing-2xs)]" data-revelar="lineas">
+                <span class="linea-mascara"><span>Anuncios que no</span></span>
+                <span class="linea-mascara"><span>parecen <em class="text-[var(--accion)] not-italic">grabados</em></span></span>
+                <span class="linea-mascara"><span><em class="text-[var(--accion)] not-italic">con un celular</em></span></span>
+              </h1>
+
+              <p class="prosa mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]" data-revelar data-revelar-retraso="1">
+                Producimos las piezas que vas a pautar en Meta, TikTok y YouTube: guion, rodaje con
+                cámara, luz y sonido propios, y entrega en los tres formatos lista para subir.
+              </p>
+
+              <div class="mt-[var(--spacing-sm)] flex flex-col gap-[var(--spacing-3xs)] md:flex-row" data-revelar data-revelar-retraso="2" data-ancla-cta>
+                <a href="#cotizar" class="boton boton-primario"><span>Quiero cotizar mis anuncios</span></a>
+                <a
+                  href="https://wa.me/573057190936?text=Hola%20Lienzos%2C%20vengo%20de%20la%20web%20y%20quiero%20cotizar%20la%20producci%C3%B3n%20de%20unos%20anuncios."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="boton boton-secundario"
+                >
+                  Prefiero escribir por WhatsApp
+                </a>
+              </div>
+
+              <p class="mt-[var(--spacing-2xs)] text-sm text-[var(--texto-secundario)]">
+                Cuéntanos qué vendes y te devolvemos guion y precio cerrado.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Cinta de formatos ═════════════════════════════════════
+           El grupo va duplicado y la pista se desplaza el 50%: así el
+           bucle no tiene costura. aria-hidden porque es decorativa —
+           todo lo que dice ya está escrito en los servicios.
+      -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__pista">
+          <div class="ticker__grupo">
+            <span class="ticker__item ticker__item--fuerte">Meta Ads</span>
+            <span class="ticker__item">9:16 Reels</span>
+            <span class="ticker__item ticker__item--fuerte">TikTok</span>
+            <span class="ticker__item">1:1 Carrusel</span>
+            <span class="ticker__item ticker__item--fuerte">YouTube</span>
+            <span class="ticker__item">16:9 Pre-roll</span>
+            <span class="ticker__item ticker__item--fuerte">Subtítulos quemados</span>
+            <span class="ticker__item">Sonido directo</span>
+          </div>
+          <div class="ticker__grupo">
+            <span class="ticker__item ticker__item--fuerte">Meta Ads</span>
+            <span class="ticker__item">9:16 Reels</span>
+            <span class="ticker__item ticker__item--fuerte">TikTok</span>
+            <span class="ticker__item">1:1 Carrusel</span>
+            <span class="ticker__item ticker__item--fuerte">YouTube</span>
+            <span class="ticker__item">16:9 Pre-roll</span>
+            <span class="ticker__item ticker__item--fuerte">Subtítulos quemados</span>
+            <span class="ticker__item">Sonido directo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Problema ══════════════════════════════════════════════
+           El ángulo no es técnico ("el recorte 9:16"), es de percepción:
+           un anuncio barato le dice al cliente cuánto vale tu producto
+           antes de que tú digas nada.
+      -->
+      <section class="seccion bg-[var(--tarjeta-fondo)]" data-block="problem">
+        <div class="contenedor">
+          <div class="prosa" data-revelar>
+            <p class="kicker">El problema</p>
+            <h2 class="titular-seccion mt-[var(--spacing-2xs)]">
+              Tu producto no es barato.<br class="hidden md:inline" />
+              Tu anuncio no debería parecerlo.
+            </h2>
+            <p class="mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]">
+              Grabado con el celular, con la luz que había y el audio de la cámara. Puede que el
+              producto sea excelente, pero en los tres segundos que dura la decisión nadie sabe
+              eso todavía: solo ve cómo se ve.
+            </p>
+            <p class="mt-[var(--spacing-2xs)] text-lg text-[var(--texto-secundario)]">
+              Y el presupuesto de pauta se gasta igual. La plataforma cobra por mostrar la pieza,
+              se vea como se vea. Producir bien no es un lujo del anuncio: es lo que decide si ese
+              dinero compra clientes o solo compra impresiones.
+            </p>
+          </div>
+
+          <!-- La respuesta al problema. Tres razones concretas, no adjetivos. -->
+          <div class="mt-[var(--spacing-md)] grid gap-[var(--spacing-2xs)] md:grid-cols-3">
+            <article class="tarjeta servicio" style="--franja: var(--acento-senal)" data-revelar>
+              <p class="servicio__indice">01</p>
+              <h3 class="titular-seccion mt-[var(--spacing-3xs)] text-[1.25rem]">El audio no se arregla después</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Grabamos con ingeniero de sonido en el set, no con el micrófono de la cámara. Un
+                anuncio que se ve bien y suena mal se nota más que uno que no se ve tan bien.
+              </p>
+            </article>
+
+            <article class="tarjeta servicio" style="--franja: var(--accion)" data-revelar data-revelar-retraso="1">
+              <p class="servicio__indice">02</p>
+              <h3 class="titular-seccion mt-[var(--spacing-3xs)] text-[1.25rem]">Sale listo para subir</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                No entregamos un máster para que tu equipo lo recorte. Entregamos las piezas ya
+                cortadas por formato, con y sin subtítulos, dentro del peso y la duración de cada
+                plataforma.
+              </p>
+            </article>
+
+            <article class="tarjeta servicio" style="--franja: #E85A9B" data-revelar data-revelar-retraso="2">
+              <p class="servicio__indice">03</p>
+              <h3 class="titular-seccion mt-[var(--spacing-3xs)] text-[1.25rem]">De la idea al export, un solo equipo</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Guion, cámara, sonido, montaje y los permisos de imagen y música salen de la misma
+                mesa. No coordinas proveedores ni persigues a nadie: hablas con quien estuvo en el
+                rodaje.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Paquetes ══════════════════════════════════════════════
+           Una sola oferta — producir anuncios — vendida por volumen. El
+           destacado es el pack de 3 porque es el que necesita cualquiera
+           que pauta en serio: sin variantes no hay nada que optimizar.
+      -->
+      <section id="servicios" class="seccion" data-block="services-grid">
+        <div class="contenedor">
+          <p class="kicker" data-revelar>Paquetes</p>
+          <h2 class="titular-seccion mt-[var(--spacing-2xs)]" data-revelar>Cuántos anuncios necesitas</h2>
+          <p class="prosa mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]" data-revelar>
+            Todos incluyen lo mismo de fondo: guion, rodaje con equipo propio y entrega en 9:16,
+            1:1 y 16:9 con y sin subtítulos. Lo que cambia es cuántas piezas salen.
+          </p>
+
+          <div class="mt-[var(--spacing-md)] grid gap-[var(--spacing-2xs)] lg:grid-cols-3">
+            <article class="tarjeta servicio" style="--franja: var(--linea)" data-revelar>
+              <p class="servicio__indice">Para probar</p>
+              <h3 class="titular-seccion mt-[var(--spacing-3xs)] text-[1.5rem]">Un anuncio</h3>
+              <p class="mt-[var(--spacing-2xs)] text-[var(--texto-secundario)]">
+                Una pieza producida de punta a punta. Para ver si la producción cambia tus números
+                antes de comprometerte a más.
+              </p>
+              <p class="mt-auto pt-[var(--spacing-xs)]"><span class="pendiente">Precio pendiente</span></p>
+            </article>
+
+            <article class="tarjeta servicio lg:-translate-y-3" style="--franja: var(--accion)" data-revelar data-revelar-retraso="1">
+              <p class="servicio__indice text-[var(--accion)]">Lo que más se contrata</p>
+              <h3 class="titular-seccion mt-[var(--spacing-3xs)] text-[1.5rem]">Pack de 3 anuncios</h3>
+              <p class="mt-[var(--spacing-2xs)] text-[var(--texto-secundario)]">
+                Tres piezas distintas del mismo rodaje para testear ángulos en paralelo: cuál
+                gancho retiene y cuál cierre convierte. Sin variantes, el algoritmo no tiene nada
+                que optimizar.
+              </p>
+              <p class="mt-auto pt-[var(--spacing-xs)]"><span class="pendiente">Precio pendiente</span></p>
+            </article>
+
+            <article class="tarjeta servicio" style="--franja: var(--acento-senal)" data-revelar data-revelar-retraso="2">
+              <p class="servicio__indice">Para campañas activas</p>
+              <h3 class="titular-seccion mt-[var(--spacing-3xs)] text-[1.5rem]">Pack mensual</h3>
+              <p class="mt-[var(--spacing-2xs)] text-[var(--texto-secundario)]">
+                Creatividades nuevas cada mes para que la campaña no se queme. La fatiga
+                publicitaria no se arregla subiendo el presupuesto: se arregla con material nuevo.
+              </p>
+              <p class="mt-auto pt-[var(--spacing-xs)]"><span class="pendiente">Precio pendiente</span></p>
+            </article>
+          </div>
+
+          <p class="copy-pendiente mt-[var(--spacing-md)]">
+            <strong>Falta copy · esto es lo que decide la venta</strong>
+            La estructura por volumen ya está, pero los tres paquetes están vacíos por dentro.
+            Necesito de Lienzos: desde cuánto arranca cada uno, cuántas piezas salen exactamente
+            del pack mensual, cuántas rondas de cambios entran, si el guion y la locación van
+            incluidos, y qué queda fuera — que es lo que genera discusiones después. Sin eso, las
+            tres tarjetas son intercambiables con las de cualquier productora.
+          </p>
+        </div>
+      </section>
+
+      <!-- ══ Portafolio ════════════════════════════════════════════
+           Bento con proporciones distintas a propósito: una retícula
+           uniforme de miniaturas iguales es el aspecto que hay que evitar.
+           Los seis huecos se sustituyen por el material real del cliente.
+      -->
+      <section id="trabajo" class="seccion bg-[var(--tarjeta-fondo)]" data-block="portfolio-grid">
+        <div class="contenedor">
+          <div class="flex flex-col gap-[var(--spacing-2xs)] md:flex-row md:items-end md:justify-between">
+            <div data-revelar>
+              <p class="kicker">Nuestro trabajo</p>
+              <h2 class="titular-seccion mt-[var(--spacing-2xs)]">Lo que hemos grabado</h2>
+            </div>
+            <a
+              href="https://lienzosproduccionesportafolio.myportfolio.com/work"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="boton boton-secundario shrink-0"
+            >
+              Ver portafolio completo
+            </a>
+          </div>
+
+          <div class="bento mt-[var(--spacing-md)]" data-revelar>
+            <figure class="pieza pieza--ancha bento--destacado grano">
+              <div class="hueco"><span class="hueco__etiqueta">Pieza destacada 1 · material pendiente</span></div>
+              <figcaption class="pieza__titulo">Concierto de piano</figcaption>
+            </figure>
+            <figure class="pieza pieza--ancha bento--destacado grano">
+              <div class="hueco"><span class="hueco__etiqueta">Pieza destacada 2 · material pendiente</span></div>
+              <figcaption class="pieza__titulo">Orquesta en vivo</figcaption>
+            </figure>
+            <figure class="pieza grano">
+              <div class="hueco"><span class="hueco__etiqueta">Material pendiente</span></div>
+              <figcaption class="pieza__titulo">Sesión de podcast</figcaption>
+            </figure>
+            <figure class="pieza grano">
+              <div class="hueco"><span class="hueco__etiqueta">Material pendiente</span></div>
+              <figcaption class="pieza__titulo">Rodaje de marca</figcaption>
+            </figure>
+            <figure class="pieza grano">
+              <div class="hueco"><span class="hueco__etiqueta">Material pendiente</span></div>
+              <figcaption class="pieza__titulo">Cobertura de evento</figcaption>
+            </figure>
+          </div>
+
+          <p class="mt-[var(--spacing-2xs)] text-sm text-[var(--texto-secundario)]">
+            Los títulos de arriba son provisionales: se cambian por los proyectos reales cuando
+            llegue el material.
+          </p>
+        </div>
+      </section>
+
+      <!-- ══ Proceso ═══════════════════════════════════════════════ -->
+      <section id="proceso" class="seccion" data-block="method">
+        <div class="contenedor">
+          <p class="kicker" data-revelar>Cómo trabajamos</p>
+          <h2 class="titular-seccion mt-[var(--spacing-2xs)]" data-revelar>Tres pasos, sin sorpresas</h2>
+
+          <ol class="mt-[var(--spacing-md)] grid gap-[var(--spacing-md)] md:grid-cols-3">
+            <li class="paso" data-revelar>
+              <p class="paso__numero">01</p>
+              <h3 class="titular-seccion mt-[var(--spacing-2xs)] text-[1.25rem]">Brief y propuesta</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Nos cuentas qué vas a pautar, a quién le hablas y con qué presupuesto. Te devolvemos
+                propuesta con enfoque, formatos y precio cerrado.
+              </p>
+              <p class="mt-[var(--spacing-2xs)]"><span class="pendiente">Duración pendiente</span></p>
+            </li>
+            <li class="paso" data-revelar data-revelar-retraso="1">
+              <p class="paso__numero">02</p>
+              <h3 class="titular-seccion mt-[var(--spacing-2xs)] text-[1.25rem]">Rodaje</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Grabamos con equipo propio: cámara, luz y sonido. Apruebas el guion antes de que se
+                encienda una cámara.
+              </p>
+              <p class="mt-[var(--spacing-2xs)]"><span class="pendiente">Duración pendiente</span></p>
+            </li>
+            <li class="paso" data-revelar data-revelar-retraso="2">
+              <p class="paso__numero">03</p>
+              <h3 class="titular-seccion mt-[var(--spacing-2xs)] text-[1.25rem]">Entrega por formato</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Recibes los cortes en 9:16, 1:1 y 16:9, con y sin subtítulos quemados, listos para
+                subir a Meta, TikTok o YouTube.
+              </p>
+              <p class="mt-[var(--spacing-2xs)]"><span class="pendiente">Duración pendiente</span></p>
+            </li>
+          </ol>
+
+          <p class="copy-pendiente mt-[var(--spacing-md)]">
+            <strong>Falta copy · estos tres pasos son mi hipótesis, no su proceso</strong>
+            Aquí iría cómo trabajan de verdad: qué pasa exactamente en cada fase, quién aprueba qué
+            y en qué momento, cuánto dura cada una, y sobre todo qué necesitan de ti para arrancar.
+            Un proceso genérico ("briefing, producción, entrega") no diferencia a nadie; el suyo
+            real, con sus tiempos y sus puntos de aprobación, sí baja el miedo a contratar.
+          </p>
+        </div>
+      </section>
+
+      <!-- ══ Equipo ════════════════════════════════════════════════
+           La única sección con contenido 100% real del boceto. El nombre
+           va sobre la foto, en condensada grande: es exactamente como
+           Lienzos ya lo resuelve en su propio portafolio.
+      -->
+      <section id="equipo" class="seccion bg-[var(--tarjeta-fondo)]" data-block="team">
+        <div class="contenedor">
+          <p class="kicker" data-revelar>Quiénes somos</p>
+          <h2 class="titular-seccion mt-[var(--spacing-2xs)]" data-revelar>Cuatro oficios en el mismo equipo</h2>
+          <p class="prosa mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]" data-revelar>
+            No subcontratamos el sonido, ni el diseño, ni la parte legal. Están en la mesa desde
+            el brief.
+          </p>
+
+          <div class="mt-[var(--spacing-md)] grid gap-[var(--spacing-2xs)] md:grid-cols-2">
+            <article class="persona grano" data-revelar>
+              <div class="hueco"><span class="hueco__etiqueta">Foto pendiente</span></div>
+              <div class="persona__pie">
+                <h3 class="persona__nombre">Luisa María Rodríguez</h3>
+                <p class="persona__rol">Profesional en cine y televisión</p>
+              </div>
+            </article>
+            <article class="persona grano" data-revelar data-revelar-retraso="1">
+              <div class="hueco"><span class="hueco__etiqueta">Foto pendiente</span></div>
+              <div class="persona__pie">
+                <h3 class="persona__nombre">David Rodríguez</h3>
+                <p class="persona__rol">Maestro en música e ingeniero de sonido</p>
+              </div>
+            </article>
+            <article class="persona grano" data-revelar data-revelar-retraso="2">
+              <div class="hueco"><span class="hueco__etiqueta">Foto pendiente</span></div>
+              <div class="persona__pie">
+                <h3 class="persona__nombre">Angelica Castillo</h3>
+                <p class="persona__rol">Maestra en artes visuales, esp. expresión gráfica</p>
+              </div>
+            </article>
+            <article class="persona grano" data-revelar data-revelar-retraso="3">
+              <div class="hueco"><span class="hueco__etiqueta">Foto pendiente</span></div>
+              <div class="persona__pie">
+                <h3 class="persona__nombre">Laura Rodríguez</h3>
+                <p class="persona__rol">Abogada comercial</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Métricas ══════════════════════════════════════════════
+           Los valores son "—" a propósito. Las etiquetas sí son reales:
+           dicen qué se va a medir. Un número inventado aquí es publicidad
+           engañosa, y además se nota.
+      -->
+      <section class="seccion" data-block="stats">
+        <div class="contenedor">
+          <p class="kicker" data-revelar>En números</p>
+          <dl class="mt-[var(--spacing-md)] grid gap-[var(--spacing-md)] md:grid-cols-3">
+            <div data-revelar>
+              <dd class="metrica__valor">—</dd>
+              <dt class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">eventos grabados</dt>
+              <p class="mt-[var(--spacing-3xs)]"><span class="pendiente">Dato pendiente</span></p>
+            </div>
+            <div data-revelar data-revelar-retraso="1">
+              <dd class="metrica__valor">—</dd>
+              <dt class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">marcas acompañadas</dt>
+              <p class="mt-[var(--spacing-3xs)]"><span class="pendiente">Dato pendiente</span></p>
+            </div>
+            <div data-revelar data-revelar-retraso="2">
+              <dd class="metrica__valor">—</dd>
+              <dt class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">años produciendo</dt>
+              <p class="mt-[var(--spacing-3xs)]"><span class="pendiente">Dato pendiente</span></p>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ══ Testimonios ═══════════════════════════════════════════
+           Slots vacíos, cero texto redactado. Ningún testimonio se
+           escribe hasta que exista el real: es riesgo legal y se nota.
+      -->
+      <section class="seccion bg-[var(--tarjeta-fondo)]" data-block="video-testimonials">
+        <div class="contenedor">
+          <p class="kicker" data-revelar>Lo que dicen</p>
+          <h2 class="titular-seccion mt-[var(--spacing-2xs)]" data-revelar>Testimonios en video</h2>
+          <p class="prosa mt-[var(--spacing-xs)] text-[var(--texto-secundario)]" data-revelar>
+            Esta sección queda montada y vacía. Se llena con los testimonios reales cuando estén
+            grabados — no antes.
+          </p>
+
+          <div class="mt-[var(--spacing-md)] grid gap-[var(--spacing-2xs)] md:grid-cols-3" data-revelar>
+            <div class="pieza pieza--alta grano">
+              <div class="hueco"><span class="hueco__etiqueta">Testimonio 1 · por grabar</span></div>
+            </div>
+            <div class="pieza pieza--alta grano">
+              <div class="hueco"><span class="hueco__etiqueta">Testimonio 2 · por grabar</span></div>
+            </div>
+            <div class="pieza pieza--alta grano">
+              <div class="hueco"><span class="hueco__etiqueta">Testimonio 3 · por grabar</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Cotizar ═══════════════════════════════════════════════
+           Los mismos campos de siempre, repartidos en TRES pasos. Once
+           campos de golpe no se llenan: la persona calcula el esfuerzo
+           antes de empezar y se va. En tres pasos calcula el del primero.
+
+           Los datos de contacto van al final a propósito — se piden cuando
+           ya hay dos pasos de inversión hechos, no antes de que haya nada
+           que perder. Los cuatro estados los gestiona src/lib/formulario.ts.
+      -->
+      <section id="cotizar" class="seccion" data-block="contact-form">
+        <div class="contenedor grid gap-[var(--spacing-md)] lg:grid-cols-[0.8fr_1fr] lg:items-start">
+          <div data-revelar>
+            <p class="kicker">Cotizar</p>
+            <h2 class="titular-seccion mt-[var(--spacing-2xs)]">Cuéntanos qué vendes</h2>
+            <p class="prosa mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]">
+              Tres pasos, menos de un minuto. Al terminar, la conversación sigue por WhatsApp con
+              tu resumen ya escrito.
+            </p>
+
+            <div class="mt-[var(--spacing-sm)] flex flex-col gap-[var(--spacing-2xs)]">
+              <a
+                href="https://wa.me/573057190936?text=Hola%20Lienzos%2C%20vengo%20de%20la%20web%20y%20quiero%20cotizar%20la%20producci%C3%B3n%20de%20unos%20anuncios."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="boton boton-secundario self-start"
+              >
+                Escribir directo por WhatsApp
+              </a>
+              <p class="text-sm text-[var(--texto-secundario)]">
+                <a href="mailto:lienzosprod@gmail.com" class="underline underline-offset-2">lienzosprod@gmail.com</a>
+                ·
+                <a href="https://www.instagram.com/lienzosproducciones/" target="_blank" rel="noopener noreferrer" class="underline underline-offset-2">@lienzosproducciones</a>
+              </p>
+            </div>
+
+            <p class="copy-pendiente mt-[var(--spacing-sm)]">
+              <strong>Falta copy · el refuerzo que baja el miedo a enviar</strong>
+              Aquí iría lo que quita la última duda justo antes de pulsar: en cuánto responden de
+              verdad, si la cotización es gratis y sin compromiso, y qué pasa después de enviar.
+              Es el punto de la página donde más gente se cae, y ahora mismo no tengo ninguno de
+              esos tres datos.
+            </p>
+          </div>
+
+          <form class="tarjeta" data-formulario data-pasos action="/formulario.php" method="post" novalidate data-revelar>
+            <!-- Trampa para robots. Un humano nunca la ve ni la rellena. -->
+            <div class="solo-lectores" aria-hidden="true">
+              <label for="web">No rellenes este campo</label>
+              <input type="text" id="web" name="web" tabindex="-1" autocomplete="off" />
+            </div>
+            <input type="hidden" name="t" data-marca-tiempo value="" />
+
+            <div class="pasos__barra" aria-hidden="true">
+              <span class="pasos__tramo" data-tramo="0"></span>
+              <span class="pasos__tramo" data-tramo="1"></span>
+              <span class="pasos__tramo" data-tramo="2"></span>
+            </div>
+            <p class="pasos__cuenta" data-pasos-cuenta role="status"></p>
+
+            <!-- ── Paso 1 · lo fácil, sin datos personales ───────────── -->
+            <fieldset class="paso-panel" data-paso="0">
+              <legend class="paso-panel__titulo">¿Qué necesitas?</legend>
+
+              <div class="mt-[var(--spacing-2xs)]">
+                <p class="etiqueta-campo">Paquete</p>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="paquete" value="Un anuncio" /><span>Un anuncio</span></label>
+                  <label class="chip"><input type="radio" name="paquete" value="Pack de 3" /><span>Pack de 3</span></label>
+                  <label class="chip"><input type="radio" name="paquete" value="Pack mensual" /><span>Pack mensual</span></label>
+                  <label class="chip"><input type="radio" name="paquete" value="Aún no sé" /><span>Aún no sé</span></label>
+                </div>
+                <p class="error-campo" data-error-de="paquete" hidden></p>
+              </div>
+
+              <div class="mt-[var(--spacing-xs)]">
+                <p class="etiqueta-campo">¿Dónde vas a pautar? <span class="font-normal text-[var(--texto-secundario)]">(opcional)</span></p>
+                <div class="chips">
+                  <label class="chip"><input type="checkbox" name="plataformas[]" value="Meta" /><span>Meta</span></label>
+                  <label class="chip"><input type="checkbox" name="plataformas[]" value="TikTok" /><span>TikTok</span></label>
+                  <label class="chip"><input type="checkbox" name="plataformas[]" value="YouTube" /><span>YouTube</span></label>
+                  <label class="chip"><input type="checkbox" name="plataformas[]" value="Aún no pauto" /><span>Aún no pauto</span></label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- ── Paso 2 · el proyecto ──────────────────────────────── -->
+            <fieldset class="paso-panel" data-paso="1" hidden>
+              <legend class="paso-panel__titulo">Sobre el proyecto</legend>
+
+              <div class="mt-[var(--spacing-2xs)] grid gap-[var(--spacing-xs)]">
+                <div>
+                  <label class="etiqueta-campo" for="mensaje">¿Qué vendes?</label>
+                  <input class="campo" type="text" id="mensaje" name="mensaje" placeholder="Ej: cursos de repostería online" />
+                  <p class="error-campo" data-error-de="mensaje" hidden></p>
+                </div>
+
+                <div>
+                  <label class="etiqueta-campo" for="presupuesto">Presupuesto para la producción</label>
+                  <select class="campo" id="presupuesto" name="presupuesto">
+                    <option value="">Prefiero no decirlo todavía</option>
+                    <option value="Menos de $1M COP">Menos de $1.000.000</option>
+                    <option value="$1M a $3M COP">$1.000.000 – $3.000.000</option>
+                    <option value="$3M a $8M COP">$3.000.000 – $8.000.000</option>
+                    <option value="Más de $8M COP">Más de $8.000.000</option>
+                  </select>
+                  <p class="mt-[var(--spacing-3xs)] text-sm text-[var(--texto-secundario)]">
+                    Sirve para proponerte algo realista, no para encarecerlo.
+                  </p>
+                </div>
+
+                <div>
+                  <label class="etiqueta-campo" for="cuando">¿Para cuándo?</label>
+                  <select class="campo" id="cuando" name="cuando">
+                    <option value="">Sin fecha definida</option>
+                    <option value="Este mes">Este mes</option>
+                    <option value="En 2 o 3 meses">En 2 o 3 meses</option>
+                    <option value="Solo estoy explorando">Solo estoy explorando</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="etiqueta-campo" for="referencia">
+                    Un anuncio que te guste <span class="font-normal text-[var(--texto-secundario)]">(opcional)</span>
+                  </label>
+                  <input class="campo" type="url" id="referencia" name="referencia" placeholder="https://" />
+                  <p class="error-campo" data-error-de="referencia" hidden></p>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- ── Paso 3 · los datos, al final ──────────────────────── -->
+            <fieldset class="paso-panel" data-paso="2" hidden>
+              <legend class="paso-panel__titulo">¿Cómo te escribimos?</legend>
+
+              <div class="mt-[var(--spacing-2xs)] grid gap-[var(--spacing-xs)]">
+                <div>
+                  <label class="etiqueta-campo" for="nombre">Tu nombre</label>
+                  <input class="campo" type="text" id="nombre" name="nombre" autocomplete="name" />
+                  <p class="error-campo" data-error-de="nombre" hidden></p>
+                </div>
+
+                <div>
+                  <label class="etiqueta-campo" for="telefono">WhatsApp</label>
+                  <input class="campo" type="tel" id="telefono" name="telefono" autocomplete="tel" placeholder="+57 300 000 0000" />
+                  <p class="error-campo" data-error-de="telefono" hidden></p>
+                </div>
+
+                <div>
+                  <label class="etiqueta-campo" for="email">Correo</label>
+                  <input class="campo" type="email" id="email" name="email" autocomplete="email" />
+                  <p class="error-campo" data-error-de="email" hidden></p>
+                </div>
+
+                <div>
+                  <label class="etiqueta-campo" for="marca">
+                    Marca o empresa <span class="font-normal text-[var(--texto-secundario)]">(opcional)</span>
+                  </label>
+                  <input class="campo" type="text" id="marca" name="marca" autocomplete="organization" />
+                </div>
+
+                <div class="flex items-start gap-[var(--spacing-3xs)]">
+                  <input type="checkbox" id="datos" name="datos" class="mt-1 h-5 w-5 shrink-0 accent-[var(--accion)]" />
+                  <label for="datos" class="text-sm text-[var(--texto-secundario)]">
+                    Autorizo el tratamiento de mis datos para responder a esta solicitud
+                    (ley 1581 de 2012). <a href="/privacidad" class="underline underline-offset-2">Cómo los tratamos</a>.
+                  </label>
+                </div>
+                <p class="error-campo" data-error-de="datos" hidden></p>
+              </div>
+            </fieldset>
+
+            <div class="pasos__acciones">
+              <button type="button" class="boton boton-secundario" data-paso-atras hidden>Atrás</button>
+              <button type="button" class="boton boton-primario" data-paso-siguiente><span>Siguiente</span></button>
+              <button type="submit" class="boton boton-primario" data-enviar hidden>
+                <span class="indicador-carga" aria-hidden="true"></span>
+                <span>Enviar y seguir por WhatsApp</span>
+              </button>
+            </div>
+
+            <!-- Los cuatro estados se pintan aquí. -->
+            <p data-estado hidden></p>
+
+            <!-- Salida alternativa si el envío falla: el lead no se pierde
+                 porque el servidor de correo esté caído. -->
+            <a
+              href="https://wa.me/573057190936"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="boton boton-secundario mt-[var(--spacing-2xs)] w-full"
+              data-salida-whatsapp
+              hidden
+            >
+              Escribir por WhatsApp
+            </a>
+          </form>
+        </div>
+      </section>
+
+      <!-- ══ Preguntas frecuentes ══════════════════════════════════
+           Va DESPUÉS del formulario: quien no lo llenó sigue leyendo
+           objeciones. Tres de las cuatro respuestas están pendientes.
+      -->
+      <section id="preguntas" class="seccion bg-[var(--tarjeta-fondo)]" data-block="faq">
+        <div class="contenedor">
+          <p class="kicker" data-revelar>Preguntas</p>
+          <h2 class="titular-seccion mt-[var(--spacing-2xs)]" data-revelar>Lo que más nos preguntan</h2>
+
+          <div class="prosa mt-[var(--spacing-md)]" data-faq data-revelar>
+            <details name="faq">
+              <summary>¿En cuánto tiempo entregan las piezas?</summary>
+              <div><span class="pendiente">Respuesta pendiente del cliente</span> — plazo real desde el rodaje, y si cambia según el tipo de proyecto.</div>
+            </details>
+            <details name="faq">
+              <summary>¿Los videos vienen listos para subir al administrador de anuncios?</summary>
+              <div>
+                Sí. Entregamos cada pieza en 9:16, 1:1 y 16:9, dentro de los límites de peso y
+                duración de cada plataforma, con y sin subtítulos quemados.
+              </div>
+            </details>
+            <details name="faq">
+              <summary>¿El registro de marca se cobra aparte de la producción?</summary>
+              <div><span class="pendiente">Respuesta pendiente del cliente</span> — si la asesoría legal va incluida en algún paquete o siempre se cotiza por separado, y si las tasas oficiales de la SIC van aparte.</div>
+            </details>
+            <details name="faq">
+              <summary>¿Trabajan fuera de la ciudad?</summary>
+              <div><span class="pendiente">Respuesta pendiente del cliente</span> — ciudad base, si viajan y cómo se cobran los desplazamientos.</div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Cierre ════════════════════════════════════════════════
+           Único sitio donde se usa el violeta exacto del logo: superficie
+           grande, texto grande encima (5.16:1). Como texto suelto sobre
+           el fondo negro daría 3.41 y no pasaría accesibilidad.
+      -->
+      <section class="seccion banda-marca" data-block="cta-band">
+        <div class="contenedor" data-revelar>
+          <h2 class="titular-hero text-[clamp(2rem,5vw,3.5rem)]">
+            ¿Ya tienes el presupuesto de pauta<br class="hidden md:inline" />y te falta el video?
+          </h2>
+          <p class="prosa mt-[var(--spacing-xs)] text-lg">
+            Cuéntanos el proyecto y te devolvemos una propuesta con formatos y precio cerrado.
+            Sin reuniones de descubrimiento de una hora.
+          </p>
+          <div class="mt-[var(--spacing-sm)] flex flex-col gap-[var(--spacing-3xs)] md:flex-row">
+            <a href="#cotizar" class="boton boton-secundario">Quiero cotizar mi proyecto</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ══ Pie ═══════════════════════════════════════════════════════
+         Los cuatro documentos legales van aquí y solo aquí. En el cuerpo de
+         la página no hay ni un enlace que saque al visitante del embudo.
+    -->
+    <footer class="border-t border-[var(--linea)] py-[var(--spacing-md)]" data-block="footer">
+      <div class="contenedor grid gap-[var(--spacing-sm)] md:grid-cols-[1.2fr_1fr_1fr]">
+        <div>
+          <div class="flex items-center gap-[var(--spacing-3xs)]">
+            <img src="/logo-lienzos.png" alt="" width="32" height="32" class="block h-8 w-8" />
+            <p class="font-display text-lg tracking-[0.02em] uppercase">Lienzos Producciones</p>
+          </div>
+          <p class="mt-[var(--spacing-3xs)] text-sm text-[var(--texto-secundario)]">
+            Producción audiovisual · Colombia
+          </p>
+          <a href="#cotizar" class="boton boton-primario mt-[var(--spacing-2xs)]">
+            <span>Cotizar mi proyecto</span>
+          </a>
+        </div>
+
+        <nav aria-label="Contacto y redes">
+          <p class="text-sm font-semibold tracking-[0.1em] uppercase text-[var(--texto-secundario)]">Contacto</p>
+          <ul class="mt-[var(--spacing-2xs)] flex flex-col gap-[var(--spacing-3xs)] text-sm">
+            <li>
+              <a href="https://wa.me/573057190936" target="_blank" rel="noopener noreferrer" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">WhatsApp</a>
+            </li>
+            <li>
+              <a href="mailto:lienzosprod@gmail.com" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">lienzosprod@gmail.com</a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/lienzosproducciones/" target="_blank" rel="noopener noreferrer" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">Instagram</a>
+            </li>
+            <li>
+              <a href="https://lienzosproduccionesportafolio.myportfolio.com/work" target="_blank" rel="noopener noreferrer" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">Portafolio</a>
+            </li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Legal">
+          <p class="text-sm font-semibold tracking-[0.1em] uppercase text-[var(--texto-secundario)]">Legal</p>
+          <ul class="mt-[var(--spacing-2xs)] flex flex-col gap-[var(--spacing-3xs)] text-sm">
+            <li><a href="/privacidad" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">Política de privacidad</a></li>
+            <li><a href="/tratamiento-datos" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">Tratamiento de datos</a></li>
+            <li><a href="/terminos" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">Términos y condiciones</a></li>
+            <li><a href="/cookies" class="flex min-h-11 items-center text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]">Política de cookies</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="contenedor mt-[var(--spacing-sm)] border-t border-[var(--linea)] pt-[var(--spacing-2xs)]">
+        <p class="text-sm text-[var(--texto-secundario)]">
+          © <span data-ano>2026</span> Lienzos Producciones. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <!-- ══ Barra fija, solo móvil ════════════════════════════════════ -->
+    <div class="sticky-cta" data-block="sticky-cta" role="region" aria-label="Acciones rápidas">
+      <a href="#cotizar" class="boton boton-primario"><span>Cotizar</span></a>
+      <a
+        href="https://wa.me/573057190936?text=Hola%20Lienzos%2C%20vengo%20de%20la%20web%20y%20quiero%20cotizar%20un%20proyecto%20de%20video."
+        target="_blank"
+        rel="noopener noreferrer"
+        class="boton boton-secundario"
+        aria-label="Escribir por WhatsApp"
+       
+      >
+        WhatsApp
+      </a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# El endpoint del formulario no se indexa: no es contenido.
+Disallow: /formulario.php
+
+Sitemap: https://DOMINIO-PENDIENTE.com/sitemap.xml

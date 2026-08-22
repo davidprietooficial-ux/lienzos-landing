@@ -1,0 +1,12 @@
+Tipografías de este sitio — ambas bajo SIL Open Font License 1.1 (OFL).
+La OFL permite el uso comercial y el autoalojado, y exige conservar este aviso.
+
+Anton — Vernon Adams, Kimberly Geswein, Cyreal
+  https://fonts.google.com/specimen/Anton
+  Copyright (c) The Anton Project Authors
+
+Archivo — Omnibus-Type
+  https://fonts.google.com/specimen/Archivo
+  Copyright (c) The Archivo Project Authors
+
+Texto completo de la licencia: https://openfontlicense.org
