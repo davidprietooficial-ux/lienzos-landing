@@ -458,19 +458,25 @@
  * vez de con un JPG de textura, que costaría ~200 KB por lo mismo.
  * ═══════════════════════════════════════════════════════════════════ */
 
-/* Dos colores de marca que no entran en el archivo generado de arriba, que
- * solo cubre los roles fijos del sistema. Van declarados aquí a mano:
+/* Los dos violetas de marca que no entran en el archivo generado de arriba,
+ * que solo cubre los roles fijos del sistema. Salen del manual de marca:
  *
- *   acento          → #C9F24D  lima de señal
  *   marca profunda  → #7D42D8  el violeta exacto del logotipo
+ *   marca abismo    → #270060  el violeta ultra profundo del manual
+ *
+ * Los dos son SUPERFICIE, nunca texto: sobre el fondo dan 3.02:1 y 1.04:1.
+ * El acento de señal apunta al color de acción (la crema del manual): la
+ * marca tiene un solo color claro y usarlo para dos cosas la hace más sobria,
+ * que es literalmente lo que pide el manual.
  */
 :root {
-  --acento-senal: #C9F24D;
-  --marca-profunda: #7D42D8;
+  --acento-senal: var(--accion);
+  --marca-profunda: #7d42d8;
+  --marca-abismo: #270060;
 
-  /* Anton es una grotesca condensada, no una serif: el fallback que genera
-     tokens.mjs por defecto (ui-serif) daría un salto enorme mientras carga. */
-  --font-display: 'Anton', 'Arial Narrow', ui-sans-serif, sans-serif;
+  /* Jost es una geométrica, no una serif: el fallback que genera tokens.mjs
+     por defecto (ui-serif) daría un salto enorme mientras carga. */
+  --font-display: 'Jost', 'Avenir Next', 'Century Gothic', ui-sans-serif, sans-serif;
 }
 
 /* ── Grano ───────────────────────────────────────────────────────────
@@ -492,25 +498,26 @@
 }
 
 /* ── Titular fluido ──────────────────────────────────────────────────
- * Anton es condensada: escala continua en vez de tres saltos por etapa,
- * porque el largo del titular cambia mucho entre secciones.
+ * Jost es geométrica y bastante más ancha que una condensada: el mismo
+ * cuerpo ocupa más caja, así que el tope baja y el peso sube. En caja alta
+ * una geométrica necesita peso para tener presencia — 600, no 400.
  */
 .titular-hero {
   font-family: var(--font-display);
-  /* Tope a 4.75rem, no a 6: Anton es condensada y a 96px un titular de
-     cinco palabras se comía el alto completo del viewport en escritorio. */
-  /* Tope 3.5rem desde que el hero es de dos columnas: el copy ya no tiene
-     el ancho entero, y a 68px un titular de seis palabras se partía en seis
-     líneas — que es justo lo que la máscara por líneas deja en evidencia. */
-  font-size: clamp(2rem, 3.6vw + 0.5rem, 3.5rem);
-  line-height: 0.96;
-  letter-spacing: -0.01em;
+  /* Tope 3.25rem: con Jost, a 56px un titular de seis palabras ya ocupa
+     tres líneas en la columna del hero, que es el máximo legible ahí. */
+  font-size: clamp(1.875rem, 3.2vw + 0.5rem, 3.25rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.005em;
   text-transform: uppercase;
 }
 .titular-seccion {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
-  line-height: 1;
+  font-size: clamp(1.625rem, 3.4vw + 0.5rem, 2.75rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.005em;
   text-transform: uppercase;
 }
 
@@ -567,7 +574,12 @@
   z-index: 1;
   background:
     linear-gradient(to top, var(--pagina-fondo) 4%, transparent 62%),
-    linear-gradient(to right, var(--pagina-fondo) 8%, color-mix(in srgb, var(--pagina-fondo) 55%, transparent) 58%, transparent 92%);
+    linear-gradient(
+      to right,
+      var(--pagina-fondo) 8%,
+      color-mix(in srgb, var(--pagina-fondo) 55%, transparent) 58%,
+      transparent 92%
+    );
 }
 .hero__contenido {
   position: relative;
@@ -600,12 +612,11 @@
   width: 100%;
   height: 100%;
   min-height: 180px;
-  background:
-    repeating-linear-gradient(
-      135deg,
-      var(--tarjeta-fondo) 0 14px,
-      var(--elevado-fondo) 14px 28px
-    );
+  background: repeating-linear-gradient(
+    135deg,
+    var(--tarjeta-fondo) 0 14px,
+    var(--elevado-fondo) 14px 28px
+  );
   border: 1px dashed var(--linea);
   color: var(--texto-secundario);
 }
@@ -764,11 +775,90 @@
   color: var(--accion);
 }
 
+/* ── Dos pistas: dirección humana / aceleración por máquina ──────────
+ * El argumento de la sección es que la máquina NO entra en todas las
+ * etapas. Por eso los huecos vacíos son parte del contenido, no un fallo
+ * de maquetación: se marcan y se dejan ver.
+ */
+.pistas {
+  border-top: var(--borde-ancho) solid var(--linea);
+}
+.pistas__cabecera {
+  display: none;
+}
+.pista-fila {
+  display: grid;
+  gap: var(--spacing-3xs);
+  padding: var(--spacing-xs) 0;
+  border-bottom: var(--borde-ancho) solid var(--linea);
+}
+.pista-fila__indice {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accion);
+}
+.pista-fila__humano {
+  color: var(--texto-principal);
+}
+.pista-fila__maquina {
+  color: var(--texto-secundario);
+}
+.pista-fila__maquina--vacia {
+  font-style: italic;
+  opacity: 0.55;
+}
+
+@media (min-width: 768px) {
+  .pistas__cabecera {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    padding: 0 0 var(--spacing-3xs) 33%;
+  }
+  .pistas__etiqueta {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--texto-secundario);
+  }
+  .pistas__etiqueta--maquina {
+    color: var(--linea);
+  }
+  .pista-fila {
+    grid-template-columns: 33% 1fr 1fr;
+    gap: var(--spacing-sm);
+    align-items: start;
+  }
+  .pista-fila__indice {
+    margin: 0;
+  }
+}
+
+/* ── Los límites declarados de la IA ─────────────────────────────────*/
+.lista-limites {
+  display: grid;
+  gap: var(--spacing-2xs);
+}
+.lista-limites li {
+  padding-left: var(--spacing-2xs);
+  border-left: 2px solid var(--marca-profunda);
+  color: var(--texto-secundario);
+}
+.lista-limites strong {
+  color: var(--texto-principal);
+  font-weight: 600;
+}
+
 /* ── Métricas ────────────────────────────────────────────────────────*/
 .metrica__valor {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 5rem);
-  line-height: 0.85;
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.95;
   color: var(--acento-senal);
 }
 
@@ -842,7 +932,8 @@
 select.campo {
   appearance: none;
   padding-right: var(--spacing-sm);
-  background-image: linear-gradient(45deg, transparent 50%, var(--texto-secundario) 50%),
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--texto-secundario) 50%),
     linear-gradient(135deg, var(--texto-secundario) 50%, transparent 50%);
   background-position:
     calc(100% - 20px) calc(50% + 2px),
@@ -958,9 +1049,15 @@ select.campo {
 .linea-mascara.visible > span {
   transform: none;
 }
-.linea-mascara:nth-of-type(2) > span { transition-delay: 90ms; }
-.linea-mascara:nth-of-type(3) > span { transition-delay: 180ms; }
-.no-js .linea-mascara > span { transform: none; }
+.linea-mascara:nth-of-type(2) > span {
+  transition-delay: 90ms;
+}
+.linea-mascara:nth-of-type(3) > span {
+  transition-delay: 180ms;
+}
+.no-js .linea-mascara > span {
+  transform: none;
+}
 
 /* ── Ticker: la cinta de formatos que cruza la página ────────────────
  * Duplicada en el HTML y desplazada el 50%: el bucle no tiene costura.
@@ -1007,8 +1104,12 @@ select.campo {
   color: var(--texto-principal);
 }
 @keyframes ticker-correr {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 /* ── Los huecos respiran ─────────────────────────────────────────────
@@ -1030,8 +1131,12 @@ select.campo {
   animation: hueco-barrido 4.5s ease-in-out infinite;
 }
 @keyframes hueco-barrido {
-  from { background-position: 160% 0; }
-  to   { background-position: -60% 0; }
+  from {
+    background-position: 160% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
 }
 
 /* ── Botón primario con barrido al pasar el ratón ────────────────────*/
@@ -1043,7 +1148,12 @@ select.campo {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 0.35) 50%, transparent 60%);
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgb(255 255 255 / 0.35) 50%,
+    transparent 60%
+  );
   transform: translateX(-100%);
   transition: transform var(--mov-lento) var(--mov-curva);
 }
@@ -1139,8 +1249,15 @@ select.campo {
   }
 }
 @keyframes bajar {
-  0%, 100% { transform: translateY(0); opacity: 1; }
-  50%      { transform: translateY(8px); opacity: 0.35; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.35;
+  }
 }
 
 /* ── Aura del hero: respiración lenta detrás del titular ─────────────
@@ -1165,8 +1282,15 @@ select.campo {
   animation: respirar 11s ease-in-out infinite;
 }
 @keyframes respirar {
-  0%, 100% { transform: scale(1) translate3d(0, 0, 0); opacity: 0.75; }
-  50%      { transform: scale(1.12) translate3d(-2%, 2%, 0); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(1.12) translate3d(-2%, 2%, 0);
+    opacity: 1;
+  }
 }
 
 /* ── Kicker: la línea se estira al entrar ────────────────────────────*/
@@ -1253,7 +1377,11 @@ select.campo {
   gap: var(--spacing-3xs);
   padding: var(--spacing-2xs);
   border: 0;
-  background: linear-gradient(to top, color-mix(in srgb, var(--pagina-fondo) 92%, transparent) 8%, transparent 55%);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--pagina-fondo) 92%, transparent) 8%,
+    transparent 55%
+  );
   color: var(--texto-principal);
   cursor: pointer;
   font: inherit;
@@ -1293,8 +1421,14 @@ select.campo {
   display: none;
 }
 @keyframes vsl-pulso {
-  from { opacity: 0.7; transform: scale(1); }
-  to   { opacity: 0; transform: scale(1.6); }
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
 }
 .vsl__etiqueta {
   font-size: 12px;
@@ -1352,8 +1486,14 @@ select.campo {
   animation: paso-entra var(--mov-normal) var(--mov-curva-entrada);
 }
 @keyframes paso-entra {
-  from { opacity: 0; transform: translateX(12px); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .paso-panel__titulo {
   font-family: var(--font-display);

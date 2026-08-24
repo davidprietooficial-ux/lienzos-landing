@@ -116,7 +116,7 @@ export function iniciarFormulario(): void {
 
   agregar(
     simple('mensaje', (v) =>
-      v.trim() ? null : 'Con saber qué vendes ya podemos proponerte algo.',
+      v.trim() ? null : 'Con saber qué vas a pautar ya podemos proponerte algo.',
     ),
   );
 
@@ -315,7 +315,9 @@ export function iniciarFormulario(): void {
     const marca = valor(form, 'marca');
     const paquete = valor(form, 'paquete');
     const plataformas = valores(form, 'plataformas[]').join(', ');
-    const presupuesto = valor(form, 'presupuesto');
+    const inversion = valor(form, 'inversion');
+    const volumen = valor(form, 'volumen');
+    const equipoInterno = valor(form, 'equipo_interno');
     const cuando = valor(form, 'cuando');
     const referencia = valor(form, 'referencia');
     const mensaje = valor(form, 'mensaje');
@@ -324,12 +326,14 @@ export function iniciarFormulario(): void {
       `Hola Lienzos, soy ${nombre}${marca ? ` de ${marca}` : ''}.`,
       `Acabo de enviar el formulario de la web.`,
       '',
-      paquete && `Paquete: ${paquete}`,
-      plataformas && `Voy a pautar en: ${plataformas}`,
-      presupuesto && `Presupuesto: ${presupuesto}`,
+      paquete && `Modalidad: ${paquete}`,
+      mensaje && `Pauto: ${mensaje}`,
+      plataformas && `Plataformas: ${plataformas}`,
+      inversion && `Invierto al mes en pauta: ${inversion}`,
+      volumen && `Anuncios que necesito al mes: ${volumen}`,
+      equipoInterno && `Equipo interno: ${equipoInterno}`,
       cuando && `Para: ${cuando}`,
       referencia && `Anuncio de referencia: ${referencia}`,
-      mensaje && `Vendo: ${mensaje}`,
     ].filter(Boolean);
 
     return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(lineas.join('\n'))}`;

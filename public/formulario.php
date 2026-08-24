@@ -173,9 +173,19 @@ function limpiarLista(string $clave, array $permitidos, int $maxItems = 8): arra
     return array_values(array_unique($salida));
 }
 
-const PAQUETES    = ['Un anuncio', 'Pack de 3', 'Pack mensual', 'Aún no sé'];
+const PAQUETES    = ['Lote inicial', 'Producción mensual', 'Producción dedicada', 'Aún no sé'];
 const PLATAFORMAS = ['Meta', 'TikTok', 'YouTube', 'Aún no pauto'];
-const PRESUPUESTOS = ['Menos de $1M COP', '$1M a $3M COP', '$3M a $8M COP', 'Más de $8M COP'];
+// Se pregunta por la inversión en pauta del cliente, NO por lo que puede
+// pagarle a Lienzos: califica igual de bien y no ancla el precio propio.
+const INVERSIONES = [
+    'Menos de USD 3.000 al mes',
+    'USD 3.000 a 10.000 al mes',
+    'USD 10.000 a 30.000 al mes',
+    'Mas de USD 30.000 al mes',
+    'Todavia no pautamos',
+];
+const VOLUMENES   = ['1 a 3 al mes', '4 a 8 al mes', '9 o mas al mes'];
+const EQUIPOS     = ['Si, equipo propio', 'Parcial, con freelances', 'No'];
 const PLAZOS      = ['Este mes', 'En 2 o 3 meses', 'Solo estoy explorando'];
 
 $nombre      = limpiar('nombre', 100);
@@ -193,16 +203,20 @@ if ($paquete !== '' && !in_array($paquete, PAQUETES, true)) { $paquete = ''; }
 
 // Los select se validan contra su lista: vacío es una opción legítima
 // ("prefiero no decirlo"), pero un valor inventado no.
-$presupuesto = limpiar('presupuesto', 60);
-$cuando      = limpiar('cuando', 60);
-if ($presupuesto !== '' && !in_array($presupuesto, PRESUPUESTOS, true)) { $presupuesto = ''; }
-if ($cuando !== '' && !in_array($cuando, PLAZOS, true)) { $cuando = ''; }
+$inversion = limpiar('inversion', 60);
+$volumen   = limpiar('volumen', 40);
+$equipo    = limpiar('equipo_interno', 40);
+$cuando    = limpiar('cuando', 60);
+if ($inversion !== '' && !in_array($inversion, INVERSIONES, true)) { $inversion = ''; }
+if ($volumen   !== '' && !in_array($volumen, VOLUMENES, true))     { $volumen = ''; }
+if ($equipo    !== '' && !in_array($equipo, EQUIPOS, true))        { $equipo = ''; }
+if ($cuando    !== '' && !in_array($cuando, PLAZOS, true))         { $cuando = ''; }
 
 $errores = [];
 if ($nombre === '')   { $errores[] = 'nombre vacío'; }
 if ($telefono === '') { $errores[] = 'teléfono vacío'; }
 if ($paquete === '')  { $errores[] = 'sin paquete seleccionado'; }
-if ($mensaje === '')  { $errores[] = 'sin decir qué vende'; }
+if ($mensaje === '')  { $errores[] = 'sin decir qué pauta'; }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { $errores[] = 'email inválido'; }
 if ($telefono !== '' && !preg_match('/^\+?[\d\s().-]{7,20}$/', $telefono)) {
     $errores[] = 'teléfono inválido';
@@ -235,17 +249,19 @@ $sinDato = '(no indicado)';
 $cuerpo = implode("\n", [
     'COTIZACIÓN DESDE LA WEB',
     '',
-    'Nombre:       ' . $nombre,
-    'Marca:        ' . ($marca !== '' ? $marca : $sinDato),
-    'Correo:       ' . $email,
-    'WhatsApp:     ' . $telefono,
+    'Nombre:         ' . $nombre,
+    'Marca:          ' . ($marca !== '' ? $marca : $sinDato),
+    'Correo:         ' . $email,
+    'WhatsApp:       ' . $telefono,
     '',
-    'Paquete:      ' . $paquete,
-    'Vende:        ' . $mensaje,
-    'Pauta en:     ' . ($plataformas !== [] ? implode(', ', $plataformas) : $sinDato),
-    'Presupuesto:  ' . ($presupuesto !== '' ? $presupuesto : $sinDato),
-    'Para cuándo:  ' . ($cuando !== '' ? $cuando : $sinDato),
-    'Referencia:   ' . ($referencia !== '' ? $referencia : $sinDato),
+    'Modalidad:      ' . $paquete,
+    'Qué pauta:      ' . $mensaje,
+    'Plataformas:    ' . ($plataformas !== [] ? implode(', ', $plataformas) : $sinDato),
+    'Inversión/mes:  ' . ($inversion !== '' ? $inversion : $sinDato),
+    'Anuncios/mes:   ' . ($volumen !== '' ? $volumen : $sinDato),
+    'Equipo interno: ' . ($equipo !== '' ? $equipo : $sinDato),
+    'Para cuándo:    ' . ($cuando !== '' ? $cuando : $sinDato),
+    'Referencia:     ' . ($referencia !== '' ? $referencia : $sinDato),
     '',
     '---',
     'Responder por WhatsApp: https://wa.me/' . preg_replace('/\D/', '', $telefono),
@@ -256,7 +272,7 @@ $cuerpo = implode("\n", [
 // El asunto lleva el dato que decide si se abre ahora o después. Se limpia
 // de saltos de línea aparte: en el asunto también se inyectan cabeceras.
 $asunto = ASUNTO_BASE . ' · ' . $nombre . ' · ' . $paquete
-        . ($presupuesto !== '' ? ' · ' . $presupuesto : '');
+        . ($inversion !== '' ? ' · pauta ' . $inversion : '');
 $asunto = trim(preg_replace('/[\r\n]+/', ' ', $asunto) ?? ASUNTO_BASE);
 
 // El From es del propio dominio: poner el correo del visitante hace que

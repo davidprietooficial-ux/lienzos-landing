@@ -16,14 +16,14 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
 
-  --font-display: "Anton", ui-serif, serif;
+  --font-display: "Jost", ui-serif, serif;
   --font-cuerpo: "Archivo", ui-sans-serif, system-ui, sans-serif;
 }
 
 @font-face {
-  font-family: "Anton";
-  src: url("/fuentes/anton-400.woff2") format("woff2");
-  font-weight: 400 400;
+  font-family: "Jost";
+  src: url("/fuentes/jost-var.woff2") format("woff2");
+  font-weight: 400 700;
   font-display: swap;
 }
 
@@ -37,18 +37,18 @@
 :root {
   /* Color. Si el tono del primario cae en el rango de morados reservado, es
      porque es el color real de la marca y está documentado como excepción. */
-  --accion: #9B6BEA;
-  --accion-hover: #A97BF0;
-  --pagina-fondo: #0C0A12;
-  --tarjeta-fondo: #17131F;
-  --elevado-fondo: #201c28;
-  --texto-principal: #F4F1FA;
-  --texto-secundario: #A79FB5;
+  --accion: #FFF3B0;
+  --accion-hover: #FAF8EC;
+  --pagina-fondo: #1B1921;
+  --tarjeta-fondo: #312841;
+  --elevado-fondo: #393048;
+  --texto-principal: #FAF8EC;
+  --texto-secundario: #B1AAB3;
   --texto-sobre-accion: #000000;
   --estado-exito: #5CD69A;
   --estado-error: #FF7A70;
   --estado-aviso: #F0C05A;
-  --linea: #6B5C82;
+  --linea: #7D718B;
   --borde-ancho: 1px;
 
   /* Forma — máximo 3 radios en todo el sistema (anti-slop.md). */
