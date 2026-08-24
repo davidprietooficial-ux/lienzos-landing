@@ -1,9 +1,13 @@
 Tipografías de este sitio — ambas bajo SIL Open Font License 1.1 (OFL).
 La OFL permite el uso comercial y el autoalojado, y exige conservar este aviso.
 
-Anton — Vernon Adams, Kimberly Geswein, Cyreal
-  https://fonts.google.com/specimen/Anton
-  Copyright (c) The Anton Project Authors
+Jost — Owen Earl / indestructible type*
+  https://fonts.google.com/specimen/Jost
+  Copyright (c) The Jost Project Authors
+  Sustituye a Bauhaus Std (Medium) del manual de marca de Lienzos: Bauhaus Std
+  es de Adobe y no permite autoalojado. Jost es geométrica de linaje Futura —
+  la misma escuela— y sí se puede autoalojar, que es lo que exige la regla de
+  rendimiento del proyecto (nada de fuentes en caliente).
 
 Archivo — Omnibus-Type
   https://fonts.google.com/specimen/Archivo
