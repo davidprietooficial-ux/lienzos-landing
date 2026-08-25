@@ -66,6 +66,11 @@
 .seccion {
   padding-block: var(--seccion-y);
 }
+@media (min-width: 1024px) {
+  :root {
+    --aire-seccion: 88px;
+  }
+}
 
 /* Longitud de línea legible para texto largo. Por encima de ~70 caracteres
    el ojo pierde el renglón al volver. */
@@ -133,7 +138,7 @@
  */
 .tarjeta {
   background: var(--tarjeta-fondo);
-  border: var(--borde-ancho) solid var(--linea);
+  border: var(--borde-ancho) solid var(--linea-sutil);
   border-radius: var(--radius-lg);
   padding: var(--tarjeta-padding);
 }
@@ -151,7 +156,7 @@
     transform var(--mov-normal) var(--mov-curva);
 }
 .tarjeta-enlace:hover {
-  border-color: var(--accion);
+  border-color: var(--acento-senal);
   transform: translateY(-2px);
 }
 
@@ -230,7 +235,7 @@
 
 /* ── Preguntas frecuentes ────────────────────────────────────────────*/
 [data-faq] details {
-  border-bottom: var(--borde-ancho) solid var(--linea);
+  border-bottom: var(--borde-ancho) solid var(--linea-sutil);
 }
 [data-faq] summary {
   display: flex;
@@ -458,21 +463,58 @@
  * vez de con un JPG de textura, que costaría ~200 KB por lo mismo.
  * ═══════════════════════════════════════════════════════════════════ */
 
-/* Los dos violetas de marca que no entran en el archivo generado de arriba,
- * que solo cubre los roles fijos del sistema. Salen del manual de marca:
+/* El violeta es el color principal del sistema, por decisión del cliente,
+ * y va repartido en dos tonos porque uno solo no llega:
  *
- *   marca profunda  → #7D42D8  el violeta exacto del logotipo
- *   marca abismo    → #270060  el violeta ultra profundo del manual
+ *   #B08CF2  acción y texto · 6.52:1 sobre el fondo · negro encima 7.88:1
+ *   #7D42D8  el violeta exacto del logo · SOLO superficie grande
+ *   #270060  la superficie más honda del manual · jamás texto (1.04:1)
  *
- * Los dos son SUPERFICIE, nunca texto: sobre el fondo dan 3.02:1 y 1.04:1.
- * El acento de señal apunta al color de acción (la crema del manual): la
- * marca tiene un solo color claro y usarlo para dos cosas la hace más sobria,
- * que es literalmente lo que pide el manual.
+ * Hacen falta los dos: sobre un fondo con luminancia 0.0104, un color que
+ * dé 4.5:1 contra el fondo necesita luminancia >= 0.2217, y uno que aguante
+ * texto claro encima necesita <= 0.1833. Los rangos no se tocan, así que
+ * ningún hex único puede ser relleno y texto a la vez. La crema del manual
+ * deja de ser el color de acción: la marca se lee violeta, no crema.
  */
+/* La interlínea del cuerpo no la fija el archivo generado. 1.7 es lo que
+   separa un párrafo que se lee de uno que se escanea a la fuerza — y es la
+   mitad barata del efecto galería: el aire dentro del texto, no solo entre
+   bloques. */
+body {
+  line-height: 1.7;
+}
+
 :root {
+  /* Kickers, cifras y etiquetas. Apunta al color de acción porque ya son el
+     mismo violeta: un solo origen, no dos hex que se desincronizan. */
   --acento-senal: var(--accion);
   --marca-profunda: #7d42d8;
   --marca-abismo: #270060;
+
+  /* Separador decorativo. NO es --linea: --linea existe para el contorno de
+     los campos de formulario, que sí es un componente y necesita 3:1 por
+     WCAG 1.4.11. Un separador a 3:1 ensucia; a 1.4:1 respira. */
+  --linea-sutil: #363439;
+
+  /* Cristal. Solo dos superficies en toda la página — cabecera y barra de
+     CTA — y solo ahí porque son lo único que flota sobre contenido que se
+     mueve. El alfa no baja de 0.68: por debajo, el texto encima cae de 4.5:1
+     cuando pasa por debajo una zona clara. Donde el navegador no soporte el
+     desenfoque, ese color sólido de reserva ya es legible por sí solo. */
+  --cristal-fondo: rgb(27 25 33 / 0.68);
+  --cristal-borde: rgb(250 248 236 / 0.09);
+  --cristal-desenfoque: blur(22px) saturate(150%);
+
+  /* Aire dentro de la tarjeta. La escala generada da 32/48 desde la unidad
+     de 8 del contrato; la unidad solo admite 4 u 8, así que el ajuste fino
+     de galería se hace aquí y no rompiendo el generador, que es de la
+     herramienta y lo comparten todos los clientes. */
+  --tarjeta-padding: 40px;
+  --tarjeta-padding-lg: 64px;
+
+  /* Separación entre el encabezado de sección y su contenido. Es la medida
+     que más decide si una sección se lee compuesta o apelotonada. */
+  --aire-seccion: 56px;
 
   /* Jost es una geométrica, no una serif: el fallback que genera tokens.mjs
      por defecto (ui-serif) daría un salto enorme mientras carga. */
@@ -493,32 +535,33 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.28;
+  opacity: 0.16;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23r)' opacity='0.5'/%3E%3C/svg%3E");
 }
 
 /* ── Titular fluido ──────────────────────────────────────────────────
- * Jost es geométrica y bastante más ancha que una condensada: el mismo
- * cuerpo ocupa más caja, así que el tope baja y el peso sube. En caja alta
- * una geométrica necesita peso para tener presencia — 600, no 400.
+ * Peso 300 y caja baja, no 600 en mayúsculas. Un titular en versalitas
+ * gritadas llena la caja de tinta y lee como oferta; el mismo texto en
+ * ligera y caja baja, más grande y con más interlínea, lee como catálogo.
+ * El tamaño es el que hace la jerarquía aquí, no el peso ni la mayúscula.
+ * A peso 300 el tracking se abre solo, así que se cierra a mano (-0.015em).
+ * El titular de sección se corta a 20ch: una línea larga en ligera pierde
+ * el ojo al volver, y la medida corta es la que crea la columna de aire.
  */
 .titular-hero {
   font-family: var(--font-display);
-  /* Tope 3.25rem: con Jost, a 56px un titular de seis palabras ya ocupa
-     tres líneas en la columna del hero, que es el máximo legible ahí. */
-  font-size: clamp(1.875rem, 3.2vw + 0.5rem, 3.25rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.005em;
-  text-transform: uppercase;
+  font-size: clamp(2.125rem, 3.6vw + 0.5rem, 3.75rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
 }
 .titular-seccion {
   font-family: var(--font-display);
-  font-size: clamp(1.625rem, 3.4vw + 0.5rem, 2.75rem);
-  font-weight: 600;
-  line-height: 1.06;
-  letter-spacing: -0.005em;
-  text-transform: uppercase;
+  font-size: clamp(1.75rem, 3.4vw + 0.5rem, 3rem);
+  font-weight: 300;
+  line-height: 1.14;
+  letter-spacing: -0.012em;
+  max-width: 20ch;
 }
 
 /* El kicker que va encima de cada titular: la etiqueta de sección. */
@@ -526,17 +569,18 @@
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-3xs);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accion);
+  color: var(--acento-senal);
 }
 .kicker::before {
   content: '';
-  width: 28px;
+  width: 40px;
   height: 1px;
   background: currentColor;
+  opacity: 0.5;
 }
 
 /* ── Hero a sangre ───────────────────────────────────────────────────*/
@@ -701,7 +745,7 @@
 .pieza {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--linea);
+  border: 1px solid var(--linea-sutil);
   aspect-ratio: 4 / 3;
 }
 .pieza--alta {
@@ -730,7 +774,7 @@
 .persona {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--linea);
+  border: 1px solid var(--linea-sutil);
   aspect-ratio: 4 / 3;
 }
 .persona__pie {
@@ -757,7 +801,7 @@
 .paso {
   position: relative;
   padding-top: var(--spacing-sm);
-  border-top: 2px solid var(--linea);
+  border-top: 2px solid var(--linea-sutil);
 }
 .paso::before {
   content: '';
@@ -772,7 +816,7 @@
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   line-height: 0.8;
-  color: var(--accion);
+  color: var(--acento-senal);
 }
 
 /* ── Dos pistas: dirección humana / aceleración por máquina ──────────
@@ -781,7 +825,7 @@
  * de maquetación: se marcan y se dejan ver.
  */
 .pistas {
-  border-top: var(--borde-ancho) solid var(--linea);
+  border-top: var(--borde-ancho) solid var(--linea-sutil);
 }
 .pistas__cabecera {
   display: none;
@@ -790,7 +834,7 @@
   display: grid;
   gap: var(--spacing-3xs);
   padding: var(--spacing-xs) 0;
-  border-bottom: var(--borde-ancho) solid var(--linea);
+  border-bottom: var(--borde-ancho) solid var(--linea-sutil);
 }
 .pista-fila__indice {
   font-family: var(--font-display);
@@ -798,7 +842,7 @@
   font-size: 0.875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accion);
+  color: var(--acento-senal);
 }
 .pista-fila__humano {
   color: var(--texto-principal);
@@ -808,7 +852,9 @@
 }
 .pista-fila__maquina--vacia {
   font-style: italic;
-  opacity: 0.55;
+  /* Sin opacity. Atenuar texto con opacity lo dejaba en 2.92:1 sobre la
+     tarjeta; la cursiva ya lo marca como hueco sin tocar el contraste. */
+  color: var(--texto-secundario);
 }
 
 @media (min-width: 768px) {
@@ -826,7 +872,8 @@
     color: var(--texto-secundario);
   }
   .pistas__etiqueta--maquina {
-    color: var(--linea);
+    /* --linea es contorno de campo (3.05:1), no color de texto. */
+    color: var(--texto-secundario);
   }
   .pista-fila {
     grid-template-columns: 33% 1fr 1fr;
@@ -856,8 +903,8 @@
 /* ── Métricas ────────────────────────────────────────────────────────*/
 .metrica__valor {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 7vw, 4.5rem);
-  font-weight: 600;
+  font-size: clamp(3rem, 7.5vw, 5.25rem);
+  font-weight: 300;
   line-height: 0.95;
   color: var(--acento-senal);
 }
@@ -916,7 +963,7 @@
     color var(--mov-rapido) var(--mov-curva);
 }
 .chip input:hover + span {
-  border-color: var(--accion);
+  border-color: var(--acento-senal);
 }
 .chip input:checked + span {
   background: var(--accion);
@@ -953,9 +1000,9 @@ select.campo {
   gap: var(--spacing-3xs);
   padding: var(--spacing-3xs);
   padding-bottom: max(var(--spacing-3xs), env(safe-area-inset-bottom));
-  background: color-mix(in srgb, var(--pagina-fondo) 94%, transparent);
-  border-top: 1px solid var(--linea);
-  backdrop-filter: blur(8px);
+  background: var(--cristal-fondo);
+  border-top: 1px solid var(--cristal-borde);
+  backdrop-filter: var(--cristal-desenfoque);
 }
 @media (min-width: 768px) {
   .sticky-cta {
@@ -1002,10 +1049,15 @@ select.campo {
     border-color var(--mov-normal) var(--mov-curva),
     padding var(--mov-normal) var(--mov-curva);
 }
+/* La cabecera nace transparente y solo al bajar se vuelve cristal: 0.68 de
+   alfa, desenfoque fuerte y una línea de un píxel a 0.09 de opacidad. Antes
+   era una banda casi opaca (0.90) rematada con --linea a 3.81:1, y eso no es
+   una cabecera flotante, es un bloque pegado arriba. El alfa no baja de 0.68
+   porque por debajo pasa el hero, que tiene zonas claras. */
 .marca-flotante.compacta {
-  background: color-mix(in srgb, var(--pagina-fondo) 90%, transparent);
-  border-bottom-color: var(--linea);
-  backdrop-filter: blur(10px);
+  background: var(--cristal-fondo);
+  border-bottom-color: var(--cristal-borde);
+  backdrop-filter: var(--cristal-desenfoque);
 }
 .marca-flotante__fila {
   display: flex;
@@ -1065,7 +1117,7 @@ select.campo {
 .ticker {
   position: relative;
   overflow: hidden;
-  border-block: 1px solid var(--linea);
+  border-block: 1px solid var(--linea-sutil);
   padding-block: var(--spacing-2xs);
   /* Se difumina en los bordes para que no "aparezca" de golpe. */
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
@@ -1182,7 +1234,7 @@ select.campo {
 }
 @media (hover: hover) {
   .servicio:hover {
-    border-color: var(--accion);
+    border-color: var(--acento-senal);
     transform: translateY(-3px);
   }
 }
@@ -1207,7 +1259,7 @@ select.campo {
   }
   .pieza:hover,
   .persona:hover {
-    border-color: var(--accion);
+    border-color: var(--acento-senal);
   }
 }
 
@@ -1350,7 +1402,7 @@ select.campo {
   width: 100%;
   max-width: 320px;
   margin-inline: auto;
-  border: 1px solid var(--linea);
+  border: 1px solid var(--linea-sutil);
   background: var(--tarjeta-fondo);
 }
 @media (min-width: 768px) {
@@ -1456,7 +1508,7 @@ select.campo {
 .pasos__tramo {
   flex: 1;
   height: 3px;
-  background: var(--linea);
+  background: var(--linea-sutil);
   overflow: hidden;
 }
 .pasos__tramo::after {

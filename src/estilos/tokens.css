@@ -23,7 +23,7 @@
 @font-face {
   font-family: "Jost";
   src: url("/fuentes/jost-var.woff2") format("woff2");
-  font-weight: 400 700;
+  font-weight: 300 700;
   font-display: swap;
 }
 
@@ -37,8 +37,8 @@
 :root {
   /* Color. Si el tono del primario cae en el rango de morados reservado, es
      porque es el color real de la marca y está documentado como excepción. */
-  --accion: #FFF3B0;
-  --accion-hover: #FAF8EC;
+  --accion: #B08CF2;
+  --accion-hover: #9E74EC;
   --pagina-fondo: #1B1921;
   --tarjeta-fondo: #312841;
   --elevado-fondo: #393048;
@@ -63,7 +63,7 @@
   --spacing-sm: 32px;
   --spacing-md: 48px;
   --spacing-lg: 80px;
-  --seccion-y: 64px;
+  --seccion-y: 96px;
 
   /* Constantes de sistema — no cambian por cliente, ver docs/sistema-bloques.md. */
   --contenedor-max: 1200px;
@@ -85,12 +85,12 @@
 
 @media (min-width: 768px) {
   :root {
-    --seccion-y: 96px;
+    --seccion-y: 144px;
   }
 }
 @media (min-width: 1024px) {
   :root {
-    --seccion-y: 128px;
+    --seccion-y: 200px;
   }
 }
 
