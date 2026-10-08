@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#7D42D8"/>
+  <!-- Cuerpo de cámara + el triángulo del objetivo, que es la forma del logo. -->
+  <rect x="10" y="22" width="28" height="22" rx="2" fill="#F4F1FA"/>
+  <path d="M40 30 L54 22 L54 44 L40 36 Z" fill="#F4F1FA"/>
+</svg>

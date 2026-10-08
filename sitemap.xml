@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Dominio canónico: lienzosproducciones.com, sin www y con https. Si
+     cambia, cámbialo también en robots.txt y en los <link rel="canonical">
+     de las cinco páginas. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://lienzosproducciones.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://lienzosproducciones.com/privacidad</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://lienzosproducciones.com/tratamiento-datos</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://lienzosproducciones.com/terminos</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://lienzosproducciones.com/cookies</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+</urlset>

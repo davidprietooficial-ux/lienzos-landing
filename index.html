@@ -1,0 +1,1802 @@
+<!doctype html>
+<!--
+  La clase no-js del <html> la quita src/main.ts al arrancar. Si el JS
+  falla o lo bloquean, se queda puesta y todo el contenido se ve igual.
+-->
+<html lang="es" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Producción audiovisual para anuncios de pago · Lienzos</title>
+    <meta
+      name="description"
+      content="Productora audiovisual de anuncios de pago para Meta, TikTok y YouTube. De cada rodaje, múltiples piezas listas para pautar, con dirección creativa propia."
+    />
+    <!-- DOMINIO PENDIENTE: cámbialo aquí, en og:url y en el JSON-LD cuando
+         esté comprado. Ver PROYECTO.md → Pendiente del cliente. -->
+    <link rel="canonical" href="https://lienzosproducciones.com/" />
+
+    <!-- Open Graph: es lo que se ve al compartir el enlace por WhatsApp,
+         que es por donde va a viajar la mitad del tráfico de la pauta. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lienzos Producciones" />
+    <meta
+      property="og:description"
+      content="Los anuncios se queman. Nosotros mantenemos el ritmo: producción de alta cadencia con dirección creativa, sin ampliar tu equipo interno."
+    />
+    <meta property="og:url" content="https://lienzosproducciones.com/" />
+    <meta property="og:image" content="https://lienzosproducciones.com/og.jpg" />
+    <meta property="og:locale" content="es_CO" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Jost es la fuente del LCP (el titular del hero). La del cuerpo no
+         se precarga: competiría con el render de lo primero que se ve. -->
+    <link rel="preload" href="/fuentes/jost-var.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- El póster del reel es lo que mide el LCP en móvil (fondo a sangre). -->
+    <link rel="preload" href="/hero/fondo-poster.webp" as="image" type="image/webp" fetchpriority="high" />
+
+    <meta name="theme-color" content="#1B1921" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+
+    <!-- JSON-LD del negocio. El de FAQPage no se escribe aquí: lo genera
+         vite.config.ts al compilar, leyendo las preguntas del propio HTML. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Lienzos Producciones",
+        "description": "Productora de anuncios para pauta digital. Producción de alta cadencia para equipos de marketing: dirección creativa propia, integración de IA en el proceso de producción, sonido profesional y gestión de derechos de imagen y música. Entrega en 9:16, 1:1 y 16:9 lista para Meta, TikTok y YouTube.",
+        "url": "https://lienzosproducciones.com/",
+        "email": "lienzosprod@gmail.com",
+        "telephone": "+573228539152",
+        "areaServed": { "@type": "Country", "name": "Colombia" },
+        "sameAs": ["https://www.instagram.com/lienzosproducciones/"]
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/main-BHgaBBco.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/main-CDdIYcor.css">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Qué hace una productora audiovisual de anuncios para pauta digital?","acceptedAnswer":{"@type":"Answer","text":"Una productora tradicional te entrega un video. Nosotros producimos para pauta: cada rodaje se piensa desde el guion para Meta Ads, TikTok Ads y YouTube Ads, y sale convertido en múltiples piezas —ganchos distintos para los primeros tres segundos, cierres, duraciones y formatos— listas para distribuir en cada plataforma y probar en tu cuenta publicitaria."}},{"@type":"Question","name":"¿Cada cuánto hay que renovar los anuncios en Meta Ads y TikTok Ads?","acceptedAnswer":{"@type":"Answer","text":"No hay un número fijo: depende de cuánto inviertes y de qué tan grande es tu audiencia. La señal sí es la misma en todas las cuentas: la frecuencia sube, el CTR cae y el costo por adquisición se dispara sin que hayas tocado la segmentación. Cuanto más inviertes, antes llega. Por eso trabajamos por ritmo de producción, para que la pieza siguiente esté lista antes de que la actual se agote."}},{"@type":"Question","name":"¿Cuánto cuesta producir anuncios en video para redes sociales?","acceptedAnswer":{"@type":"Answer","text":"Depende de cuántas piezas necesitas al mes, de si hay rodaje en locación y de cuántas variantes por formato. Por eso no publicamos una tarifa: te enviamos una cotización a la medida de tu campaña, sin compromiso. Un consejo para compararla: el costo de una pieza importa menos que cuánto baja tu costo por adquisición mientras está al aire."}},{"@type":"Question","name":"¿Por qué contratar una productora en vez de producir los anuncios in-house?","acceptedAnswer":{"@type":"Answer","text":"Porque no amplías la nómina: cámara, sonido, arte, edición y dirección creativa cuando los usas, no en planilla todo el mes esperando el siguiente rodaje. Y porque trabajas siempre con el mismo equipo, que ya conoce tu marca: no hay que explicar el tono y el producto desde cero en cada rodaje, como pasa al cotizar pieza por pieza con proveedores distintos."}},{"@type":"Question","name":"¿Qué es el contenido UGC y sirve para anuncios pagados?","acceptedAnswer":{"@type":"Answer","text":"UGC es contenido con estética de creador: una persona real hablándole a cámara, como se ve en el feed. En pauta rinde porque no se lee como publicidad y sostiene los primeros segundos. Lo producimos con guion aprobado y dirección creativa, para que suene natural sin salirse de tu marca, y con la cesión de imagen firmada por quien aparece."}},{"@type":"Question","name":"¿Usan inteligencia artificial para producir los anuncios?","acceptedAnswer":{"@type":"Answer","text":"Sí, pero no decide nada. Los anuncios los dirige, los graba y los monta nuestro equipo. La IA la usamos dentro de la producción para sacar variantes de algo que ya está aprobado —otros ganchos, otros cierres, otros formatos— y en planos puntuales que no se pueden grabar. En cada entrega te decimos cuáles son. Si tu marca prefiere que no se use nada generado, se produce así y te lo decimos de entrada."}},{"@type":"Question","name":"¿En qué formatos entregan los videos para Meta, TikTok y YouTube?","acceptedAnswer":{"@type":"Answer","text":"En 9:16 para Reels, Stories, TikTok y Shorts; 1:1 para el feed, y 16:9 para YouTube. Cada pieza sale dentro de los límites de peso y duración de cada plataforma, con y sin subtítulos quemados, y con sus variantes de gancho y de cierre, lista para subir al administrador de anuncios."}},{"@type":"Question","name":"¿Qué necesita mi equipo de marketing para empezar?","acceptedAnswer":{"@type":"Answer","text":"Un brief: qué vas a pautar, a quién le hablas y cuánto material necesitas al mes. El ángulo lo definimos contigo, el guion se aprueba antes de encender una cámara, y de ahí en adelante la logística —locación, talento, cámara, sonido y edición— corre por nuestra cuenta. Tu equipo aprueba, no coordina."}},{"@type":"Question","name":"¿Quién responde por los derechos de imagen y de música de los anuncios?","acceptedAnswer":{"@type":"Answer","text":"Nosotros, con asesoría legal especializada en derechos de imagen y música. Recibes cada pieza con la cesión firmada por quien aparece y la música licenciada. Un anuncio tumbado a mitad de campaña por un reclamo de audio cuesta bastante más que producirlo bien."}}]}</script>
+  </head>
+
+  <body>
+    <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
+    <!-- ══ Cabecera · marca, secciones y menú ══════════════════════
+         Como la referencia: logo, enlaces a las secciones de la propia
+         página (solo en escritorio) y la hamburguesa, que abre el panel
+         lateral con las mismas secciones en todas las etapas. Todos son
+         anclas internas: nada saca al visitante de la página.
+         "Cotizar" sigue apareciendo solo cuando el CTA de la portada ya se
+         fue de pantalla.
+    -->
+    <header class="marca-flotante" data-block="nav-simple" data-marca-flotante>
+      <div class="contenedor marca-flotante__fila">
+        <a href="#contenido" class="flex items-center gap-[var(--spacing-3xs)]">
+          <img src="/logo-lienzos.png" alt="Lienzos Producciones" width="36" height="36" class="block h-9 w-9" />
+          <span class="font-display text-base leading-none tracking-[0.02em] uppercase md:text-lg">Lienzos</span>
+        </a>
+
+        <ul class="marca-flotante__enlaces">
+          <li><a href="#trabajo">Nuestro trabajo</a></li>
+          <li><a href="#metodo">Método</a></li>
+          <li><a href="#servicios">Cómo trabajamos</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+        </ul>
+
+        <a href="#cotizar" class="boton boton-primario marca-flotante__cta">
+          <span>Cotizar</span>
+        </a>
+
+        <button
+          type="button"
+          class="hamburguesa"
+          data-menu-boton
+          aria-label="Abrir menú"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="contenido" tabindex="-1">
+      <!-- ══ Portada ═══════════════════════════════════════════════
+           Estructura de la referencia, adaptada:
+             · Fondo: video a sangre en todas las etapas, a pantalla
+               completa y SIN velo encima (así lo pidió el cliente).
+             · Escritorio y tablet: texto a la izquierda, abajo; tarjeta
+               redondeada a la derecha con el hueco del VSL y las redes
+               encajadas en la esquina.
+             · Móvil: fondo y texto en la primera pantalla; la tarjeta del
+               VSL justo debajo.
+           El orden del DOM va fondo → media → texto y se recoloca con
+           order, como en la referencia.
+           El fondo es mudo y decorativo; su src lo pone src/lib/portada.ts
+           DESPUÉS de cargar la página: hasta entonces se ve el póster.
+           Entrada escalonada solo con transform/opacity: .entra + --d
+           (72ms por escalón).
+      -->
+      <section class="portada" data-block="hero-video">
+        <video
+          class="portada__fondo"
+          poster="/hero/fondo-poster.webp"
+          data-reel="/hero/fondo.mp4"
+          width="1600"
+          height="1136"
+          muted
+          loop
+          playsinline
+          preload="none"
+          aria-hidden="true"
+          tabindex="-1"
+        ></video>
+
+        <div class="portada__media entra" style="--d: 0">
+          <!-- El VSL, mudo y en bucle: es ambiente, no una pieza que haya que
+               ver. Llega sin src y lo pone src/lib/portada.ts cuando la página
+               ya cargó (data-reel). -->
+          <video
+            class="vsl__video"
+            data-reel="/vsl/lienzos.mp4"
+            poster="/vsl/lienzos-poster.webp"
+            width="1080"
+            height="1920"
+            muted
+            loop
+            playsinline
+            preload="none"
+          ></video>
+
+          <ul class="portada__redes cristal entra" style="--d: 19">
+            <li>
+              <a
+                href="https://www.instagram.com/lienzosproducciones/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram de Lienzos Producciones"
+                ><img
+                  class="icono-ig"
+                  src="/instagram.png"
+                  alt=""
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                  decoding="async"
+              /></a>
+            </li>
+            <li>
+              <a
+                href="https://wa.me/573228539152"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Escribir por WhatsApp"
+                ><img
+                  class="icono-wa"
+                  src="/whatsapp-logo.png"
+                  alt=""
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                  decoding="async"
+              /></a>
+            </li>
+            <li>
+              <a href="mailto:lienzosprod@gmail.com" aria-label="Escribir un correo"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+                  <rect x="2" y="4" width="20" height="16" rx="2" /></svg
+              ></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="portada__texto">
+          <div class="portada__contenido">
+            <p class="kicker portada__antetitulo cristal entra" style="--d: 8">Para marcas que pautan cada mes</p>
+            <h1 class="portada__titulo">
+              <span class="portada__linea entra" style="--d: 9">Anuncios nuevos</span>
+              <span class="portada__linea entra" style="--d: 10">al ritmo al que</span>
+              <span class="portada__linea entra" style="--d: 11"
+                ><span class="portada__resalte">se te queman</span></span
+              >
+            </h1>
+
+            <p class="portada__parrafo entra" style="--d: 12">
+              De cada rodaje, múltiples piezas distribuidas en cada plataforma.
+            </p>
+
+            <div class="portada__accion" data-ancla-cta>
+              <a class="portada__cta" href="#cotizar">
+                <span class="portada__cta-texto entra" style="--d: 12">Pedir cotización</span>
+                <span class="portada__cta-icono entra" style="--d: 13">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+              </a>
+            </div>
+
+            <ul class="portada__redes-movil">
+              <li class="entra" style="--d: 14">
+                <a
+                  href="https://www.instagram.com/lienzosproducciones/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram de Lienzos Producciones"
+                  ><img
+                    class="icono-ig"
+                    src="/instagram.png"
+                    alt=""
+                    width="24"
+                    height="24"
+                    loading="lazy"
+                    decoding="async"
+                /></a>
+              </li>
+              <li class="entra" style="--d: 15">
+                <a
+                  href="https://wa.me/573228539152"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Escribir por WhatsApp"
+                  ><img
+                    class="icono-wa"
+                    src="/whatsapp-logo.png"
+                    alt=""
+                    width="24"
+                    height="24"
+                    loading="lazy"
+                    decoding="async"
+                /></a>
+              </li>
+              <li class="entra" style="--d: 16">
+                <a href="mailto:lienzosprod@gmail.com" aria-label="Escribir un correo"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+                    <rect x="2" y="4" width="20" height="16" rx="2" /></svg
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Cinta de formatos ═════════════════════════════════════
+           El grupo va duplicado y la pista se desplaza el 50%: así el
+           bucle no tiene costura. aria-hidden porque es decorativa —
+           todo lo que dice ya está escrito en los servicios.
+      -->
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__pista">
+          <div class="ticker__grupo">
+            <span class="ticker__item ticker__item--fuerte">Alta cadencia</span>
+            <span class="ticker__item">Dirección creativa propia</span>
+            <span class="ticker__item ticker__item--fuerte">Distribución en cada plataforma</span>
+            <span class="ticker__item">Múltiples piezas por rodaje</span>
+            <span class="ticker__item ticker__item--fuerte">IA declarada pieza por pieza</span>
+            <span class="ticker__item">Cesión de imagen firmada</span>
+            <span class="ticker__item ticker__item--fuerte">Música con licencia</span>
+            <span class="ticker__item">Cámara, luz y sonido propios</span>
+          </div>
+          <div class="ticker__grupo">
+            <span class="ticker__item ticker__item--fuerte">Alta cadencia</span>
+            <span class="ticker__item">Dirección creativa propia</span>
+            <span class="ticker__item ticker__item--fuerte">Distribución en cada plataforma</span>
+            <span class="ticker__item">Múltiples piezas por rodaje</span>
+            <span class="ticker__item ticker__item--fuerte">IA declarada pieza por pieza</span>
+            <span class="ticker__item">Cesión de imagen firmada</span>
+            <span class="ticker__item ticker__item--fuerte">Música con licencia</span>
+            <span class="ticker__item">Cámara, luz y sonido propios</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Portafolio ════════════════════════════════════════════
+           Las cuatro líneas que Lienzos quiere destacar, una pieza real por
+           categoría. Cada tarjeta es un enlace al .mp4 (sin JS, el navegador
+           lo abre solo); src/lib/portafolio.ts le pone encima dos capas:
+           un avance mudo de 6 s que corre solo mientras la tarjeta está en
+           pantalla, y el visor con el anuncio completo y con sonido.
+      -->
+      <section id="trabajo" class="seccion" data-block="portfolio-grid">
+        <div class="contenedor">
+          <div class="flex flex-col gap-[var(--spacing-2xs)] md:flex-row md:items-end md:justify-between">
+            <div data-revelar>
+              <p class="kicker">Nuestro trabajo</p>
+              <h2 class="titular-seccion mt-[var(--spacing-2xs)]">Anuncios que hemos producido</h2>
+            </div>
+          </div>
+
+          <div class="categorias mt-[var(--aire-seccion)]">
+            <figure class="categoria" data-revelar>
+              <a
+                href="/portafolio/ugc.mp4"
+                class="pieza pieza--vertical pieza--video grano"
+                data-pieza-video
+                aria-label="Ver el anuncio de UGC completo, con sonido (0:32)"
+              >
+                <video
+                  class="pieza__avance"
+                  data-poster="/portafolio/ugc-poster.webp"
+                  data-avance="/portafolio/ugc-avance.mp4"
+                  width="432"
+                  height="768"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></video>
+                <span class="pieza__play" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                <span class="pieza__duracion cristal" aria-hidden="true">0:32</span>
+              </a>
+              <figcaption class="categoria__pie">
+                <span class="categoria__indice">01</span>
+                <span class="categoria__nombre">UGC</span>
+                <span class="categoria__linea">Personas reales hablándole a cámara, con el lenguaje del feed.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="categoria" data-revelar data-revelar-retraso="1">
+              <a
+                href="/portafolio/storytelling.mp4"
+                class="pieza pieza--vertical pieza--video grano"
+                data-pieza-video
+                aria-label="Ver el anuncio de storytelling completo, con sonido (2:52)"
+              >
+                <video
+                  class="pieza__avance"
+                  data-poster="/portafolio/storytelling-poster.webp"
+                  data-avance="/portafolio/storytelling-avance.mp4"
+                  width="432"
+                  height="768"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></video>
+                <span class="pieza__play" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                <span class="pieza__duracion cristal" aria-hidden="true">2:52</span>
+              </a>
+              <figcaption class="categoria__pie">
+                <span class="categoria__indice">02</span>
+                <span class="categoria__nombre">Storytelling</span>
+                <span class="categoria__linea">Una historia completa en los segundos que dura el anuncio.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="categoria" data-revelar data-revelar-retraso="2">
+              <a
+                href="/portafolio/producto.mp4"
+                class="pieza pieza--vertical pieza--video grano"
+                data-pieza-video
+                aria-label="Ver el anuncio de producto completo, con sonido (0:12)"
+              >
+                <video
+                  class="pieza__avance"
+                  data-poster="/portafolio/producto-poster.webp"
+                  data-avance="/portafolio/producto-avance.mp4"
+                  width="432"
+                  height="768"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></video>
+                <span class="pieza__play" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                <span class="pieza__duracion cristal" aria-hidden="true">0:12</span>
+              </a>
+              <figcaption class="categoria__pie">
+                <span class="categoria__indice">03</span>
+                <span class="categoria__nombre">Producto</span>
+                <span class="categoria__linea">Tu producto filmado con luz, textura y detalle.</span>
+              </figcaption>
+            </figure>
+
+            <figure class="categoria" data-revelar data-revelar-retraso="3">
+              <a
+                href="/portafolio/ia.mp4"
+                class="pieza pieza--vertical pieza--video grano"
+                data-pieza-video
+                aria-label="Ver el anuncio de inteligencia artificial completo, con sonido (0:25)"
+              >
+                <video
+                  class="pieza__avance"
+                  data-poster="/portafolio/ia-poster.webp"
+                  data-avance="/portafolio/ia-avance.mp4"
+                  width="432"
+                  height="768"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></video>
+                <span class="pieza__play" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                <span class="pieza__duracion cristal" aria-hidden="true">0:25</span>
+              </a>
+              <figcaption class="categoria__pie">
+                <span class="categoria__indice">04</span>
+                <span class="categoria__nombre">Inteligencia artificial</span>
+                <span class="categoria__linea">Lo que no se puede grabar, generado y declarado pieza por pieza.</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Ritmo y retorno ═══════════════════════════════════════
+           Antes eran dos secciones (IA con dirección + retorno) y casi todo
+           era párrafo. Ahora es un gráfico y una cadena:
+             · Dos carriles por las cinco etapas: la persona está en todas,
+               la IA solo en las tres del medio. El hueco en los extremos ES
+               el argumento — se ve antes de leerse.
+             · El retorno como cadena causa → efecto, sin cifras inventadas.
+           La IA va en crema, el único acento cálido de esta vista (regla de
+           marca_crema en marca.json).
+      -->
+      <section id="metodo" class="seccion bg-[var(--tarjeta-fondo)]" data-block="differentiator">
+        <div class="contenedor">
+          <div data-revelar>
+            <p class="kicker">Cómo sostenemos el ritmo</p>
+            <h2 class="titular-seccion mt-[var(--spacing-2xs)]">IA para acelerar. Personas para decidir.</h2>
+          </div>
+
+          <div class="carriles-leyenda mt-[var(--spacing-md)]" aria-hidden="true">
+            <span class="carriles-leyenda__item">Decide una persona</span>
+            <span class="carriles-leyenda__item carriles-leyenda__item--ia">Acelera la IA</span>
+          </div>
+
+          <ol class="etapas mt-[var(--spacing-xs)]" data-revelar>
+            <li class="etapa" style="--i: 0">
+              <p class="etapa__nombre"><span class="etapa__numero">01</span> Ángulo</p>
+              <p class="etapa__carril etapa__carril--persona">
+                <span class="solo-lectores">Decide una persona:</span> Se define contigo
+              </p>
+              <p class="etapa__carril etapa__carril--ia etapa__carril--vacio">
+                <span class="solo-lectores">Acelera la IA:</span> No entra
+              </p>
+            </li>
+            <li class="etapa" style="--i: 1">
+              <p class="etapa__nombre"><span class="etapa__numero">02</span> Guion</p>
+              <p class="etapa__carril etapa__carril--persona">
+                <span class="solo-lectores">Decide una persona:</span> Se aprueba antes de grabar
+              </p>
+              <p class="etapa__carril etapa__carril--ia">
+                <span class="solo-lectores">Acelera la IA:</span> Ganchos alternativos
+              </p>
+            </li>
+            <li class="etapa" style="--i: 2">
+              <p class="etapa__nombre"><span class="etapa__numero">03</span> Rodaje</p>
+              <p class="etapa__carril etapa__carril--persona">
+                <span class="solo-lectores">Decide una persona:</span> Equipo y personas reales
+              </p>
+              <p class="etapa__carril etapa__carril--ia">
+                <span class="solo-lectores">Acelera la IA:</span> Solo lo que no se puede grabar
+              </p>
+            </li>
+            <li class="etapa" style="--i: 3">
+              <p class="etapa__nombre"><span class="etapa__numero">04</span> Variantes</p>
+              <p class="etapa__carril etapa__carril--persona">
+                <span class="solo-lectores">Decide una persona:</span> Corte maestro humano
+              </p>
+              <p class="etapa__carril etapa__carril--ia">
+                <span class="solo-lectores">Acelera la IA:</span> Formatos, duraciones y subtítulos
+              </p>
+            </li>
+            <li class="etapa" style="--i: 4">
+              <p class="etapa__nombre"><span class="etapa__numero">05</span> Entrega</p>
+              <p class="etapa__carril etapa__carril--persona">
+                <span class="solo-lectores">Decide una persona:</span> Declaramos qué es IA
+              </p>
+              <p class="etapa__carril etapa__carril--ia etapa__carril--vacio">
+                <span class="solo-lectores">Acelera la IA:</span> No entra
+              </p>
+            </li>
+          </ol>
+
+          <div class="nunca mt-[var(--spacing-md)]" data-revelar>
+            <p class="nunca__titulo">La IA nunca toca</p>
+            <ul class="nunca__lista">
+              <li>Tu estrategia</li>
+              <li>El corte maestro</li>
+              <li>Caras de clientes falsos</li>
+              <li>Voces clonadas</li>
+            </ul>
+          </div>
+
+          <div class="mt-[var(--aire-seccion)]">
+            <p class="kicker" data-revelar>El retorno</p>
+            <ol class="cadena mt-[var(--spacing-md)]">
+              <li class="cadena__paso cadena__paso--1 animate-fade-in-up">
+                <div class="brillo brillo--compacta" style="--degradado: var(--degradado-4)">
+                  <div class="brillo__halo" aria-hidden="true"></div>
+                  <div class="brillo__cara">
+                    <div class="brillo__contenido">
+                      <span class="brillo__icono"
+                        ><svg
+                          width="28"
+                          height="28"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="m12.296 3.464 3.02 3.956" />
+                          <path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z" />
+                          <path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                          <path d="m6.18 5.276 3.1 3.899" /></svg
+                      ></span>
+                      <span>
+                        <span class="brillo__titulo">Piezas nuevas</span>
+                        <span class="brillo__texto">Cada mes, antes de que la anterior se agote.</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="cadena__paso cadena__paso--2 animate-fade-in-up">
+                <div class="brillo brillo--compacta" style="--degradado: var(--degradado-3)">
+                  <div class="brillo__halo" aria-hidden="true"></div>
+                  <div class="brillo__cara">
+                    <div class="brillo__contenido">
+                      <span class="brillo__icono"
+                        ><svg
+                          width="28"
+                          height="28"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="m12 14 4-4" />
+                          <path d="M3.34 19a10 10 0 1 1 17.32 0" /></svg
+                      ></span>
+                      <span>
+                        <span class="brillo__titulo">Menos fatiga</span>
+                        <span class="brillo__texto">No subes presupuesto sobre un creativo cansado.</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="cadena__paso cadena__paso--3 animate-fade-in-up">
+                <div class="brillo brillo--compacta" style="--degradado: var(--degradado-1)">
+                  <div class="brillo__halo" aria-hidden="true"></div>
+                  <div class="brillo__cara">
+                    <div class="brillo__contenido">
+                      <span class="brillo__icono"
+                        ><svg
+                          width="28"
+                          height="28"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M16 17h6v-6" />
+                          <path d="m22 17-8.5-8.5-5 5L2 7" /></svg
+                      ></span>
+                      <span>
+                        <span class="brillo__titulo">CPA más bajo</span>
+                        <span class="brillo__texto">Los mismos clientes con menos inversión en medios.</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ol>
+            <p class="prosa mt-[var(--spacing-md)] text-lg text-[var(--texto-secundario)]" data-revelar>
+              El creativo es la palanca más grande de tu pauta: ni la segmentación ni la puja mueven tanto los números
+              como cambiar la pieza.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Cómo trabajamos: proceso + modalidades ═════════════════
+           Antes eran dos secciones que decían lo mismo. El proceso es común
+           a todas las modalidades; lo único que cambia es el ritmo, así que
+           van juntos: tres pasos arriba, y abajo el ritmo al que se repiten.
+           Una sola oferta vendida por ritmo, NUNCA por precio (decisión del
+           cliente). Cada "Pedir cotización" deja marcada su modalidad en el
+           formulario.
+      -->
+      <section id="servicios" class="seccion seccion--centrada" data-block="services-grid">
+        <div class="contenedor">
+          <div class="cabecera-centrada" data-revelar>
+            <p class="kicker">Cómo trabajamos</p>
+            <h2 class="titular-seccion mt-[var(--spacing-2xs)]">Tres pasos, al ritmo que elijas</h2>
+            <p class="mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]">
+              Cada rodaje sale en <strong class="text-[var(--texto-principal)]">múltiples piezas</strong> —ganchos,
+              cierres y formatos 9:16, 1:1 y 16:9— con su
+              <strong class="text-[var(--texto-principal)]">distribución en cada plataforma</strong>.
+            </p>
+          </div>
+
+          <ol class="mt-[var(--aire-seccion)] grid gap-[var(--spacing-md)] md:grid-cols-3">
+            <li class="paso" data-revelar>
+              <p class="paso__numero">01</p>
+              <h3 class="titular-tarjeta mt-[var(--spacing-2xs)]">Brief</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Qué vas a pautar, a quién le hablas y cuánto material necesitas al mes.
+              </p>
+            </li>
+            <li class="paso" data-revelar data-revelar-retraso="1">
+              <p class="paso__numero">02</p>
+              <h3 class="titular-tarjeta mt-[var(--spacing-2xs)]">Rodaje</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Guion aprobado antes de encender la cámara. Equipo propio de cámara, luz y sonido.
+              </p>
+            </li>
+            <li class="paso" data-revelar data-revelar-retraso="2">
+              <p class="paso__numero">03</p>
+              <h3 class="titular-tarjeta mt-[var(--spacing-2xs)]">Entrega y distribución</h3>
+              <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                Cada pieza en su formato y lista para cada plataforma: Meta, TikTok o YouTube.
+              </p>
+            </li>
+          </ol>
+
+          <div class="mt-[var(--aire-seccion)] text-center" data-revelar>
+            <p class="kicker">Elige el ritmo</p>
+          </div>
+          <div class="brillos mt-[var(--spacing-md)]">
+            <div class="brillo" style="--degradado: var(--degradado-1); --retraso: 100ms" data-revelar>
+              <div class="brillo__halo" aria-hidden="true"></div>
+              <a
+                href="#cotizar"
+                class="brillo__cara"
+                data-elegir-modalidad="Lote inicial"
+                aria-label="Pedir cotización de Lote inicial"
+              >
+                <span class="brillo__contenido">
+                  <span class="brillo__cabeza">
+                    <span class="brillo__icono"
+                      ><svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"
+                        />
+                        <path d="M6.453 15h11.094" />
+                        <path d="M8.5 2h7" /></svg
+                    ></span>
+                    <span class="brillo__etiqueta">Para empezar</span>
+                  </span>
+                  <span>
+                    <span class="brillo__titulo">Lote inicial</span>
+                    <span class="brillo__texto">Un primer lote de anuncios para medir qué cambia en tus números.</span>
+                    <span class="brillo__accion">Pedir cotización <span aria-hidden="true">→</span></span>
+                  </span>
+                </span>
+              </a>
+            </div>
+            <div
+              class="brillo brillo--destacada"
+              style="--degradado: var(--degradado-2); --retraso: 200ms"
+              data-revelar
+            >
+              <div class="brillo__halo" aria-hidden="true"></div>
+              <a
+                href="#cotizar"
+                class="brillo__cara"
+                data-elegir-modalidad="Producción mensual"
+                aria-label="Pedir cotización de Producción mensual"
+              >
+                <span class="brillo__contenido">
+                  <span class="brillo__cabeza">
+                    <span class="brillo__icono"
+                      ><svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="m17 2 4 4-4 4" />
+                        <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+                        <path d="m7 22-4-4 4-4" />
+                        <path d="M21 13v1a4 4 0 0 1-4 4H3" /></svg
+                    ></span>
+                    <span class="brillo__etiqueta">Lo que más se contrata</span>
+                  </span>
+                  <span>
+                    <span class="brillo__titulo">Producción mensual</span>
+                    <span class="brillo__texto">Piezas nuevas cada mes, con variantes por gancho y por formato.</span>
+                    <span class="brillo__accion">Pedir cotización <span aria-hidden="true">→</span></span>
+                  </span>
+                </span>
+              </a>
+            </div>
+            <div class="brillo" style="--degradado: var(--degradado-3); --retraso: 300ms" data-revelar>
+              <div class="brillo__halo" aria-hidden="true"></div>
+              <a
+                href="#cotizar"
+                class="brillo__cara"
+                data-elegir-modalidad="Producción dedicada"
+                aria-label="Pedir cotización de Producción dedicada"
+              >
+                <span class="brillo__contenido">
+                  <span class="brillo__cabeza">
+                    <span class="brillo__icono"
+                      ><svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"
+                        />
+                        <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+                        <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg
+                    ></span>
+                    <span class="brillo__etiqueta">Varias líneas a la vez</span>
+                  </span>
+                  <span>
+                    <span class="brillo__titulo">Producción dedicada</span>
+                    <span class="brillo__texto">Equipo y calendario reservados para varias líneas o mercados.</span>
+                    <span class="brillo__accion">Pedir cotización <span aria-hidden="true">→</span></span>
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Equipo + números ══════════════════════════════════════
+           Una sola sección: quién hace el trabajo y cuánto lleva haciéndolo.
+           Las tres cifras son datos del cliente: 4 años (marca.json), +2.640
+           anuncios entregados y +40 marcas acompañadas.
+      -->
+      <section id="equipo" class="seccion bg-[var(--tarjeta-fondo)]" data-block="team">
+        <div class="contenedor">
+          <div class="grid gap-[var(--spacing-sm)]">
+            <div data-revelar>
+              <p class="kicker">Quiénes somos</p>
+              <h2 class="titular-seccion mt-[var(--spacing-2xs)]">Cine, sonido y arte en el mismo equipo</h2>
+              <p class="prosa mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]">
+                Por eso puedes subir el volumen sin subcontratar a nadie: quien filma, quien mezcla y quien diseña
+                trabajan en la misma mesa.
+              </p>
+            </div>
+
+            <dl class="cifras" data-revelar data-revelar-retraso="1">
+              <div class="cifra">
+                <dt class="cifra__etiqueta">años produciendo</dt>
+                <dd class="metrica__valor"><span data-contador="4">4</span></dd>
+              </div>
+              <div class="cifra">
+                <dt class="cifra__etiqueta">anuncios entregados</dt>
+                <dd class="metrica__valor"><span class="cifra__mas">+</span><span data-contador="2640">2.640</span></dd>
+              </div>
+              <div class="cifra">
+                <dt class="cifra__etiqueta">marcas acompañadas</dt>
+                <dd class="metrica__valor"><span class="cifra__mas">+</span><span data-contador="40">40</span></dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="mt-[var(--aire-seccion)] grid gap-[var(--spacing-xs)] md:grid-cols-3">
+            <article class="persona grano" data-revelar>
+              <img
+                src="/equipo/luisa-rodriguez.webp"
+                alt="Luisa María Rodríguez"
+                width="386"
+                height="515"
+                loading="lazy"
+                decoding="async"
+                class="persona__foto"
+              />
+              <div class="persona__pie cristal">
+                <h3 class="persona__nombre">Luisa María Rodríguez</h3>
+                <p class="persona__rol">Profesional en cine y televisión</p>
+              </div>
+            </article>
+            <article class="persona grano" data-revelar data-revelar-retraso="1">
+              <img
+                src="/equipo/david-rodriguez.webp"
+                alt="David Rodríguez"
+                width="429"
+                height="572"
+                loading="lazy"
+                decoding="async"
+                class="persona__foto"
+              />
+              <div class="persona__pie cristal">
+                <h3 class="persona__nombre">David Rodríguez</h3>
+                <p class="persona__rol">Maestro en música e ingeniero de sonido</p>
+              </div>
+            </article>
+            <article class="persona grano" data-revelar data-revelar-retraso="2">
+              <img
+                src="/equipo/angelica-castillo.webp"
+                alt="Angélica Castillo"
+                width="586"
+                height="782"
+                loading="lazy"
+                decoding="async"
+                class="persona__foto"
+              />
+              <div class="persona__pie cristal">
+                <h3 class="persona__nombre">Angélica Castillo</h3>
+                <p class="persona__rol">Maestra en artes visuales, esp. expresión gráfica</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Testimonios ═══════════════════════════════════════════
+           Slots vacíos, cero texto redactado. La sección SE QUEDA montada a
+           petición del cliente: con ticket alto y tráfico frío la prueba
+           social es indispensable. Pero ningún testimonio se escribe hasta
+           que exista el real — es riesgo legal y además se nota.
+      -->
+      <section class="seccion" data-block="video-testimonials">
+        <div class="contenedor">
+          <p class="kicker" data-revelar>Lo que dicen</p>
+          <h2 class="titular-seccion mt-[var(--spacing-2xs)]" data-revelar>
+            Lo que dicen quienes ya trabajaron con nosotros
+          </h2>
+          <p class="prosa mt-[var(--spacing-xs)] text-lg text-[var(--texto-secundario)]" data-revelar>
+            Hoy el 100 % de los clientes de Lienzos llegó por recomendación. Esta sección existe para que esa
+            recomendación también funcione con quien no conoce a nadie del equipo. Son ellos hablando a cámara, sin
+            guion: pulsa cualquiera para verlo completo y con sonido.
+          </p>
+
+          <div class="mt-[var(--aire-seccion)] grid gap-[var(--spacing-sm)_var(--spacing-xs)] md:grid-cols-3">
+            <figure class="categoria" data-revelar>
+              <a
+                href="/testimonios/mateo-navia.mp4"
+                class="pieza pieza--vertical pieza--video grano"
+                data-pieza-video
+                aria-label="Ver el testimonio de Mateo Navia completo, con sonido (1:53)"
+              >
+                <video
+                  class="pieza__avance"
+                  data-poster="/testimonios/mateo-navia-poster.webp"
+                  data-avance="/testimonios/mateo-navia-avance.mp4"
+                  width="432"
+                  height="768"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></video>
+                <span class="pieza__play" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                <span class="pieza__duracion cristal" aria-hidden="true">1:53</span>
+              </a>
+              <figcaption class="categoria__pie">
+                <span class="categoria__nombre">Mateo Navia</span>
+              </figcaption>
+            </figure>
+            <figure class="categoria" data-revelar data-revelar-retraso="1">
+              <a
+                href="/testimonios/juan-pablo-morales.mp4"
+                class="pieza pieza--vertical pieza--video grano"
+                data-pieza-video
+                aria-label="Ver el testimonio de Juan Pablo Morales completo, con sonido (0:51)"
+              >
+                <video
+                  class="pieza__avance"
+                  data-poster="/testimonios/juan-pablo-morales-poster.webp"
+                  data-avance="/testimonios/juan-pablo-morales-avance.mp4"
+                  width="432"
+                  height="768"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></video>
+                <span class="pieza__play" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                <span class="pieza__duracion cristal" aria-hidden="true">0:51</span>
+              </a>
+              <figcaption class="categoria__pie">
+                <span class="categoria__nombre">Juan Pablo Morales</span>
+              </figcaption>
+            </figure>
+            <figure class="categoria" data-revelar data-revelar-retraso="2">
+              <a
+                href="/testimonios/dayanth-solano.mp4"
+                class="pieza pieza--vertical pieza--video grano"
+                data-pieza-video
+                aria-label="Ver el testimonio de Dayanth Solano completo, con sonido (5:00)"
+              >
+                <video
+                  class="pieza__avance"
+                  data-poster="/testimonios/dayanth-solano-poster.webp"
+                  data-avance="/testimonios/dayanth-solano-avance.mp4"
+                  width="432"
+                  height="768"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  tabindex="-1"
+                ></video>
+                <span class="pieza__play" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+                <span class="pieza__duracion cristal" aria-hidden="true">5:00</span>
+              </a>
+              <figcaption class="categoria__pie">
+                <span class="categoria__nombre">Dayanth Solano</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Cotizar ═══════════════════════════════════════════════
+           Estructura de la referencia (registro a dos columnas), adaptada
+           al formulario que ya existía:
+             · Izquierda, solo escritorio: video a sangre SIN velo (lo pidió
+               la referencia) y encima marca, promesa y los tres pasos. El
+               paso activo lo marca src/lib/formulario.ts (data-paso-indicador).
+               El video es el avance UGC que ya usa el portafolio: carga
+               diferida y pausa fuera de pantalla vienen de portafolio.ts.
+             · Derecha: título, atajos (WhatsApp y correo) en lugar del
+               "entrar con Google", el separador "o" y el formulario.
+           Los mismos campos de siempre en TRES pasos, y los datos de
+           contacto al final a propósito. Los cuatro estados los gestiona
+           src/lib/formulario.ts.
+      -->
+      <section id="cotizar" class="cotizar" data-block="contact-form">
+        <div class="cotizar__marco">
+          <aside class="cotizar__lado">
+            <video
+              class="cotizar__video"
+              data-poster="/cotizar/fondo-poster.webp"
+              data-avance="/cotizar/fondo.mp4"
+              width="960"
+              height="1290"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-hidden="true"
+              tabindex="-1"
+            ></video>
+            <div class="cotizar__lado-contenido" data-revelar>
+              <p class="cotizar__marca">
+                <img src="/logo-lienzos.png" alt="" width="28" height="28" />
+                <span>Lienzos</span>
+              </p>
+              <div>
+                <p class="cotizar__lema">Tres pasos</p>
+                <p class="cotizar__lema-texto">
+                  Menos de un minuto. Al terminar, la conversación sigue por WhatsApp con tu resumen ya escrito.
+                </p>
+              </div>
+              <ol class="cotizar__pasos">
+                <li class="paso-item paso-item--activo" data-paso-indicador="0" aria-current="step">
+                  <span class="paso-item__numero">1</span> ¿Qué necesitas?
+                </li>
+                <li class="paso-item" data-paso-indicador="1">
+                  <span class="paso-item__numero">2</span> Sobre el proyecto
+                </li>
+                <li class="paso-item" data-paso-indicador="2">
+                  <span class="paso-item__numero">3</span> ¿Cómo te escribimos?
+                </li>
+              </ol>
+            </div>
+          </aside>
+
+          <div class="cotizar__columna">
+            <div class="cotizar__interior" data-revelar>
+              <div>
+                <p class="kicker">Cotizar</p>
+                <h2 class="cotizar__titulo">Pide tu cotización</h2>
+                <p class="cotizar__subtitulo">
+                  Te respondemos con un plan de producción a tu medida. Pedirla no te compromete a nada.
+                </p>
+              </div>
+
+              <form class="cotizar__form" data-formulario data-pasos action="/formulario.php" method="post" novalidate>
+                <!-- Trampa para robots. Un humano nunca la ve ni la rellena. -->
+                <div class="solo-lectores" aria-hidden="true">
+                  <label for="web">No rellenes este campo</label>
+                  <input type="text" id="web" name="web" tabindex="-1" autocomplete="off" />
+                </div>
+                <input type="hidden" name="t" data-marca-tiempo value="" />
+
+                <div class="pasos__barra" aria-hidden="true">
+                  <span class="pasos__tramo" data-tramo="0"></span>
+                  <span class="pasos__tramo" data-tramo="1"></span>
+                  <span class="pasos__tramo" data-tramo="2"></span>
+                </div>
+                <p class="pasos__cuenta" data-pasos-cuenta role="status"></p>
+
+                <!-- ── Paso 1 · lo fácil, sin datos personales ───────────── -->
+                <fieldset class="paso-panel" data-paso="0">
+                  <legend class="paso-panel__titulo">¿Qué necesitas?</legend>
+
+                  <!-- Cada opción lleva su pista en aria-describedby; src/lib/pistas.ts
+                   la escribe debajo al pasar el cursor, enfocar o tocar. -->
+                  <div class="mt-[var(--spacing-2xs)]" data-pistas>
+                    <p class="etiqueta-campo">¿Qué modalidad te encaja?</p>
+                    <div class="chips">
+                      <label class="chip"
+                        ><input type="radio" name="paquete" value="Lote inicial" aria-describedby="pista-lote" /><span
+                          >Lote inicial</span
+                        ></label
+                      >
+                      <label class="chip"
+                        ><input
+                          type="radio"
+                          name="paquete"
+                          value="Producción mensual"
+                          aria-describedby="pista-mensual"
+                        /><span>Producción mensual</span></label
+                      >
+                      <label class="chip"
+                        ><input
+                          type="radio"
+                          name="paquete"
+                          value="Producción dedicada"
+                          aria-describedby="pista-dedicada"
+                        /><span>Producción dedicada</span></label
+                      >
+                      <label class="chip"
+                        ><input type="radio" name="paquete" value="Aún no sé" aria-describedby="pista-no-se" /><span
+                          >Aún no sé</span
+                        ></label
+                      >
+                    </div>
+                    <p class="chips__pista" data-pistas-salida aria-hidden="true" hidden></p>
+                    <div hidden>
+                      <span id="pista-lote">Un primer lote de anuncios para medir qué cambia en tus números.</span>
+                      <span id="pista-mensual">Piezas nuevas cada mes, con variantes por gancho y por formato.</span>
+                      <span id="pista-dedicada">Equipo y calendario reservados para varias líneas o mercados.</span>
+                      <span id="pista-no-se">Cuéntanos tu caso y te proponemos la modalidad que encaje.</span>
+                    </div>
+                    <p class="error-campo" data-error-de="paquete" hidden></p>
+                  </div>
+
+                  <div class="mt-[var(--spacing-xs)]">
+                    <p class="etiqueta-campo">
+                      ¿Dónde vas a pautar? <span class="font-normal text-[var(--texto-secundario)]">(opcional)</span>
+                    </p>
+                    <div class="chips">
+                      <label class="chip"
+                        ><input type="checkbox" name="plataformas[]" value="Meta" /><span>Meta</span></label
+                      >
+                      <label class="chip"
+                        ><input type="checkbox" name="plataformas[]" value="TikTok" /><span>TikTok</span></label
+                      >
+                      <label class="chip"
+                        ><input type="checkbox" name="plataformas[]" value="YouTube" /><span>YouTube</span></label
+                      >
+                      <label class="chip"
+                        ><input type="checkbox" name="plataformas[]" value="Aún no pauto" /><span
+                          >Aún no pauto</span
+                        ></label
+                      >
+                    </div>
+                  </div>
+                </fieldset>
+
+                <!-- ── Paso 2 · el proyecto ──────────────────────────────── -->
+                <fieldset class="paso-panel" data-paso="1" hidden>
+                  <legend class="paso-panel__titulo">Sobre el proyecto</legend>
+
+                  <div class="mt-[var(--spacing-2xs)] grid gap-[var(--spacing-xs)]">
+                    <div>
+                      <label class="etiqueta-campo" for="mensaje">¿Qué producto o servicio vas a pautar?</label>
+                      <input
+                        class="campo"
+                        type="text"
+                        id="mensaje"
+                        name="mensaje"
+                        placeholder="Ej: línea de skincare para e-commerce"
+                      />
+                      <p class="error-campo" data-error-de="mensaje" hidden></p>
+                    </div>
+
+                    <div>
+                      <label class="etiqueta-campo" for="inversion">¿Cuánto invierte tu marca al mes en pauta?</label>
+                      <select class="campo" id="inversion" name="inversion">
+                        <option value="">Prefiero hablarlo primero</option>
+                        <option value="Menos de USD 3.000 al mes">Menos de USD $3.000</option>
+                        <option value="USD 3.000 a 10.000 al mes">USD $3.000 – $10.000</option>
+                        <option value="USD 10.000 a 30.000 al mes">USD $10.000 – $30.000</option>
+                        <option value="Mas de USD 30.000 al mes">Más de USD $30.000</option>
+                        <option value="Todavia no pautamos">Todavía no pautamos</option>
+                      </select>
+                      <p class="mt-[var(--spacing-3xs)] text-sm text-[var(--texto-secundario)]">
+                        Nos sirve para dimensionar cuánto material nuevo necesita tu campaña al mes.
+                      </p>
+                    </div>
+
+                    <div>
+                      <label class="etiqueta-campo" for="volumen">¿Cuántos anuncios nuevos necesitas al mes?</label>
+                      <select class="campo" id="volumen" name="volumen">
+                        <option value="">Aún no lo sé</option>
+                        <option value="1 a 3 al mes">1 a 3</option>
+                        <option value="4 a 8 al mes">4 a 8</option>
+                        <option value="9 o mas al mes">9 o más</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <p class="etiqueta-campo">¿Tienes equipo de contenido interno?</p>
+                      <div class="chips">
+                        <label class="chip"
+                          ><input type="radio" name="equipo_interno" value="Si, equipo propio" /><span
+                            >Sí, propio</span
+                          ></label
+                        >
+                        <label class="chip"
+                          ><input type="radio" name="equipo_interno" value="Parcial, con freelances" /><span
+                            >Parcial, con freelances</span
+                          ></label
+                        >
+                        <label class="chip"
+                          ><input type="radio" name="equipo_interno" value="No" /><span>No</span></label
+                        >
+                      </div>
+                    </div>
+
+                    <div>
+                      <label class="etiqueta-campo" for="cuando">¿Para cuándo?</label>
+                      <select class="campo" id="cuando" name="cuando">
+                        <option value="">Sin fecha definida</option>
+                        <option value="Este mes">Este mes</option>
+                        <option value="En 2 o 3 meses">En 2 o 3 meses</option>
+                        <option value="Solo estoy explorando">Solo estoy explorando</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="etiqueta-campo" for="referencia">
+                        Un anuncio que te guste
+                        <span class="font-normal text-[var(--texto-secundario)]">(opcional)</span>
+                      </label>
+                      <input class="campo" type="url" id="referencia" name="referencia" placeholder="https://" />
+                      <p class="error-campo" data-error-de="referencia" hidden></p>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <!-- ── Paso 3 · los datos, al final ──────────────────────── -->
+                <fieldset class="paso-panel" data-paso="2" hidden>
+                  <legend class="paso-panel__titulo">¿Cómo te escribimos?</legend>
+
+                  <div class="mt-[var(--spacing-2xs)] grid gap-[var(--spacing-xs)]">
+                    <div>
+                      <label class="etiqueta-campo" for="nombre">Tu nombre</label>
+                      <input class="campo" type="text" id="nombre" name="nombre" autocomplete="name" />
+                      <p class="error-campo" data-error-de="nombre" hidden></p>
+                    </div>
+
+                    <div>
+                      <label class="etiqueta-campo" for="telefono">WhatsApp</label>
+                      <input
+                        class="campo"
+                        type="tel"
+                        id="telefono"
+                        name="telefono"
+                        autocomplete="tel"
+                        placeholder="+57 300 000 0000"
+                      />
+                      <p class="error-campo" data-error-de="telefono" hidden></p>
+                    </div>
+
+                    <div>
+                      <label class="etiqueta-campo" for="email">Correo</label>
+                      <input class="campo" type="email" id="email" name="email" autocomplete="email" />
+                      <p class="error-campo" data-error-de="email" hidden></p>
+                    </div>
+
+                    <div>
+                      <label class="etiqueta-campo" for="marca">
+                        Marca o empresa <span class="font-normal text-[var(--texto-secundario)]">(opcional)</span>
+                      </label>
+                      <input class="campo" type="text" id="marca" name="marca" autocomplete="organization" />
+                    </div>
+
+                    <div class="flex items-start gap-[var(--spacing-3xs)]">
+                      <input
+                        type="checkbox"
+                        id="datos"
+                        name="datos"
+                        class="mt-1 h-5 w-5 shrink-0 accent-[var(--accion)]"
+                      />
+                      <label for="datos" class="text-sm text-[var(--texto-secundario)]">
+                        Autorizo el tratamiento de mis datos para responder a esta solicitud (ley 1581 de 2012).
+                        <a href="/privacidad" class="underline underline-offset-2">Cómo los tratamos</a>.
+                      </label>
+                    </div>
+                    <p class="error-campo" data-error-de="datos" hidden></p>
+                  </div>
+                </fieldset>
+
+                <div class="pasos__acciones">
+                  <button type="button" class="boton boton-secundario" data-paso-atras hidden>Atrás</button>
+                  <button type="button" class="boton boton-primario" data-paso-siguiente><span>Siguiente</span></button>
+                  <button type="submit" class="boton boton-primario" data-enviar hidden>
+                    <span class="indicador-carga" aria-hidden="true"></span>
+                    <span>Enviar y seguir por WhatsApp</span>
+                  </button>
+                </div>
+
+                <!-- Los cuatro estados se pintan aquí. -->
+                <p data-estado tabindex="-1" hidden></p>
+
+                <!-- Salida alternativa si el envío falla: el lead no se pierde
+                 porque el servidor de correo esté caído. -->
+                <a
+                  href="https://wa.me/573228539152"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="boton boton-secundario mt-[var(--spacing-2xs)] w-full"
+                  data-salida-whatsapp
+                  hidden
+                >
+                  Escribir por WhatsApp
+                </a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Preguntas frecuentes ══════════════════════════════════
+           Doble trabajo: posicionar en búsquedas de "producción audiovisual
+           para anuncios de pago" y resolver las objeciones de quien ya
+           llegó (fatiga, precio, tiempos, carga para su equipo, IA,
+           derechos). Por eso cada pregunta está escrita como la teclea
+           alguien en Google, y cada respuesta sale de lo que la página ya
+           afirma — nada inventado.
+
+           El JSON-LD FAQPage lo genera vite.config.ts a partir de estos
+           <details> al compilar: no hay que duplicar las respuestas en el
+           <head>. Las que siguen con .pendiente se quedan fuera solas.
+
+           Va DESPUÉS del formulario: quien no lo llenó sigue leyendo
+           objeciones.
+      -->
+      <section id="preguntas" class="seccion bg-[var(--tarjeta-fondo)]" data-block="faq">
+        <div class="contenedor faq-rejilla">
+          <div class="faq-rejilla__cabeza" data-revelar>
+            <p class="kicker">Preguntas frecuentes</p>
+            <h2 class="titular-seccion mt-[var(--spacing-2xs)]">Lo que más nos preguntan sobre anuncios en video</h2>
+            <p class="mt-[var(--spacing-xs)] text-[var(--texto-secundario)]">¿Tu pregunta no está aquí?</p>
+            <a
+              href="https://wa.me/573228539152?text=Hola%20Lienzos%2C%20tengo%20una%20pregunta%20sobre%20la%20producci%C3%B3n%20de%20anuncios."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="boton boton-secundario mt-[var(--spacing-2xs)]"
+            >
+              Pregúntanos por WhatsApp
+            </a>
+          </div>
+
+          <div data-faq data-revelar>
+            <details name="faq">
+              <summary>¿Qué hace una productora audiovisual de anuncios para pauta digital?</summary>
+              <div>
+                <p>
+                  Una productora tradicional te entrega un video. Nosotros producimos para pauta: cada rodaje se piensa
+                  desde el guion para Meta Ads, TikTok Ads y YouTube Ads, y sale convertido en múltiples piezas —ganchos
+                  distintos para los primeros tres segundos, cierres, duraciones y formatos— listas para distribuir en
+                  cada plataforma y probar en tu cuenta publicitaria.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Cada cuánto hay que renovar los anuncios en Meta Ads y TikTok Ads?</summary>
+              <div>
+                <p>
+                  No hay un número fijo: depende de cuánto inviertes y de qué tan grande es tu audiencia. La señal sí es
+                  la misma en todas las cuentas: la frecuencia sube, el CTR cae y el costo por adquisición se dispara
+                  sin que hayas tocado la segmentación. Cuanto más inviertes, antes llega. Por eso trabajamos por ritmo
+                  de producción, para que la pieza siguiente esté lista antes de que la actual se agote.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Cuánto cuesta producir anuncios en video para redes sociales?</summary>
+              <div>
+                <p>
+                  Depende de cuántas piezas necesitas al mes, de si hay rodaje en locación y de cuántas variantes por
+                  formato. Por eso no publicamos una tarifa: te enviamos una cotización a la medida de tu campaña, sin
+                  compromiso. Un consejo para compararla: el costo de una pieza importa menos que cuánto baja tu costo
+                  por adquisición mientras está al aire.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Cuántos anuncios pueden producir al mes y en cuánto tiempo los entregan?</summary>
+              <div>
+                <p><span class="pendiente">Pendiente del cliente</span></p>
+                <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                  Capacidad real de producción mensual y en cuánto tiempo se entrega un lote desde el rodaje.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Por qué contratar una productora en vez de producir los anuncios in-house?</summary>
+              <div>
+                <p>
+                  Porque no amplías la nómina: cámara, sonido, arte, edición y dirección creativa cuando los usas, no en
+                  planilla todo el mes esperando el siguiente rodaje. Y porque trabajas siempre con el mismo equipo, que
+                  ya conoce tu marca: no hay que explicar el tono y el producto desde cero en cada rodaje, como pasa al
+                  cotizar pieza por pieza con proveedores distintos.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Qué es el contenido UGC y sirve para anuncios pagados?</summary>
+              <div>
+                <p>
+                  UGC es contenido con estética de creador: una persona real hablándole a cámara, como se ve en el feed.
+                  En pauta rinde porque no se lee como publicidad y sostiene los primeros segundos. Lo producimos con
+                  guion aprobado y dirección creativa, para que suene natural sin salirse de tu marca, y con la cesión
+                  de imagen firmada por quien aparece.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Usan inteligencia artificial para producir los anuncios?</summary>
+              <div>
+                <p>
+                  Sí, pero no decide nada. Los anuncios los dirige, los graba y los monta nuestro equipo. La IA la
+                  usamos dentro de la producción para sacar variantes de algo que ya está aprobado —otros ganchos, otros
+                  cierres, otros formatos— y en planos puntuales que no se pueden grabar. En cada entrega te decimos
+                  cuáles son. Si tu marca prefiere que no se use nada generado, se produce así y te lo decimos de
+                  entrada.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿En qué formatos entregan los videos para Meta, TikTok y YouTube?</summary>
+              <div>
+                <p>
+                  En 9:16 para Reels, Stories, TikTok y Shorts; 1:1 para el feed, y 16:9 para YouTube. Cada pieza sale
+                  dentro de los límites de peso y duración de cada plataforma, con y sin subtítulos quemados, y con sus
+                  variantes de gancho y de cierre, lista para subir al administrador de anuncios.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Qué necesita mi equipo de marketing para empezar?</summary>
+              <div>
+                <p>
+                  Un brief: qué vas a pautar, a quién le hablas y cuánto material necesitas al mes. El ángulo lo
+                  definimos contigo, el guion se aprueba antes de encender una cámara, y de ahí en adelante la logística
+                  —locación, talento, cámara, sonido y edición— corre por nuestra cuenta. Tu equipo aprueba, no
+                  coordina.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Quién responde por los derechos de imagen y de música de los anuncios?</summary>
+              <div>
+                <p>
+                  Nosotros, con asesoría legal especializada en derechos de imagen y música. Recibes cada pieza con la
+                  cesión firmada por quien aparece y la música licenciada. Un anuncio tumbado a mitad de campaña por un
+                  reclamo de audio cuesta bastante más que producirlo bien.
+                </p>
+              </div>
+            </details>
+
+            <details name="faq">
+              <summary>¿Trabajan con marcas fuera de Colombia?</summary>
+              <div>
+                <p><span class="pendiente">Pendiente del cliente</span></p>
+                <p class="mt-[var(--spacing-3xs)] text-[var(--texto-secundario)]">
+                  Ciudad base, si producen fuera del país y cómo se manejan los desplazamientos.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ══ Pie ═══════════════════════════════════════════════════════
+         Tarjeta oscura sobre el fondo de la página, con un resplandor
+         violeta arriba: el pie es parte del mismo sitio, no un bloque aparte.
+         Los cuatro documentos legales van aquí y solo aquí.
+    -->
+    <footer class="pie-escena grano" data-block="footer">
+      <div class="pie-escena__marco">
+        <div class="contenedor">
+          <div class="pie-tarjeta" data-revelar>
+            <div class="pie-tarjeta__cuerpo">
+              <a href="#contenido" class="pie-marca" aria-label="Lienzos Producciones, volver al inicio">
+                <img src="/logo-lienzos.png" alt="" width="48" height="48" class="pie-marca__icono" />
+                <span class="pie-marca__nombre">Lienzos</span>
+              </a>
+
+              <div class="pie-enlaces">
+                <nav class="pie-enlaces__grupo" aria-label="Lienzos">
+                  <p class="pie-enlaces__titulo">Lienzos</p>
+                  <ul>
+                    <li><a href="#trabajo">Nuestro trabajo</a></li>
+                    <li><a href="#servicios">Cómo trabajamos</a></li>
+                    <li><a href="#equipo">Equipo</a></li>
+                    <li><a href="#preguntas">Preguntas</a></li>
+                  </ul>
+                </nav>
+                <nav class="pie-enlaces__grupo" aria-label="Contacto">
+                  <p class="pie-enlaces__titulo">Contacto</p>
+                  <ul>
+                    <li><a href="#cotizar">Pedir cotización</a></li>
+                    <li><a href="https://wa.me/573228539152" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+                    <li><a href="mailto:lienzosprod@gmail.com">lienzosprod@gmail.com</a></li>
+                  </ul>
+                </nav>
+                <nav class="pie-enlaces__grupo" aria-label="Legal">
+                  <p class="pie-enlaces__titulo">Legal</p>
+                  <ul>
+                    <li><a href="/privacidad">Privacidad</a></li>
+                    <li><a href="/tratamiento-datos">Tratamiento de datos</a></li>
+                    <li><a href="/terminos">Términos</a></li>
+                    <li><a href="/cookies">Cookies</a></li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+
+            <div class="pie-tarjeta__barra">
+              <p>© <span data-ano>2026</span> Lienzos Producciones. Todos los derechos reservados.</p>
+              <ul class="pie-redes">
+                <li>
+                  <a
+                    href="https://www.instagram.com/lienzosproducciones/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram de Lienzos Producciones"
+                    ><img
+                      class="icono-ig"
+                      src="/instagram.png"
+                      alt=""
+                      width="24"
+                      height="24"
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </li>
+                <li>
+                  <a
+                    href="https://wa.me/573228539152"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Escribir por WhatsApp"
+                    ><img
+                      class="icono-wa"
+                      src="/whatsapp-logo.png"
+                      alt=""
+                      width="24"
+                      height="24"
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </li>
+                <li>
+                  <a href="mailto:lienzosprod@gmail.com" aria-label="Escribir un correo"
+                    ><svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+                      <rect x="2" y="4" width="20" height="16" rx="2" /></svg
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ══ Menú lateral ════════════════════════════════════════════
+         Entra en 680ms con salida rápida (expo-out) y se va en 440ms con
+         entrada rápida (expo-in): cerrar nunca es la apertura al revés.
+         inert mientras está cerrado; src/lib/menu.ts lo abre y lo cierra
+         (botón, velo, cualquier enlace y Esc).
+    -->
+    <div class="menu" id="menu" inert>
+      <div class="menu__velo" data-menu-cerrar></div>
+      <nav class="menu__panel cristal" aria-label="Secciones de la página">
+        <ul class="menu__lista">
+          <li style="--i: 0">
+            <a class="menu__enlace" href="#trabajo"
+              >Nuestro trabajo
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" /></svg
+            ></a>
+          </li>
+          <li style="--i: 1">
+            <a class="menu__enlace" href="#metodo"
+              >Método
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" /></svg
+            ></a>
+          </li>
+          <li style="--i: 2">
+            <a class="menu__enlace" href="#servicios"
+              >Cómo trabajamos
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" /></svg
+            ></a>
+          </li>
+          <li style="--i: 3">
+            <a class="menu__enlace" href="#equipo"
+              >Equipo
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" /></svg
+            ></a>
+          </li>
+          <li style="--i: 4">
+            <a class="menu__enlace" href="#preguntas"
+              >Preguntas
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" /></svg
+            ></a>
+          </li>
+        </ul>
+        <div class="menu__pie">
+          <a class="menu__cta" href="#cotizar"
+            >Pedir cotización
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" /></svg
+          ></a>
+          <div class="menu__redes">
+            <a
+              href="https://www.instagram.com/lienzosproducciones/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram de Lienzos Producciones"
+              ><img class="icono-ig" src="/instagram.png" alt="" width="24" height="24" loading="lazy" decoding="async"
+            /></a>
+            <a
+              href="https://wa.me/573228539152"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Escribir por WhatsApp"
+              ><img
+                class="icono-wa"
+                src="/whatsapp-logo.png"
+                alt=""
+                width="24"
+                height="24"
+                loading="lazy"
+                decoding="async"
+            /></a>
+            <a href="mailto:lienzosprod@gmail.com" aria-label="Escribir un correo"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+                <rect x="2" y="4" width="20" height="16" rx="2" /></svg
+            ></a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- ══ Visor del portafolio ══════════════════════════════════════
+         <dialog> nativo: trampa de foco, Esc y top layer gratis. La
+         entrada y la salida son de tailwind-animations (animate-dialog-
+         zoom). Los cuatro estados los pinta src/lib/portafolio.ts en
+         data-fase (no data-estado: ese atributo ya tiene estilos globales
+         del formulario): cargando, lento, error y nada (reproduciendo).
+    -->
+    <dialog class="visor animate-dialog animate-dialog-zoom" data-visor aria-label="Anuncio del portafolio">
+      <div class="visor__marco">
+        <video class="visor__video" data-visor-video controls playsinline preload="none"></video>
+        <div class="visor__estado" data-visor-estado role="status" hidden>
+          <span class="visor__spinner" aria-hidden="true"></span>
+          <p class="visor__texto" data-visor-texto></p>
+          <button type="button" class="boton boton-secundario" data-visor-reintentar hidden>Reintentar</button>
+        </div>
+        <button type="button" class="visor__cerrar cristal" data-visor-cerrar aria-label="Cerrar video">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+    </dialog>
+
+    <!-- ══ Aviso "todavía no" ════════════════════════════════════════
+         Lo abre src/lib/formulario.ts al enviar, sin esperar al servidor,
+         cuando las respuestas no califican (ver califica()). Quien califica
+         no lo ve nunca: sigue directo a WhatsApp. Cierran "Entendido", el
+         velo y Esc.
+    -->
+    <dialog
+      class="aviso animate-dialog animate-dialog-zoom"
+      data-aviso-no-califica
+      aria-labelledby="aviso-titulo"
+      aria-describedby="aviso-texto"
+    >
+      <div class="aviso__tarjeta">
+        <span class="aviso__icono" aria-hidden="true">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 22h14" />
+            <path d="M5 2h14" />
+            <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+            <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
+          </svg>
+        </span>
+        <h2 id="aviso-titulo" class="aviso__titulo">Todavía no es el mejor momento para contratarnos</h2>
+        <div id="aviso-texto" class="aviso__texto">
+          <p>
+            Producimos para marcas que ya pautan cada mes: ahí es donde cada anuncio nuevo se paga solo. Con lo que nos
+            contaste de tu pauta, hoy tu presupuesto rinde más en otra parte.
+          </p>
+          <p>Cuando tu pauta crezca, aquí vamos a estar.</p>
+        </div>
+        <button type="button" class="boton boton-primario aviso__boton" data-aviso-cerrar autofocus>Entendido</button>
+      </div>
+    </dialog>
+
+    <!-- ══ Barra fija, solo móvil ════════════════════════════════════ -->
+    <div class="sticky-cta cristal" data-block="sticky-cta" data-sticky role="region" aria-label="Acciones rápidas">
+      <a href="#cotizar" class="boton boton-primario"><span>Cotizar</span></a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,156 @@
+# ══════════════════════════════════════════════════════════════════════
+#  .htaccess — Hostinger / Apache / LiteSpeed
+#
+#  Se copia a sitio/public/.htaccess y Vite lo lleva a dist/ tal cual.
+#  Compruébalo antes de subir:  test -f sitio/dist/.htaccess
+#
+#  Lo que hace: cabeceras de seguridad, CSP estricta, compresión, caché
+#  larga en assets con hash, y bloqueo de lo que no debe servirse.
+#
+#  Lo que NO hace: mitigar denegación de servicio. Eso no se resuelve
+#  desde un hosting compartido — hace falta Cloudflare delante del
+#  dominio. Ver docs/seguridad.md.
+# ══════════════════════════════════════════════════════════════════════
+
+# ── HTTPS obligatorio ────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Sin www. Elige UNA versión canónica: tener las dos parte el SEO.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # URLs limpias: /contacto sirve contacto.html sin mostrar la extensión.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^(.+?)/?$ $1.html [L]
+</IfModule>
+
+# ── Cabeceras de seguridad ───────────────────────────────────────────
+<IfModule mod_headers.c>
+
+  # HSTS: un año, subdominios incluidos.
+  # OJO: no lo actives hasta que el certificado funcione. Una vez que el
+  # navegador lo recuerda, no hay forma de volver a http durante ese año.
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  # El navegador no adivina el tipo de contenido. Corta una familia entera
+  # de ataques por confusión de MIME.
+  Header always set X-Content-Type-Options "nosniff"
+
+  # No se puede meter el sitio en un iframe ajeno (clickjacking).
+  Header always set X-Frame-Options "DENY"
+
+  # No se filtra la URL completa a terceros al salir del sitio.
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Se apagan las APIs que este sitio no usa. Si añades un mapa embebido o
+  # una llamada, quita la que corresponda.
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+
+  # ── CSP ────────────────────────────────────────────────────────────
+  #
+  # Se construye permitiendo SOLO lo necesario, no quitando cosas de una
+  # lista permisiva. Cada dominio de terceros va con su motivo al lado.
+  #
+  # 'sha256-...' son los hashes de los scripts inline. Si editas un inline,
+  # el hash cambia: `npm run gate` los recalcula y avisa. Por eso los
+  # inline con hash están en .prettierignore — si Prettier los reformatea,
+  # el navegador los bloquea sin decir nada en la interfaz.
+  #
+  # Con monetización activa hay que abrir script-src y frame-src a Google
+  # y a Outpush. Eso es una concesión real: queda documentada, no
+  # disimulada. Ver docs/monetizacion.md.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+
+  # Se quita la firma del servidor: menos información gratis para quien
+  # esté buscando versiones con vulnerabilidades conocidas.
+  Header always unset X-Powered-By
+  Header always unset Server
+  Header always unset X-Pingback
+
+  # Caché: los assets llevan hash en el nombre, así que un año es seguro.
+  # El HTML nunca se cachea, o el cliente no ve los cambios.
+  <FilesMatch "\.(js|css|woff2|avif|webp|jpg|jpeg|png|gif|svg|ico|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|json|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ── Compresión ───────────────────────────────────────────────────────
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json
+  AddOutputFilterByType BROTLI_COMPRESS image/svg+xml application/xml
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml application/xml
+</IfModule>
+
+# ── Tipos MIME que Hostinger no siempre trae ─────────────────────────
+<IfModule mod_mime.c>
+  AddType image/avif                   .avif
+  AddType image/webp                   .webp
+  AddType font/woff2                   .woff2
+  AddType application/manifest+json    .webmanifest
+</IfModule>
+
+# ── Lo que no se sirve ───────────────────────────────────────────────
+
+# Sin listados de directorio. Sin esto, cualquiera navega tu estructura.
+Options -Indexes
+
+# Archivos que nunca deben ser públicos. Compruébalo después de subir:
+#   curl -s -o /dev/null -w "%{http_code}\n" https://TU-DOMINIO/.env
+# Tiene que dar 403 o 404. Si da 200, este bloque no se está aplicando.
+<FilesMatch "(^\.|\.(env|map|json|lock|md|log|sql|bak|old|orig|swp|dist|ini|yml|yaml)$)">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Excepciones: estos SÍ son públicos y tienen que servirse.
+<FilesMatch "^(robots\.txt|ads\.txt|sitemap\.xml|site\.webmanifest|manifest\.json)$">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+</FilesMatch>
+
+# Carpetas de control de versiones y dependencias
+RedirectMatch 404 /\.git
+RedirectMatch 404 /node_modules
+RedirectMatch 404 /\.well-known/(?!acme-challenge|security\.txt)
+
+# ── Higiene ──────────────────────────────────────────────────────────
+#
+# No es defensa contra denegación de servicio (eso es Cloudflare), pero
+# quita ruido y cierra métodos que este sitio no usa.
+
+# Solo los verbos que hacen falta.
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK|DEBUG|CONNECT|PATCH|PUT|DELETE)$
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# Límite de tamaño del cuerpo: 2 MB es de sobra para un formulario.
+<IfModule mod_php.c>
+  php_value post_max_size 2M
+  php_value upload_max_filesize 2M
+</IfModule>
+LimitRequestBody 2097152
+
+# ── Errores ──────────────────────────────────────────────────────────
+ErrorDocument 404 /404.html
