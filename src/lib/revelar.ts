@@ -59,8 +59,9 @@ export function iniciarContadores(): void {
   if (contadores.length === 0) return;
 
   const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Con separador de miles: "2.640" se lee de un vistazo, "2640" no.
   const pintar = (el: HTMLElement, v: number) => {
-    el.textContent = String(v) + (el.dataset.contadorSufijo ?? '');
+    el.textContent = v.toLocaleString('es-CO') + (el.dataset.contadorSufijo ?? '');
   };
 
   if (sinMovimiento || !('IntersectionObserver' in window)) {

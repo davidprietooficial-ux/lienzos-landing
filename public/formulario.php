@@ -242,12 +242,22 @@ if ($errores !== []) {
     responder(422, 'Revisa los datos e inténtalo otra vez.', 'validación: ' . implode(', ', $errores));
 }
 
+// ── Calificación ─────────────────────────────────────────────────────
+// Mismo criterio que califica() en src/lib/formulario.ts. La web ya le
+// enseñó a la persona el aviso "todavía no es el mejor momento"; aquí solo
+// se marca el correo para poder filtrarlo. Ojo: el valor sale del
+// formulario, así que sirve para ordenar la bandeja, no como control.
+const INVERSIONES_QUE_NO_CALIFICAN = ['Menos de USD 3.000 al mes', 'Todavia no pautamos'];
+$califica = !in_array($inversion, INVERSIONES_QUE_NO_CALIFICAN, true)
+         && !($inversion === '' && $plataformas === ['Aún no pauto']);
+
 // ── Capa 5 · Envío con salida escapada ───────────────────────────────
 
 $sinDato = '(no indicado)';
 
 $cuerpo = implode("\n", [
     'COTIZACIÓN DESDE LA WEB',
+    $califica ? 'Califica: sí (la web lo llevó a WhatsApp)' : 'Califica: NO (vio el aviso "todavía no es el mejor momento")',
     '',
     'Nombre:         ' . $nombre,
     'Marca:          ' . ($marca !== '' ? $marca : $sinDato),
@@ -271,7 +281,8 @@ $cuerpo = implode("\n", [
 
 // El asunto lleva el dato que decide si se abre ahora o después. Se limpia
 // de saltos de línea aparte: en el asunto también se inyectan cabeceras.
-$asunto = ASUNTO_BASE . ' · ' . $nombre . ' · ' . $paquete
+$asunto = ($califica ? '' : '[No califica] ')
+        . ASUNTO_BASE . ' · ' . $nombre . ' · ' . $paquete
         . ($inversion !== '' ? ' · pauta ' . $inversion : '');
 $asunto = trim(preg_replace('/[\r\n]+/', ' ', $asunto) ?? ASUNTO_BASE);
 

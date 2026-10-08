@@ -17,35 +17,61 @@ import './estilos/sitio.css';
 import { iniciarConsentimiento } from './lib/consentimiento';
 import { iniciarRevelado, iniciarContadores } from './lib/revelar';
 import { iniciarFormulario } from './lib/formulario';
+import { iniciarPistas } from './lib/pistas';
+import { iniciarPortafolio } from './lib/portafolio';
+import { iniciarPortada } from './lib/portada';
+import { iniciarMenu } from './lib/menu';
 import { iniciarReproductores } from './lib/reproductor';
-import { iniciarVsl } from './lib/vsl';
 import { iniciarTracking, registrarConversiones } from './lib/tracking';
 
 // ── Barra de marca ────────────────────────────────────────────────────
 //
-// Esto NO es una navegación y no debe volver a serlo: en una landing de
-// campaña, cada enlace de sección es una salida que compite con el CTA.
-// Aquí solo hay logo + "Cotizar", y el "Cotizar" ni siquiera aparece hasta
-// que el CTA del hero se ha ido de pantalla — dos botones idénticos a la
-// vez es ruido, no insistencia.
+// Logo, secciones de la propia página (escritorio) y hamburguesa (menú en
+// src/lib/menu.ts). El "Cotizar" de la barra no aparece hasta que el CTA
+// de la portada se ha ido de pantalla — dos botones idénticos a la vez es
+// ruido, no insistencia.
 
 function iniciarMarcaFlotante(): void {
   const barra = document.querySelector<HTMLElement>('[data-marca-flotante]');
   if (!barra) return;
 
-  // Se observa el bloque de botones del hero, no un centinela en el top:
-  // así el CTA de arriba entra exactamente cuando el de abajo se pierde.
+  // Dos cosas distintas, cada una con su disparador:
+  //
+  //  · el cristal, en cuanto la página se mueve un dedo. Arriba del todo la
+  //    cabecera flota sobre el video; en cuanto algo pasa por debajo,
+  //    necesita su propio fondo para que los enlaces se sigan leyendo.
+  //  · el CTA de arriba y la barra fija del móvil, solo cuando el CTA de la
+  //    portada ya se fue de pantalla: dos botones iguales a la vez es ruido,
+  //    no insistencia.
+  const UMBRAL_CRISTAL = 8;
+  let conFondo: boolean | null = null;
+
+  const pintarFondo = (): void => {
+    const siguiente = window.scrollY > UMBRAL_CRISTAL;
+    if (siguiente === conFondo) return;
+    conFondo = siguiente;
+    barra.classList.toggle('con-fondo', siguiente);
+  };
+
+  pintarFondo();
+  window.addEventListener('scroll', pintarFondo, { passive: true });
+
   const anclaHero = document.querySelector<HTMLElement>('[data-ancla-cta]');
+  const fija = document.querySelector<HTMLElement>('[data-sticky]');
+
+  const mostrarCta = (visible: boolean): void => {
+    barra.classList.toggle('compacta', visible);
+    fija?.classList.toggle('visible', visible);
+  };
 
   if (!anclaHero || !('IntersectionObserver' in window)) {
-    barra.classList.add('compacta');
+    mostrarCta(true);
     return;
   }
 
-  new IntersectionObserver(
-    ([entrada]) => barra.classList.toggle('compacta', !entrada?.isIntersecting),
-    { threshold: 0 },
-  ).observe(anclaHero);
+  new IntersectionObserver(([entrada]) => mostrarCta(!entrada?.isIntersecting), {
+    threshold: 0,
+  }).observe(anclaHero);
 }
 
 // ── Preguntas frecuentes ──────────────────────────────────────────────
@@ -108,12 +134,15 @@ function iniciar(): void {
   iniciarConsentimiento();
 
   iniciarMarcaFlotante();
+  iniciarMenu();
   iniciarRevelado();
   iniciarContadores();
   iniciarFaq();
   iniciarFormulario();
+  iniciarPistas();
+  iniciarPortafolio();
+  iniciarPortada();
   iniciarReproductores();
-  iniciarVsl();
   avisarVistaPrevia();
   actualizarAno();
 

@@ -49,8 +49,12 @@ function iniciarUnReproductor(contenedor: HTMLElement): void {
   const barra = contenedor.querySelector<HTMLElement>('[data-reproductor-barra]');
   const relleno = contenedor.querySelector<HTMLElement>('[data-reproductor-relleno]');
   const resumen = contenedor.querySelector<HTMLElement>('[data-reproductor-resumen]');
-  const botonContinuar = contenedor.querySelector<HTMLButtonElement>('[data-reproductor-continuar]');
-  const botonReiniciar = contenedor.querySelector<HTMLButtonElement>('[data-reproductor-reiniciar]');
+  const botonContinuar = contenedor.querySelector<HTMLButtonElement>(
+    '[data-reproductor-continuar]',
+  );
+  const botonReiniciar = contenedor.querySelector<HTMLButtonElement>(
+    '[data-reproductor-reiniciar]',
+  );
   const final = contenedor.querySelector<HTMLElement>('[data-reproductor-final]');
 
   if (!video || !boton || !iconoPlay || !iconoPausa || !barra || !relleno) return;
@@ -117,7 +121,13 @@ function iniciarUnReproductor(contenedor: HTMLElement): void {
   });
 
   const progresoGuardado = leerProgresoGuardado(id);
-  if (progresoGuardado && progresoGuardado > UMBRAL_RETOMAR_SEG && resumen && botonContinuar && botonReiniciar) {
+  if (
+    progresoGuardado &&
+    progresoGuardado > UMBRAL_RETOMAR_SEG &&
+    resumen &&
+    botonContinuar &&
+    botonReiniciar
+  ) {
     resumen.hidden = false;
 
     botonContinuar.addEventListener('click', (evento) => {
@@ -130,7 +140,7 @@ function iniciarUnReproductor(contenedor: HTMLElement): void {
           video.currentTime = progresoGuardado;
           ultimoTiempoValido = progresoGuardado;
         },
-        { once: true }
+        { once: true },
       );
       video.play().catch(() => {});
     });

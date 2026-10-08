@@ -18,25 +18,36 @@
  *
  * ── Lo específico de este sitio ───────────────────────────────────────
  *
- * El envío tiene DOS destinos: el correo (vía formulario.php) y WhatsApp,
- * que es donde el cliente cierra. El mensaje de WhatsApp se arma con las
- * propias respuestas del formulario, así que quien recibe ya tiene el
- * resumen sin tener que preguntar nada.
+ * El formulario CALIFICA (ver califica()) y el final depende de eso:
  *
- * Por qué WhatsApp se abre con un BOTÓN y no solo: `window.open` después de
- * un `await` ya no cuenta como gesto del usuario y los navegadores lo
- * bloquean como popup. Un botón que el usuario pulsa siempre funciona; una
- * apertura automática funciona a veces. Se intenta igualmente, y el botón
- * queda de respaldo visible.
+ *   califica     → correo (vía formulario.php) y salto a WhatsApp con el
+ *                  mensaje armado con sus propias respuestas: quien recibe
+ *                  ya tiene el resumen sin preguntar nada.
+ *   no califica  → al instante, sin esperar al servidor, el aviso "todavía
+ *                  no es el mejor momento". El correo se manda igual, por
+ *                  detrás y marcado, para que no se pierda el registro.
+ *
+ * El salto a WhatsApp llega después de un `await`, cuando el navegador ya
+ * puede no contarlo como gesto del usuario y bloquear la ventana. Por eso
+ * irAWhatsapp() cae a navegar en la misma pestaña, y el botón "Abrir
+ * WhatsApp con tu resumen" queda visible de respaldo al volver.
  */
 
 import { permitido } from './consentimiento';
 
-type Estado = 'vacio' | 'cargando' | 'exito' | 'error';
+// 'aviso' es el final de quien no califica: ni éxito ni error.
+type Estado = 'vacio' | 'cargando' | 'exito' | 'error' | 'aviso';
 
 const RETRASO_SPINNER_MS = 900; // por debajo de esto no se muestra nada
 const TIEMPO_MAXIMO_MS = 15_000;
-const WHATSAPP = '573057190936';
+const DURACION_CIERRE_MS = 350; // la de animate-dialog
+const WHATSAPP = '573228539152';
+
+// Lienzos produce para marcas que ya pautan cada mes. Menos de USD 3.000
+// al mes, o todavía no pautar, no califica. "Prefiero hablarlo primero"
+// (vacío) sí: la duda juega a favor del lead. El mismo criterio está en
+// public/formulario.php, que lo usa para marcar el correo.
+const INVERSION_QUE_NO_CALIFICA = ['Menos de USD 3.000 al mes', 'Todavia no pautamos'];
 
 interface Campo {
   nombre: string;
@@ -63,6 +74,38 @@ const valores = (form: HTMLFormElement, nombre: string): string[] =>
 const valor = (form: HTMLFormElement, nombre: string): string =>
   String(new FormData(form).get(nombre) ?? '').trim();
 
+const califica = (form: HTMLFormElement): boolean => {
+  const inversion = valor(form, 'inversion');
+  if (INVERSION_QUE_NO_CALIFICA.includes(inversion)) return false;
+  // Sin cifra, pero lo único que marcó en plataformas es que aún no pauta.
+  const plataformas = valores(form, 'plataformas[]');
+  return !(inversion === '' && plataformas.length === 1 && plataformas[0] === 'Aún no pauto');
+};
+
+/**
+ * En el móvil wa.me abre la app: navegar en la misma pestaña no deja una
+ * pestaña en blanco detrás. En escritorio se abre aparte para que la
+ * confirmación siga a la vista; si el navegador bloquea la ventana, se
+ * navega aquí mismo. La ventana nace en blanco para poder cortarle el
+ * opener antes de que cargue nada (lo que haría rel="noopener").
+ *
+ * Salir de la pestaña corta las peticiones en vuelo: el respiro de 300 ms
+ * es para que la conversión alcance a llegar a la analítica.
+ */
+const RESPIRO_ANALITICA_MS = 300;
+
+function irAWhatsapp(url: string): void {
+  if (!window.matchMedia('(pointer: coarse)').matches) {
+    const ventana = window.open('', '_blank');
+    if (ventana) {
+      ventana.opener = null;
+      ventana.location.href = url;
+      return;
+    }
+  }
+  window.setTimeout(() => window.location.assign(url), RESPIRO_ANALITICA_MS);
+}
+
 // ── Montaje ───────────────────────────────────────────────────────────
 
 export function iniciarFormulario(): void {
@@ -86,10 +129,7 @@ export function iniciarFormulario(): void {
 
   // ── Definición de los campos ────────────────────────────────────────
 
-  const simple = (
-    nombre: string,
-    validar: (v: string) => string | null,
-  ): Campo | null => {
+  const simple = (nombre: string, validar: (v: string) => string | null): Campo | null => {
     const input = buscar<HTMLInputElement>(nombre);
     if (!input) return null;
     return {
@@ -109,9 +149,7 @@ export function iniciarFormulario(): void {
   };
 
   agregar(
-    simple('nombre', (v) =>
-      v.trim() ? null : 'Tu nombre hace falta para poder responderte.',
-    ),
+    simple('nombre', (v) => (v.trim() ? null : 'Tu nombre hace falta para poder responderte.')),
   );
 
   agregar(
@@ -156,9 +194,7 @@ export function iniciarFormulario(): void {
 
   // El paquete es lo que califica el lead: es el único campo "de negocio"
   // obligatorio, y va en el primer paso porque es de un solo toque.
-  const paqueteInputs = Array.from(
-    form.querySelectorAll<HTMLInputElement>('[name="paquete"]'),
-  );
+  const paqueteInputs = Array.from(form.querySelectorAll<HTMLInputElement>('[name="paquete"]'));
   if (paqueteInputs.length) {
     campos.push({
       nombre: 'paquete',
@@ -256,6 +292,16 @@ export function iniciarFormulario(): void {
     tramos.forEach((tramo, i) => tramo.toggleAttribute('data-hecho', i <= actual));
     if (cuenta) cuenta.textContent = `Paso ${actual + 1} de ${paneles.length}`;
 
+    // Los indicadores de la columna lateral (solo escritorio) viven fuera
+    // del <form>: se buscan en el documento, por su número de paso.
+    document.querySelectorAll<HTMLElement>('[data-paso-indicador]').forEach((item) => {
+      const i = Number(item.dataset.pasoIndicador);
+      item.classList.toggle('paso-item--activo', i === actual);
+      item.classList.toggle('paso-item--hecho', i < actual);
+      if (i === actual) item.setAttribute('aria-current', 'step');
+      else item.removeAttribute('aria-current');
+    });
+
     const ultimo = actual === paneles.length - 1;
     if (btnAtras) btnAtras.hidden = actual === 0;
     if (btnSiguiente) btnSiguiente.hidden = ultimo;
@@ -307,6 +353,85 @@ export function iniciarFormulario(): void {
   });
 
   pintarPaso();
+
+  // El envío ya se hizo: lo que queda es la confirmación, no el
+  // formulario otra vez. Los tres pasos quedan como hechos.
+  const dejarEnviado = (): void => {
+    form.reset();
+    campos.forEach((c) => mostrarError(c, null));
+    paneles.forEach((panel) => (panel.hidden = true));
+    tramos.forEach((tramo) => tramo.setAttribute('data-hecho', ''));
+    if (cuenta) cuenta.textContent = '';
+    document.querySelectorAll<HTMLElement>('[data-paso-indicador]').forEach((item) => {
+      item.classList.remove('paso-item--activo');
+      item.classList.add('paso-item--hecho');
+      item.removeAttribute('aria-current');
+    });
+    if (btnSiguiente) btnSiguiente.hidden = true;
+    if (btnAtras) btnAtras.hidden = true;
+    boton.hidden = true;
+    if (marcaTiempo) marcaTiempo.value = String(Math.floor(Date.now() / 1000));
+  };
+
+  // ── Aviso para quien no califica ────────────────────────────────────
+
+  const aviso = document.querySelector<HTMLDialogElement>('[data-aviso-no-califica]');
+
+  const cerrarAviso = (): void => {
+    if (!aviso?.open || aviso.classList.contains('is-closing')) return;
+    aviso.classList.add('is-closing');
+    const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.setTimeout(
+      () => {
+        aviso.classList.remove('is-closing');
+        aviso.close();
+        // El foco vuelve al mensaje que queda en el formulario: el botón
+        // que se pulsó ya no existe.
+        zonaEstado.focus();
+      },
+      quieto ? 0 : DURACION_CIERRE_MS,
+    );
+  };
+
+  if (aviso) {
+    aviso.querySelector('[data-aviso-cerrar]')?.addEventListener('click', cerrarAviso);
+    // Esc: se intercepta para que también cierre con la animación.
+    aviso.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      cerrarAviso();
+    });
+    // Clic en el velo: el target es el propio <dialog>, no su tarjeta.
+    aviso.addEventListener('click', (e) => {
+      if (e.target === aviso) cerrarAviso();
+    });
+  }
+
+  const terminarSinCalificar = (): void => {
+    // Se registra igual (llega marcado "No califica"), pero la persona no
+    // espera a eso: su respuesta ya es el aviso. keepalive para que salga
+    // aunque cierre la pestaña; si falla, solo se entera la consola.
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      keepalive: true,
+      headers: { Accept: 'application/json' },
+    })
+      .then((r) => {
+        if (!r.ok) throw new Error(String(r.status));
+      })
+      .catch((e) => console.error('[formulario] No se pudo registrar', e));
+
+    dejarEnviado();
+    // Es también el respaldo si el navegador no tiene <dialog>.
+    ponerEstado(
+      'aviso',
+      'Todavía no es el mejor momento para contratarnos. Cuando tu pauta crezca, aquí vamos a estar.',
+    );
+    if (aviso && typeof aviso.showModal === 'function') {
+      aviso.classList.remove('is-closing');
+      aviso.showModal();
+    }
+  };
 
   // ── El mensaje de WhatsApp, armado con las respuestas ───────────────
 
@@ -360,6 +485,11 @@ export function iniciarFormulario(): void {
       return;
     }
 
+    if (!califica(form)) {
+      terminarSinCalificar();
+      return;
+    }
+
     // Se arma ANTES de enviar: después el formulario se resetea y ya no
     // quedan respuestas de las que sacarlo.
     const urlWhatsapp = construirWhatsapp();
@@ -396,31 +526,21 @@ export function iniciarFormulario(): void {
 
       ponerEstado(
         'exito',
-        '¡Recibido! Ya tenemos tus datos. Sigue la conversación por WhatsApp para cerrar detalles.',
+        '¡Recibido! Te llevamos a WhatsApp con tu resumen. Si no se abrió, usa el botón de abajo.',
       );
-      form.reset();
-      campos.forEach((c) => mostrarError(c, null));
-      actual = 0;
-      pintarPaso();
-      // El envío ya se hizo: lo que queda es la confirmación, no el
-      // formulario otra vez.
-      paneles.forEach((panel) => (panel.hidden = true));
-      if (btnSiguiente) btnSiguiente.hidden = true;
-      if (btnAtras) btnAtras.hidden = true;
-      boton.hidden = true;
-      if (marcaTiempo) marcaTiempo.value = String(Math.floor(Date.now() / 1000));
+      dejarEnviado();
 
-      // Se intenta abrir solo. Si el navegador lo bloquea por venir después
-      // de un await, el botón de arriba sigue ahí — por eso no se comprueba
-      // el resultado ni se avisa de nada.
-      window.open(urlWhatsapp, '_blank', 'noopener,noreferrer');
-
-      // Se avisa a la analítica solo si hay permiso.
+      // Se avisa a la analítica solo si hay permiso, y solo aquí: quien no
+      // califica nunca cuenta como conversión, o la pauta aprendería a
+      // traer más de lo que no sirve.
       if (permitido('marketing')) {
         document.dispatchEvent(
           new CustomEvent('conversion', { detail: { tipo: 'cotizacion_enviada' } }),
         );
       }
+
+      // Lo último: en el móvil esto saca de la página.
+      irAWhatsapp(urlWhatsapp);
     } catch (e) {
       window.clearTimeout(temporizadorSpinner);
       window.clearTimeout(corte);
