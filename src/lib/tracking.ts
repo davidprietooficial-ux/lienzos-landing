@@ -131,8 +131,18 @@ export function registrarConversiones(): void {
   };
 
   document.addEventListener('conversion', (e) => {
-    const detalle = (e as CustomEvent<{ tipo: string }>).detail;
-    enviar('conversion', { tipo: detalle?.tipo ?? 'desconocido' });
+    const detalle = (e as CustomEvent<{ tipo: string; eventoId?: string }>).detail;
+    const tipo = detalle?.tipo ?? 'desconocido';
+    window.gtag?.('event', 'conversion', { tipo });
+
+    // Para Meta va como Lead, que es el evento estándar que entienden sus
+    // campañas. El eventID es el mismo que formulario.php manda por la
+    // Conversions API: Meta une los dos y cuenta una sola conversión.
+    if (detalle?.eventoId) {
+      window.fbq?.('track', 'Lead', { content_name: tipo }, { eventID: detalle.eventoId });
+    } else {
+      window.fbq?.('trackCustom', 'conversion', { tipo });
+    }
   });
 
   // Clic en WhatsApp: es la conversión principal en la mayoría de landings

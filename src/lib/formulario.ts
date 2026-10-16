@@ -74,6 +74,19 @@ const valores = (form: HTMLFormElement, nombre: string): string[] =>
 const valor = (form: HTMLFormElement, nombre: string): string =>
   String(new FormData(form).get(nombre) ?? '').trim();
 
+/**
+ * Identificador del envío.
+ *
+ * El mismo valor viaja por dos caminos: al navegador (fbq 'Lead') y al
+ * servidor, que lo reenvía a Meta por la Conversions API. Meta los une por
+ * este id y cuenta UNA conversión, no dos. Sin él, cada lead se contaría
+ * doble y la pauta optimizaría con cifras infladas.
+ */
+const nuevoEventoId = (): string =>
+  typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+
 const califica = (form: HTMLFormElement): boolean => {
   const inversion = valor(form, 'inversion');
   if (INVERSION_QUE_NO_CALIFICA.includes(inversion)) return false;
@@ -494,6 +507,11 @@ export function iniciarFormulario(): void {
     // quedan respuestas de las que sacarlo.
     const urlWhatsapp = construirWhatsapp();
 
+    // Mismo id para el evento del navegador y el del servidor.
+    const eventoId = nuevoEventoId();
+    const cuerpo = new FormData(form);
+    cuerpo.set('evento_id', eventoId);
+
     // El spinner solo aparece si de verdad tarda.
     temporizadorSpinner = window.setTimeout(
       () => ponerEstado('cargando', 'Enviando…'),
@@ -507,7 +525,7 @@ export function iniciarFormulario(): void {
     try {
       const respuesta = await fetch(form.action, {
         method: 'POST',
-        body: new FormData(form),
+        body: cuerpo,
         signal: control.signal,
         headers: { Accept: 'application/json' },
       });
@@ -535,7 +553,7 @@ export function iniciarFormulario(): void {
       // traer más de lo que no sirve.
       if (permitido('marketing')) {
         document.dispatchEvent(
-          new CustomEvent('conversion', { detail: { tipo: 'cotizacion_enviada' } }),
+          new CustomEvent('conversion', { detail: { tipo: 'cotizacion_enviada', eventoId } }),
         );
       }
 
