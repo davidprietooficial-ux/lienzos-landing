@@ -33,7 +33,7 @@
  * WhatsApp con tu resumen" queda visible de respaldo al volver.
  */
 
-import { permitido } from './consentimiento';
+import { rechazado } from './consentimiento';
 
 // 'aviso' es el final de quien no califica: ni éxito ni error.
 type Estado = 'vacio' | 'cargando' | 'exito' | 'error' | 'aviso';
@@ -548,10 +548,14 @@ export function iniciarFormulario(): void {
       );
       dejarEnviado();
 
-      // Se avisa a la analítica solo si hay permiso, y solo aquí: quien no
-      // califica nunca cuenta como conversión, o la pauta aprendería a
-      // traer más de lo que no sirve.
-      if (permitido('marketing')) {
+      // Solo aquí: quien no califica nunca cuenta como conversión, o la
+      // pauta aprendería a traer más de lo que no sirve.
+      //
+      // La condición es "no ha dicho que no", no "ha dicho que sí": el
+      // píxel ya está corriendo desde que se abrió la página, así que
+      // exigir un sí expreso dejaría fuera a quien nunca tocó el banner
+      // mientras su PageView sí se contó. Quien rechazó queda fuera.
+      if (!rechazado('marketing')) {
         document.dispatchEvent(
           new CustomEvent('conversion', { detail: { tipo: 'cotizacion_enviada', eventoId } }),
         );

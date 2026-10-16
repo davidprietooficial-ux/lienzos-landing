@@ -59,6 +59,15 @@ function guardar(analitica: boolean, marketing: boolean): void {
     // durante esta sesión y se vuelve a preguntar en la siguiente.
   }
   aplicar();
+  const decidido = estado;
+  for (const fn of oyentes) {
+    try {
+      fn(decidido);
+    } catch (e) {
+      // Un oyente que revienta no puede tumbar el banner.
+      console.warn('[consentimiento] un oyente falló', e);
+    }
+  }
 }
 
 export function consentimientoActual(): Consentimiento | null {
@@ -68,6 +77,30 @@ export function consentimientoActual(): Consentimiento | null {
 export function permitido(categoria: Categoria): boolean {
   if (categoria === 'necesarias') return true;
   return estado?.[categoria] === true;
+}
+
+/**
+ * Lo contrario de permitido(): true SOLO si dijo expresamente que no.
+ *
+ * No es lo mismo "todavía no ha contestado" que "ha dicho que no", y para
+ * los terceros que arrancan antes de preguntar la diferencia es justo la
+ * que decide si siguen corriendo o se apagan.
+ */
+export function rechazado(categoria: Categoria): boolean {
+  if (categoria === 'necesarias') return false;
+  return estado?.[categoria] === false;
+}
+
+// ── Aviso de decisión ─────────────────────────────────────────────────
+//
+// alConsentir() solo sabe de permisos concedidos: es una cola que espera
+// el sí. Esto es lo contrario — avisa de CADA decisión, también de la
+// negativa, para los terceros que ya están corriendo y hay que apagar.
+
+const oyentes: Array<(c: Consentimiento) => void> = [];
+
+export function alDecidir(fn: (c: Consentimiento) => void): void {
+  oyentes.push(fn);
 }
 
 // ── Cola de terceros ──────────────────────────────────────────────────
@@ -177,7 +210,7 @@ function construirBanner(): HTMLElement {
   const cuerpo = document.createElement('p');
   cuerpo.className = 'mt-1 max-w-[60ch] text-sm text-[var(--texto-secundario)]';
   cuerpo.textContent =
-    'Usamos cookies propias para que el sitio funcione, y de terceros para medir el tráfico y mostrar publicidad. Tú decides.';
+    'Usamos cookies propias para que el sitio funcione, y de terceros para medir qué anuncio te trajo. Las de medición están activas mientras decides: si eliges solo las necesarias, se apagan al instante y no vuelven.';
   const enlace = document.createElement('a');
   enlace.href = '/privacidad';
   enlace.className = 'text-sm underline underline-offset-2';

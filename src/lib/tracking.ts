@@ -5,7 +5,7 @@
  * carga un script "por si acaso".
  */
 
-import { alConsentir } from './consentimiento';
+import { alConsentir, alDecidir, consentimientoActual } from './consentimiento';
 
 // Vacío = no se carga.
 export const IDS = {
@@ -71,6 +71,60 @@ function prepararFbq(): void {
   window._fbq = n;
 }
 
+/**
+ * Meta Pixel.
+ *
+ * DECISIÓN DEL CLIENTE, 16 de octubre de 2026: el píxel arranca con la
+ * página, sin esperar al banner. Si la persona elige "Solo las
+ * necesarias" se le manda fbq('consent', 'revoke') —el interruptor
+ * oficial de Meta— y a partir de ahí no sale un evento más; además se
+ * borran las cookies que alcanzó a poner y en las siguientes visitas ni
+ * siquiera se descarga el archivo.
+ *
+ * Esto se aparta de la regla 6 del contrato ("ni una petición de red
+ * antes del consentimiento"). Queda escrito aquí y no disimulado: se
+ * decidió a sabiendas, con el riesgo de la ley 1581 de 2012 y de los
+ * Términos de Herramientas Empresariales de Meta sobre la mesa.
+ *
+ * El <noscript><img> del fragmento oficial sigue fuera: sin JS no hay
+ * forma de apagarlo después, así que sería un disparo sin vuelta atrás.
+ */
+function iniciarMetaPixel(): void {
+  // Quien ya dijo que no en una visita anterior: no se carga nada.
+  if (consentimientoActual()?.marketing === false) return;
+
+  prepararFbq();
+  // init y track van ANTES de que el archivo esté: quedan en la cola de
+  // fbq y salen en cuanto carga. Es el orden del fragmento de Meta, y es
+  // lo que hace que el PageView no dependa de la latencia de la descarga.
+  window.fbq?.('init', IDS.metaPixel);
+  window.fbq?.('track', 'PageView');
+  cargarScript('https://connect.facebook.net/en_US/fbevents.js').catch((e) =>
+    console.warn('[tracking] el Meta Pixel no cargó', e),
+  );
+
+  alDecidir((decision) => {
+    window.fbq?.('consent', decision.marketing ? 'grant' : 'revoke');
+    if (!decision.marketing) olvidarCookiesDeMeta();
+  });
+}
+
+/**
+ * Borra _fbp y _fbc. fbq('consent','revoke') corta los envíos, pero las
+ * cookies que el píxel alcanzó a poner se quedan; quien dice que no
+ * espera que no quede nada, no solo que deje de mandarse.
+ */
+function olvidarCookiesDeMeta(): void {
+  const host = location.hostname;
+  // El dominio con punto cubre el caso de que se hubiera puesto en el
+  // dominio padre; sin él solo se borraría la del host exacto.
+  for (const nombre of ['_fbp', '_fbc']) {
+    document.cookie = `${nombre}=; max-age=0; path=/`;
+    document.cookie = `${nombre}=; max-age=0; path=/; domain=${host}`;
+    document.cookie = `${nombre}=; max-age=0; path=/; domain=.${host}`;
+  }
+}
+
 export function iniciarTracking(): void {
   // ── Google Analytics 4 · categoría analítica ────────────────────────
   if (IDS.ga4) {
@@ -96,19 +150,7 @@ export function iniciarTracking(): void {
   }
 
   // ── Meta Pixel · marketing ──────────────────────────────────────────
-  //
-  // Mismo pixel que da Meta (ID 1480522530601725), pero el <script> no vive
-  // en el HTML: se inyecta aquí, y solo cuando hay permiso de marketing.
-  // El <noscript><img> del fragmento oficial se queda fuera a propósito —
-  // sin JS tampoco hay banner, así que dispararía sin consentimiento.
-  if (IDS.metaPixel) {
-    alConsentir('marketing', 'Meta Pixel', async () => {
-      prepararFbq();
-      await cargarScript('https://connect.facebook.net/en_US/fbevents.js');
-      window.fbq?.('init', IDS.metaPixel);
-      window.fbq?.('track', 'PageView');
-    });
-  }
+  if (IDS.metaPixel) iniciarMetaPixel();
 
   // ── TikTok · marketing ──────────────────────────────────────────────
   if (IDS.tiktokPixel) {
