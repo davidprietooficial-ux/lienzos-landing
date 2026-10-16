@@ -24,6 +24,17 @@
  *
  *    Si se deja dentro de public_html, cualquiera puede leer las IPs de
  *    quien envió el formulario. Eso es una fuga de datos personales.
+ * 3. Crea el archivo de credenciales de Meta, TAMBIÉN fuera de public_html,
+ *    en el mismo nivel que la carpeta de datos:
+ *
+ *      <?php return [
+ *          'pixel_id'        => '1480522530601725',
+ *          'token'           => 'EAAG...',   // System User, permiso ads_management
+ *          'test_event_code' => '',          // solo para "Probar eventos"
+ *      ];
+ *
+ *    chmod 600. Sin este archivo el formulario funciona igual: simplemente
+ *    no manda la conversión. El token NUNCA va al repositorio ni al bundle.
  */
 
 declare(strict_types=1);
@@ -37,6 +48,12 @@ const SEGUNDOS_MIN  = 3;
 
 // Fuera de la raíz web. Ajusta la ruta a tu cuenta de Hostinger.
 $DIR_DATOS = dirname($_SERVER['DOCUMENT_ROOT']) . '/datos-formulario';
+
+// Credenciales de la Conversions API de Meta. Un .php dentro de public_html
+// es un archivo que cualquiera puede pedir por URL, así que este vive fuera
+// y no está en el repositorio. Si no existe, no se manda la conversión y el
+// formulario sigue funcionando igual.
+$RUTA_META = dirname($_SERVER['DOCUMENT_ROOT']) . '/meta-capi.php';
 
 // ── Respuestas ───────────────────────────────────────────────────────
 
@@ -196,6 +213,13 @@ $referencia  = limpiar('referencia', 500);
 $mensaje     = limpiar('mensaje', 4000);
 $plataformas = limpiarLista('plataformas', PLATAFORMAS);
 
+// Identificador del envío, generado en el navegador. Es lo que permite que
+// Meta una este aviso con el del píxel y cuente UNA conversión. Si no llega
+// o viene con cualquier cosa, se descarta y no se manda nada: un id falso
+// rompería la deduplicación, que es peor que no mandar.
+$eventoId = limpiar('evento_id', 64);
+if (!preg_match('/^[A-Za-z0-9._-]{8,64}$/', $eventoId)) { $eventoId = ''; }
+
 // El paquete es un radio, no una lista: se valida contra su propia lista
 // blanca igual que los select.
 $paquete = limpiar('paquete', 40);
@@ -250,6 +274,108 @@ if ($errores !== []) {
 const INVERSIONES_QUE_NO_CALIFICAN = ['Menos de USD 3.000 al mes', 'Todavia no pautamos'];
 $califica = !in_array($inversion, INVERSIONES_QUE_NO_CALIFICAN, true)
          && !($inversion === '' && $plataformas === ['Aún no pauto']);
+
+// ── Conversions API de Meta ──────────────────────────────────────────
+//
+// Por qué existe: el píxel del navegador se pierde. Lo bloquean las
+// extensiones, lo recorta Safari y no existe para quien no acepta cookies.
+// Un lead que no llega a Meta es un lead del que la campaña no aprende.
+//
+// Este aviso sale del servidor, así que no depende del navegador. Lo que
+// viaja es el correo y el teléfono convertidos en SHA-256 irreversible,
+// nunca en claro. Meta no recibe el mensaje, ni el presupuesto, ni la
+// marca: solo que esta persona completó una solicitud. Es la finalidad que
+// se autoriza en la casilla del formulario.
+//
+// Y solo de quien califica: si la pauta aprende de los leads que no
+// sirven, traerá más de los que no sirven.
+
+/** SHA-256 normalizado como lo pide Meta: sin espacios y en minúsculas. */
+function hashMeta(string $valor): string {
+    $valor = trim($valor);
+    $valor = function_exists('mb_strtolower') ? mb_strtolower($valor, 'UTF-8') : strtolower($valor);
+    return hash('sha256', $valor);
+}
+
+/**
+ * Teléfono a solo dígitos y con indicativo, que es el formato que Meta
+ * empareja. Diez cifras que empiezan por 3 son un móvil colombiano sin
+ * indicativo: se le antepone el 57.
+ */
+function telefonoMeta(string $tel): string {
+    $digitos = preg_replace('/\D/', '', $tel) ?? '';
+    if (strlen($digitos) === 10 && str_starts_with($digitos, '3')) {
+        $digitos = '57' . $digitos;
+    }
+    return $digitos;
+}
+
+/**
+ * Manda el Lead. No devuelve nada y no lanza: si Meta falla, el lead ya
+ * está en la bandeja del cliente. Esto es telemetría, no puede tumbar el
+ * formulario ni retrasar la respuesta más de unos segundos.
+ */
+function enviarConversionMeta(array $cfg, array $datos): void {
+    if (!function_exists('curl_init')) {
+        error_log('[capi] cURL no disponible; la conversión no se manda');
+        return;
+    }
+
+    $nombre = function_exists('mb_strtolower')
+        ? mb_strtolower(trim($datos['nombre']), 'UTF-8')
+        : strtolower(trim($datos['nombre']));
+    $partes   = preg_split('/\s+/', $nombre) ?: [];
+    $pila     = (string)($partes[0] ?? '');
+    $apellido = count($partes) > 1 ? (string)end($partes) : '';
+    $telefono = telefonoMeta($datos['telefono']);
+
+    $usuario = ['em' => [hashMeta($datos['email'])]];
+    if ($telefono !== '') { $usuario['ph'] = [hash('sha256', $telefono)]; }
+    if ($pila     !== '') { $usuario['fn'] = [hashMeta($pila)]; }
+    if ($apellido !== '') { $usuario['ln'] = [hashMeta($apellido)]; }
+    $usuario['client_ip_address'] = $datos['ip'];
+    $usuario['client_user_agent'] = $datos['ua'];
+    // Las cookies del píxel solo existen si aceptó cookies. Cuando están,
+    // el emparejamiento mejora mucho; cuando no, se omiten y ya.
+    if (!empty($_COOKIE['_fbp'])) { $usuario['fbp'] = substr((string)$_COOKIE['_fbp'], 0, 200); }
+    if (!empty($_COOKIE['_fbc'])) { $usuario['fbc'] = substr((string)$_COOKIE['_fbc'], 0, 200); }
+
+    $carga = [
+        'data' => [[
+            'event_name'       => 'Lead',
+            'event_time'       => time(),
+            'event_id'         => $datos['evento_id'],
+            'event_source_url' => $datos['url'],
+            'action_source'    => 'website',
+            'user_data'        => $usuario,
+            'custom_data'      => ['content_name' => $datos['paquete']],
+        ]],
+        'access_token' => $cfg['token'],
+    ];
+    if (($cfg['test_event_code'] ?? '') !== '') {
+        $carga['test_event_code'] = $cfg['test_event_code'];
+    }
+
+    $ch = curl_init('https://graph.facebook.com/v21.0/' . rawurlencode((string)$cfg['pixel_id']) . '/events');
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => json_encode($carga, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 2,
+        CURLOPT_TIMEOUT        => 4,
+    ]);
+    $respuesta = curl_exec($ch);
+    $codigo    = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $fallo     = curl_error($ch);
+    curl_close($ch);
+
+    // El token no se registra nunca, ni siquiera recortado.
+    if ($codigo !== 200) {
+        error_log('[capi] Meta respondió ' . $codigo . ' ' . substr((string)$respuesta, 0, 300)
+                . ($fallo !== '' ? ' | curl: ' . $fallo : ''));
+    }
+}
 
 // ── Capa 5 · Envío con salida escapada ───────────────────────────────
 
@@ -308,6 +434,27 @@ if (!$enviado) {
         FILE_APPEND | LOCK_EX
     );
     responder(500, 'No he podido enviarlo. Escríbeme por WhatsApp y lo vemos.', 'mail() devolvió false');
+}
+
+// ── Conversión a Meta ────────────────────────────────────────────────
+// Después del correo y nunca antes: si Meta está caído o tarda, el lead ya
+// está a salvo en la bandeja del cliente.
+if ($califica && $eventoId !== '') {
+    $META = is_readable($RUTA_META) ? @include $RUTA_META : null;
+    if (is_array($META) && ($META['token'] ?? '') !== '' && ($META['pixel_id'] ?? '') !== '') {
+        $origen = (string)($_SERVER['HTTP_REFERER'] ?? '');
+        if (!filter_var($origen, FILTER_VALIDATE_URL)) { $origen = 'https://' . $dominio . '/'; }
+        enviarConversionMeta($META, [
+            'evento_id' => $eventoId,
+            'email'     => $email,
+            'telefono'  => $telefono,
+            'nombre'    => $nombre,
+            'paquete'   => $paquete,
+            'ip'        => ipCliente(),
+            'ua'        => substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 500),
+            'url'       => $origen,
+        ]);
+    }
 }
 
 responder(200, 'Recibido');
