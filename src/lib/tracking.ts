@@ -9,7 +9,7 @@ import { alConsentir } from './consentimiento';
 
 // Vacío = no se carga.
 export const IDS = {
-  metaPixel: '',
+  metaPixel: '1480522530601725',
   ga4: '',
   gtm: '',
   googleAds: '',
@@ -32,12 +32,43 @@ function cargarScript(src: string, atributos: Record<string, string> = {}): Prom
   });
 }
 
+interface FbqStub {
+  (...args: unknown[]): void;
+  callMethod?: (...args: unknown[]) => void;
+  queue: unknown[][];
+  push: unknown;
+  loaded: boolean;
+  version: string;
+}
+
 declare global {
   interface Window {
-    fbq?: (...args: unknown[]) => void;
+    fbq?: FbqStub;
+    _fbq?: FbqStub;
     gtag?: (...args: unknown[]) => void;
     ttq?: { load: (id: string) => void; page: () => void };
   }
+}
+
+/**
+ * La cola de fbq, tal cual la define el fragmento oficial de Meta.
+ *
+ * fbevents.js espera encontrarse `fbq` ya creado y vacía su `queue` al
+ * cargar. Crearlo aquí es lo que permite llamar a `track` sin depender de
+ * si el archivo externo terminó de descargarse.
+ */
+function prepararFbq(): void {
+  if (window.fbq) return;
+  const n = function (...args: unknown[]): void {
+    if (n.callMethod) n.callMethod.apply(n, args);
+    else n.queue.push(args);
+  } as FbqStub;
+  n.push = n;
+  n.loaded = true;
+  n.version = '2.0';
+  n.queue = [];
+  window.fbq = n;
+  window._fbq = n;
 }
 
 export function iniciarTracking(): void {
@@ -65,8 +96,14 @@ export function iniciarTracking(): void {
   }
 
   // ── Meta Pixel · marketing ──────────────────────────────────────────
+  //
+  // Mismo pixel que da Meta (ID 1480522530601725), pero el <script> no vive
+  // en el HTML: se inyecta aquí, y solo cuando hay permiso de marketing.
+  // El <noscript><img> del fragmento oficial se queda fuera a propósito —
+  // sin JS tampoco hay banner, así que dispararía sin consentimiento.
   if (IDS.metaPixel) {
     alConsentir('marketing', 'Meta Pixel', async () => {
+      prepararFbq();
       await cargarScript('https://connect.facebook.net/en_US/fbevents.js');
       window.fbq?.('init', IDS.metaPixel);
       window.fbq?.('track', 'PageView');

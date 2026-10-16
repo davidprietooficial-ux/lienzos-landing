@@ -65,7 +65,13 @@
   # Con monetización activa hay que abrir script-src y frame-src a Google
   # y a Outpush. Eso es una concesión real: queda documentada, no
   # disimulada. Ver docs/monetizacion.md.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+  #
+  # Terceros abiertos ahora mismo, y por qué:
+  #   connect.facebook.net  → fbevents.js, el archivo del Meta Pixel.
+  #   www.facebook.com      → el GET del píxel (img) y sus envíos (connect).
+  # Nada de esto se descarga hasta que alguien acepta marketing en el
+  # banner: la CSP solo deja de bloquearlo, no lo dispara.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://www.facebook.com; font-src 'self'; connect-src 'self' https://www.facebook.com https://connect.facebook.net; media-src 'self'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
 
   # Se quita la firma del servidor: menos información gratis para quien
   # esté buscando versiones con vulnerabilidades conocidas.
